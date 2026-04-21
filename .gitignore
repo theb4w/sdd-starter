@@ -1,0 +1,80 @@
+# ─── Secrets — NUNCA commitar ────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.key
+*-key.json
+service-account*.json
+credentials*.json
+gcp-key*.json
+
+# ─── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+
+# ─── Node ────────────────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+.next/
+.nuxt/
+.turbo/
+.parcel-cache/
+
+# ─── Go ──────────────────────────────────────────────────────────────────────
+*.exe
+*.test
+*.out
+vendor/
+
+# ─── IDE / Editor ────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Cursor / Antigravity (project-local mantém; user-local ignora) ──────────
+.cursor/cache/
+.cursor/logs/
+
+# ─── Cloud / Build ───────────────────────────────────────────────────────────
+.gcloud/
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# ─── Logs e temporários ──────────────────────────────────────────────────────
+*.log
+*.tmp
+.tmp_*
+tmp/
+
+# ─── Firebase Functions venv (se usar) ───────────────────────────────────────
+functions/venv/
+functions/__pycache__/
