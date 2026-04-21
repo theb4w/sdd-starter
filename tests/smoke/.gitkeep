@@ -1,0 +1,12 @@
+# Pasta para smoke tests (manuais ou semi-automatizados).
+#
+# Convenções:
+# - Cobertura: 2-3 fluxos end-to-end críticos do produto
+# - Cliente REAL (DB real, LLM real, HTTP real)
+# - Rodam APÓS deploy em staging
+# - Tempo: manual (~5-15 min de validação humana)
+#
+# Smoke = GATE 3 do ciclo SDD. É o único gate que captura regressões de
+# UX/comportamento que unit tests não pegam (ex.: prompt do LLM mudando tom).
+#
+# Ver docs/SDD_WORKFLOW.md §10 para detalhes.
