@@ -1,0 +1,69 @@
+---
+description: Aplica quando usuário menciona inicializar SDD, adotar SDD em projeto existente, fazer DISCOVER, BOOTSTRAP, reverse engineering documentation, ou marcar agente em projeto sem documentação. Usar este rule para guiar primeiros passos de adoção SDD.
+globs: PROJECT_BRIEF.md
+---
+
+# SDD Bootstrap — Iniciar adoção SDD
+
+## Detectar cenário
+
+Avalie o estado atual ANTES de qualquer ação:
+
+| Sintoma | Cenário | Próximo passo |
+|---|---|---|
+| Sem `specs/` e sem `AGENTS.md` no projeto | Adoção do zero | Pergunte: greenfield ou brownfield? |
+| `PROJECT_BRIEF.md` vazio + código existente | Brownfield sem docs | Use `prompts/DISCOVER.md` |
+| `PROJECT_BRIEF.md` preenchido + código vazio | Greenfield | Use `prompts/BOOTSTRAP.md` |
+| `PROJECT_BRIEF.md` preenchido + código existente | Brownfield com brief | Use `prompts/BOOTSTRAP.md` |
+| `specs/SPEC_INDEX.md` existe | SDD já adotado | Use `prompts/ONBOARDING.md` |
+
+## Greenfield (projeto novo)
+
+1. Confirme `PROJECT_BRIEF.md` preenchido (sem `[?]`)
+2. Use `prompts/BOOTSTRAP.md`:
+   - Adapta `AGENTS.md` (substitui `<!-- ADAPT -->`)
+   - Cria `docs/<NOME>_Architecture.md` v1
+   - Cria `specs/SPEC_INDEX.md`
+   - Cria SPEC do módulo crítico
+   - 🛑 Para no GATE 1 (PLAN do 1º módulo)
+3. Detalhes em `QUICKSTART/greenfield.md`
+
+## Brownfield SEM documentação
+
+⚠️ **NÃO escreva código de produção. NÃO modifique arquivos existentes.**
+
+1. Use `prompts/DISCOVER.md` (5 etapas conservadoras com GO humano em cada):
+   - Etapa 1: Reconhecimento (estrutura, sem ler conteúdo)
+   - Etapa 2: Análise de domínio (entry points + brief rascunho)
+   - Etapa 3: Mapeamento SDD retrospectivo (módulos + ADRs implícitas)
+   - Etapa 4: Geração de artefatos (UM POR VEZ)
+   - Etapa 5: Pronto pra trabalhar
+2. Marque `[?]` em qualquer inferência incerta
+3. Detalhes em `QUICKSTART/brownfield.md` e `.agent/workflows/sdd_discover.md`
+
+## Brownfield COM brief preenchido
+
+1. Use `prompts/BOOTSTRAP.md` (mesmo greenfield, mas considera código existente)
+2. Em vez de criar SPECs do zero, mapeia código existente → SPECs status retroativo
+
+## SDD já adotado (sessão de continuidade)
+
+1. Use `prompts/ONBOARDING.md` (resumir estado em 2-5 min)
+2. OU `prompts/RESUME.md` (continuar fase específica)
+
+## Regras absolutas durante bootstrap/discover
+
+- ❌ NUNCA modifica código existente em DISCOVER
+- ❌ NUNCA inventa respostas para CLARIFY
+- ❌ NUNCA aceita ADR sem aprovação humana explícita
+- ❌ NUNCA pula GATE 1 (PLAN) mesmo "pra acelerar"
+- ✓ SEMPRE marca `[?]` em inferências incertas
+- ✓ SEMPRE pausa entre etapas para GO humano
+- ✓ SEMPRE cria UM artefato por vez (não em batch)
+
+## Pré-condições antes de começar
+
+- [ ] Template SDD instalado (mínimo: `AGENTS.md`, `docs/SDD_WORKFLOW.md`, `.agent/agents.md`, `prompts/`)
+- [ ] Workspace é o projeto-alvo (não o template `sdd-starter`)
+- [ ] Usuário confirmou cenário (greenfield/brownfield/com docs/sem docs)
+- [ ] Git inicializado e fora de cloud-sync

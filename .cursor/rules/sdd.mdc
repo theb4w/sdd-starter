@@ -1,0 +1,74 @@
+---
+description: Spec-Driven Development (SDD) — regras absolutas para qualquer task neste projeto
+alwaysApply: true
+---
+
+# SDD — Regras absolutas
+
+Este projeto adota **Spec-Driven Development**. Toda task técnica passa pelas 6 regras + ciclo abaixo.
+
+## 6 princípios não-negociáveis
+
+1. **Spec-first** — toda implementação tem SPEC aprovada antes do código (exceto bug fix puro ≤30 LOC)
+2. **Human gates** — 4 GATEs (G1: PLAN, G2: TASKS, G3: smoke, G4: commit) NUNCA são pulados
+3. **Fonte primária** — toda decisão técnica cita URL oficial (sem `random_blog.com`)
+4. **Backward-compat** — cada commit deve ser revertível sem quebrar nada
+5. **Traceabilidade** — handover ao fim de cada sessão, ADR para cada trade-off
+6. **Reversibilidade** — toda decisão tem plano de rollback documentado
+
+## Ordem obrigatória de leitura ANTES de qualquer ação
+
+1. `AGENTS.md` (constituição do projeto)
+2. `GEMINI.md` (se Antigravity)
+3. `docs/handover_*.md` mais recente (autoridade do estado atual)
+4. `specs/SPEC_INDEX.md`
+5. `specs/modules/SPEC_<MODULO>.md` da seção relevante
+6. `specs/plans/PLAN_<MODULO>.md` (se existe e fase aplicável)
+7. `specs/plans/TASKS_<MODULO>.md` (se existe e fase aplicável)
+
+## Ciclo SDD
+
+```
+SPECIFY → CLARIFY → ADRs → PLAN(🛑G1) → TASKS(🛑G2) → IMPLEMENT → TEST → SMOKE(🛑G3) → COMMIT(🛑G4) → HANDOVER
+```
+
+## Como decidir tipo de task
+
+| Cenário | Prompt | Tempo extra |
+|---|---|---|
+| Bug fix simples | `prompts/BUG_FIX.md` | +10-20min (regression test) |
+| Feature pequena (≤100 LOC) | `prompts/NEW_FEATURE.md` modo pequena | +5-10min |
+| Feature média (100-400 LOC) | `prompts/NEW_FEATURE.md` modo média | +30-60min |
+| Feature grande (>400 LOC) | `prompts/NEW_FEATURE.md` modo grande | +1-2h |
+| Refator interno | `prompts/REFACTOR.md` tipo interno | +20-40min |
+| Refator arquitetural | `prompts/REFACTOR.md` tipo arquitetural | +1-3h |
+| Retomar fase | `prompts/RESUME.md` | 0 |
+| Onboarding | `prompts/ONBOARDING.md` | 5-10min |
+
+## Anti-padrões (recusar se usuário pedir)
+
+- ❌ "Implementa logo, é simples" sem SPEC quando >30 LOC ou trade-off
+- ❌ Pular CLARIFY (decisões viram tribal knowledge)
+- ❌ Pular ADR de trade-off arquitetural
+- ❌ Pular GATE 1/2/3/4 ("é urgente")
+- ❌ PR >250 LOC (separar em fases)
+- ❌ Refator sem cobertura ≥80% (vira aposta)
+- ❌ Misturar feat + refactor + fix no mesmo commit
+- ❌ Mensagem de commit sem Conventional Commits
+
+## Convenções de commit (obrigatório)
+
+```
+<tipo>(<escopo>): <título imperativo>
+
+<por quê — não o quê>.
+<referências: SPEC §X, ADR-NNN, issue #N>
+```
+
+Tipos: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `style`, `perf`, `ci`, `build`.
+
+---
+
+Para detalhes completos: leia `docs/SDD_WORKFLOW.md`.
+Para personas: leia `.agent/agents.md`.
+Para workflows: leia `.agent/workflows/sdd_implement.md`.
