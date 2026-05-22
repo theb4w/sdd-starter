@@ -34,6 +34,9 @@ Demanda
 O workflow completo esta em [`docs/SDD_WORKFLOW.md`](docs/SDD_WORKFLOW.md).
 Esse documento e o nucleo canonico do repo.
 
+Se voce abriu o repo e nao sabe para que serve cada arquivo, comece pelo mapa
+em [`docs/FILE_GUIDE.md`](docs/FILE_GUIDE.md).
+
 ## Por Que SDD
 
 Sem um fluxo explicito, projetos tendem a acumular:
@@ -70,6 +73,17 @@ arquitetural e greenfield usam niveis de rigor diferentes.
 | Feature grande | [`QUICKSTART/large-feature.md`](QUICKSTART/large-feature.md) |
 | Refatoracao | [`QUICKSTART/refactor.md`](QUICKSTART/refactor.md) |
 | Retomar uma sessao | [`prompts/RESUME.md`](prompts/RESUME.md) |
+
+## Como Navegar
+
+| Pergunta | Resposta |
+|---|---|
+| "Qual arquivo leio primeiro?" | `README.md`, depois `docs/FILE_GUIDE.md` |
+| "Onde esta o metodo completo?" | `docs/SDD_WORKFLOW.md` |
+| "Qual guia sigo agora?" | `QUICKSTART/README.md` |
+| "Qual prompt uso?" | `prompts/README.md` |
+| "Onde ficam specs, plans e ADRs?" | `specs/README.md` |
+| "O que e opcional por ferramenta?" | `tooling/README.md` |
 
 ## Kit Minimo
 
@@ -109,16 +123,20 @@ sdd-starter/
 ├── PROJECT_BRIEF.md
 ├── docs/
 │   ├── SDD_WORKFLOW.md
+│   ├── FILE_GUIDE.md
 │   ├── _ARCHITECTURE_TEMPLATE.md
 │   └── _HANDOVER_TEMPLATE.md
 ├── specs/
+│   ├── README.md
 │   ├── SPEC_INDEX.md
 │   ├── modules/_SPEC_TEMPLATE.md
 │   ├── plans/_PLAN_TEMPLATE.md
 │   ├── plans/_TASKS_TEMPLATE.md
 │   └── decisions/_ADR_TEMPLATE.md
 ├── prompts/
+│   └── README.md
 ├── QUICKSTART/
+│   └── README.md
 ├── .agent/
 ├── scripts/
 ├── tests/

@@ -12,3 +12,4 @@
 | T-4 | Ajustar adocao greenfield e brownfield | `QUICKSTART/` | caminho padrao copia/adota o core sem tooling especifico |
 | T-5 | Separar tooling opcional | `tooling/` | notas especificas ficam fora do caminho principal |
 | T-6 | Validar residuos e diff | repo | busca por claims tool-specific no core e `git diff` revisados |
+| T-7 | Explicar a organizacao dos arquivos | `docs/FILE_GUIDE.md`, READMEs de pastas | leitor entende o papel de cada arquivo/pasta antes de adaptar o starter |
