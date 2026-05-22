@@ -1,0 +1,25 @@
+---
+description: Spec-Driven Development (SDD) - regras para tarefas neste projeto
+alwaysApply: true
+---
+
+# SDD
+
+Este projeto adota Spec-Driven Development. Antes de editar:
+
+1. leia `AGENTS.md` se o projeto usar agentes;
+2. leia o handover mais recente quando houver;
+3. leia `specs/SPEC_INDEX.md`;
+4. leia SPEC, PLAN e TASKS aplicaveis.
+
+## Fluxo
+
+```text
+SPECIFY -> CLARIFY -> ADRs -> PLAN -> TASKS -> IMPLEMENT -> VALIDATE -> COMMIT -> HANDOVER
+```
+
+Respeite os gates definidos pelo projeto. Regras do Cursor sao apoio de
+execucao e nao substituem os artefatos SDD versionados.
+
+Para detalhes, leia `docs/SDD_WORKFLOW.md`.
+

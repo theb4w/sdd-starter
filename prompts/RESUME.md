@@ -24,22 +24,23 @@
 Retomar <PROJETO> — iniciar SPEC_<MODULO> Fase <X> (<descrição_curta>).
 
 LEIA NESTA ORDEM antes de qualquer ação:
-1. AGENTS.md (constituição)
-2. GEMINI.md (se aplicável)
-3. docs/handover_<MODULO>_FASE_<X-1>_<DATA>.md (autoridade do estado prévio)
-4. specs/SPEC_INDEX.md
-5. specs/modules/SPEC_<MODULO>.md §<seção_relevante>
-6. specs/plans/PLAN_<MODULO>.md §"Fase <X>"
-7. specs/plans/TASKS_<MODULO>.md §"Fase <X>" (T-<X>1..T-<X>N)
-8. .agent/skills/<dominio>/SKILL.md (skills relevantes para esta fase)
+1. docs/SDD_WORKFLOW.md (metodo)
+2. AGENTS.md (instrucoes do projeto, se agentes participam)
+3. instrucoes opcionais de tooling adotadas pelo projeto
+4. docs/handover_<MODULO>_FASE_<X-1>_<DATA>.md (autoridade do estado previo)
+5. specs/SPEC_INDEX.md
+6. specs/modules/SPEC_<MODULO>.md §<seção_relevante>
+7. specs/plans/PLAN_<MODULO>.md §"Fase <X>"
+8. specs/plans/TASKS_<MODULO>.md §"Fase <X>" (T-<X>1..T-<X>N)
+9. .agent/skills/<dominio>/SKILL.md (skills relevantes para esta fase, se existirem)
 
 ESTADO ATUAL (verificar antes de codar):
 - Workspace : <caminho local>
 - Branch    : main em <COMMIT_HASH>
 - Repo      : github.com/<user>/<repo>
 - Testes    : <N>/<N> passing — manter
-- Cloud Run / equivalente : revision <REV> ativa
-- Toolchain : git, gh, <runtime>, <pacote-mgr>, .venv local
+- Release/alvo validado : <REV ou referencia equivalente>
+- Toolchain : git, <runtime>, <pacote-mgr>, validadores relevantes
 
 GATES JÁ APROVADOS (não revisar):
 - GATE 1 (PLAN) aprovado em <DATA>
@@ -66,7 +67,7 @@ PROCEDA:
    - [ ] Edição do arquivo Y
    - [ ] Teste local Z
    - [ ] Lint/typecheck
-   - [ ] Marcar T-<X>1 concluída no TodoWrite
+   - [ ] Atualizar o status da tarefa no artefato ou tracking adotado
 4. AGUARDE meu GO antes de iniciar a primeira edição.
 
 NÃO escreva código nesta resposta. Só leia, planeje, mostre.
@@ -83,7 +84,7 @@ NÃO escreva código nesta resposta. Só leia, planeje, mostre.
 | `<X>`, `<X-1>` | Número da fase (A=1, B=2, C=3...). Letras nas TASKS |
 | `<DATA>` | Data do último handover, formato YYYY-MM-DD |
 | `<COMMIT_HASH>` | `git log -1 --format=%h` (7 chars) |
-| `<REV>` | Revisão Cloud Run / nome do deploy ativo |
+| `<REV>` | Revisao, build, release ou referencia ativa equivalente |
 | `<runtime>`, `<pacote-mgr>` | Python 3.11 + pip; Node 20 + npm; etc. |
 | `<dominio>` | Nome da pasta em `.agent/skills/<dominio>/` |
 | `<descrição>`, `<AC esperado>` | Da linha T-X1 em `specs/plans/TASKS_<MODULO>.md` |

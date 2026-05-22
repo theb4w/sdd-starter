@@ -30,9 +30,9 @@
 
 - **`T-XX`** é o ID estável da tarefa. NUNCA renumerar.
 - **`[arquivo:função]`** indica destino. **→ NOVO** cria; **→ MOD** modifica.
-- **`AC`** = critério de aceite verificável (teste, comando, http response, log).
+- **`AC`** = criterio de aceite verificavel (teste, comando, observacao ou log).
 - **`[bloq.]`** = tarefa que impede início da próxima fase (gate humano).
-- Cada fase termina em: testes full → smoke staging → commit (3 últimas tarefas).
+- Cada fase termina em: validacao completa → smoke aplicavel → commit (3 ultimas tarefas).
 
 ---
 
@@ -40,17 +40,15 @@
 
 | ID | Tarefa | Onde | AC |
 |---|---|---|---|
-| **T-A1** | Criar dataclass `<Nome>` | `app/<modulo>/models.py` → NOVO | `from app.<modulo>.models import <Nome>` funciona |
-| **T-A2** | Implementar `<funcao>` happy path | `app/<modulo>/service.py:funcao` → NOVO | `pytest tests/unit/test_<modulo>.py::test_funcao_happy` verde |
-| **T-A3** | Adicionar validação de input | `app/<modulo>/service.py:funcao` → MOD | `pytest tests/unit/test_<modulo>.py::test_funcao_invalid_input` levanta `ValueError` |
-| **T-A4** | Endpoint HTTP `POST /<modulo>` | `app/api/<modulo>.py` → NOVO | `curl -X POST localhost:8000/<modulo>` retorna 200 |
-| **T-A5** | Registrar router em `main.py` | `app/main.py` → MOD | `curl localhost:8000/openapi.json` lista endpoint |
-| **T-A6** | Testes unit (3 cenários) | `tests/unit/test_<modulo>.py` → NOVO | `pytest tests/unit/test_<modulo>.py -q` 3/3 verde |
-| **T-A7** | Logs estruturados | `app/<modulo>/service.py` → MOD | grep `"<modulo>"` nos logs mostra entrada e saída de cada chamada |
-| **T-A8** | Atualizar `requirements.txt` | `requirements.txt` → MOD | `pip install -r requirements.txt` sem erro |
-| **T-A9** [bloq.] | Testes full sem regressão | terminal | `pytest -q` 0 falhas em todo o repo |
-| **T-A10** [bloq.] | Smoke staging | manual / `scripts/smoke.sh` | 3 fluxos críticos OK + logs limpos (**GATE 3**) |
-| **T-A11** | Commit + push (Fase A) | git | `feat(<modulo>): implementa <funcionalidade> (Fase A)` |
+| **T-A1** | Criar contrato/estrutura base | `<src>/<modulo>/<arquivo>` → NOVO | contrato importavel, instanciavel ou verificavel |
+| **T-A2** | Implementar regra principal | `<src>/<modulo>/<arquivo>` → MOD | check especifico do happy path verde |
+| **T-A3** | Cobrir erro ou limite | `<src>/<modulo>/<arquivo>` → MOD | check especifico do caso invalido verde |
+| **T-A4** | Integrar modulo ao ponto de entrada | `<arquivo-existente>` → MOD | fluxo fica acessivel pelo caminho esperado |
+| **T-A5** | Adicionar validacao do fluxo | `tests/<escopo>/<arquivo>` → NOVO | checks do fluxo passam |
+| **T-A6** | Atualizar config/docs necessarias | `<manifest-ou-doc>` → MOD | configuracao ou documentacao confere com a entrega |
+| **T-A7** [bloq.] | Validacao completa sem regressao | ambiente de trabalho | suite/checklist definido pelo projeto passa |
+| **T-A8** [bloq.] | Smoke aplicavel | alvo realista / checklist | fluxos criticos OK (**GATE 3**) |
+| **T-A9** | Commit + push (Fase A) | git | commit convencional aprovado (**GATE 4**) |
 
 ---
 
@@ -61,8 +59,8 @@
 | **T-B1** | <descrição> | <onde> | <AC> |
 | **T-B2** | <descrição> | <onde> | <AC> |
 | ... | ... | ... | ... |
-| **T-B<N-2>** [bloq.] | Testes full sem regressão | terminal | `pytest -q` 0 falhas |
-| **T-B<N-1>** [bloq.] | Smoke staging | manual | 3 fluxos OK (**GATE 3**) |
+| **T-B<N-2>** [bloq.] | Validacao completa sem regressao | ambiente de trabalho | suite/checklist do projeto passa |
+| **T-B<N-1>** [bloq.] | Smoke aplicavel | alvo realista / manual | fluxos criticos OK (**GATE 3**) |
 | **T-B<N>** | Commit + push (Fase B) | git | `feat(<modulo>): <fase B>` |
 
 ---

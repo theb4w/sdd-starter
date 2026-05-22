@@ -6,13 +6,9 @@
   4 personas universais. Funcionam em qualquer stack/domínio.
   Adapte o "Usa quando" e "Regras ativas" à sua stack — mantenha os papéis.
 
-  Lido por: Antigravity (via .agent/), Cursor (manual via @), agentes que
-  respeitam o padrão.
-
-  Como invocar:
-  - Antigravity: digite @engineer no Agent Manager
-  - Cursor: mencione "@engineer" no chat ou referencie este arquivo
-  - Gemini CLI: cole o bloco da persona como prefixo
+  Use estas personas como prompts reutilizaveis quando o projeto adotar
+  assistencia por agentes. Ferramentas diferentes podem ativar uma persona por
+  mencao, colagem de prompt ou instrucao local.
 ═══════════════════════════════════════════════════════════════════════════════
 -->
 
@@ -63,9 +59,8 @@ Não gere PLAN ainda.
 - Ler `.agent/skills/<dominio>/SKILL.md` relevante antes de codar
 - Codar APENAS o escopo da tarefa atual (não antecipar próxima)
 - Rodar AC local imediatamente após cada tarefa
-- Type hints + docstrings em funções públicas
-- Sem `print()` em produção; logger estruturado
-- AsyncClient para I/O quando em código async (Python+FastAPI)
+- Tipos, documentacao e logs conforme convencoes do projeto
+- Sem hardcode de credenciais ou atalhos fora do criterio de aceite
 - Arquivo ≤300 linhas; função ≤30 linhas
 - Nunca hardcodar segredos
 - Conventional Commits; PR ≤250 LOC

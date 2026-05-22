@@ -36,12 +36,12 @@ Para cada tarefa `T-<X><N>` na fase atual:
 - Sem `print()`, sem hardcode de credenciais
 
 ### 3. Verificar AC localmente
-- Rodar teste específico (`pytest tests/unit/test_<modulo>.py::<test_func>`)
-- Verificar comportamento esperado (`curl`, `rg`, log inspection)
-- Lint nos arquivos editados
+- Rodar o check especifico indicado no AC da task
+- Verificar comportamento esperado por teste, comando, log ou observacao aplicavel
+- Rodar validadores locais relevantes nos arquivos editados
 
 ### 4. Marcar tarefa como concluída
-- TodoWrite (Cursor) ou equivalente
+- Atualizar o tracking adotado pelo projeto e o artefato aplicavel
 - Não acumular múltiplas tarefas sem AC verde
 
 ### 5. Próxima tarefa
@@ -105,7 +105,7 @@ Arquivo: `docs/handover_<MODULO>_FASE_<X>_<DATA>.md`
 
 - **Trade-off arquitetural não previsto:** parar, criar ADR, retomar PLAN.
 - **Tarefa toca >5 arquivos não previstos:** parar, atualizar TASKS, recomeçar.
-- **Bug investigativo:** trocar para Debug Mode (Cursor) ou similar.
+- **Bug investigativo:** interromper execucao linear e investigar a causa antes de editar mais.
 - **Sessão >2h sem fim de fase:** parar, gerar handover parcial, retomar amanhã.
 
 ---
@@ -132,7 +132,7 @@ Arquivo: `docs/handover_<MODULO>_FASE_<X>_<DATA>.md`
    $ ruff check app/payments/service.py
    ✓ No issues found
 
-5. Marcar como concluída no TodoWrite.
+5. Marcar como concluída no tracking adotado.
 
 6. Próxima: T-A3.
 ```

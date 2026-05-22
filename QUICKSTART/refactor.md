@@ -104,7 +104,7 @@ Sem PLAN intermediário (refator interno é menor):
 ```
 T-1: extrair função X de Y
 T-2: renomear Z → W
-T-3: pytest full + lint
+T-3: validacao completa + checks de qualidade
 T-4: smoke
 T-5: commit
 ```

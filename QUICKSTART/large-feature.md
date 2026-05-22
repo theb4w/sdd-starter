@@ -213,7 +213,7 @@ Retomar <PROJETO> — iniciar SPEC_<FEATURE> Fase A (Models + DB Schema).
 
 LEIA NESTA ORDEM antes de qualquer ação:
 1. AGENTS.md
-2. GEMINI.md (se aplicável)
+2. instruções opcionais de tooling adotadas pelo projeto
 3. docs/handover_<FEATURE>_PLANNING_<DATA>.md
 4. specs/SPEC_INDEX.md
 5. specs/modules/SPEC_<FEATURE>.md §1-§3 (objetivo + design)

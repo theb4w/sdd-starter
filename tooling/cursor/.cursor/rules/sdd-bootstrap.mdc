@@ -1,0 +1,25 @@
+---
+description: Ajuda a iniciar ou adotar SDD quando PROJECT_BRIEF.md esta presente
+globs: PROJECT_BRIEF.md
+---
+
+# SDD Bootstrap
+
+Antes de iniciar:
+
+| Estado | Proximo passo |
+|---|---|
+| Projeto novo com brief preenchido | usar `prompts/BOOTSTRAP.md` |
+| Projeto existente sem docs | usar `prompts/DISCOVER.md` |
+| Projeto SDD com indice e handover | usar `prompts/ONBOARDING.md` ou `prompts/RESUME.md` |
+
+Durante bootstrap ou discover:
+
+- nao escrever codigo de producao;
+- marcar inferencias incertas;
+- criar artefatos um por vez;
+- pausar nos gates humanos;
+- preservar arquivos existentes em brownfield.
+
+Para detalhes, leia `QUICKSTART/greenfield.md` ou `QUICKSTART/brownfield.md`.
+

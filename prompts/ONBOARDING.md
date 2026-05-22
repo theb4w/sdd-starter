@@ -6,7 +6,7 @@
   USE QUANDO:
   - Você é um dev novo no projeto (e o projeto JÁ tem SDD ativo)
   - OU sessão nova num projeto seu após dias/semanas afastado
-  - OU agente novo (Cursor/Claude/Antigravity) num projeto SDD existente
+  - OU agente novo num projeto SDD existente
 
   RESULTADO ESPERADO: agente lê constituição, último handover e SPEC_INDEX,
   e te resume o estado do projeto em 2-3 minutos. Pronto pra próxima task.
@@ -23,11 +23,11 @@
 
 ## Antes de qualquer ação, leia e resuma (nesta ordem)
 
-1. `AGENTS.md` — constituição cross-tool do projeto
-2. `GEMINI.md` (se existir) — overrides Antigravity
-3. `docs/SDD_WORKFLOW.md` — framework canônico
-4. `.agent/agents.md` — personas
-5. `.agent/skills/*/SKILL.md` — regras técnicas por domínio
+1. `docs/SDD_WORKFLOW.md` — framework canônico
+2. `AGENTS.md` — instruções do projeto quando agentes participam
+3. instruções opcionais de tooling adotadas pelo projeto
+4. `.agent/agents.md` — personas, se adotadas
+5. `.agent/skills/*/SKILL.md` — regras técnicas por domínio, se existirem
 6. `specs/SPEC_INDEX.md` — status atual de cada módulo
 7. `docs/<Project>_Architecture.md` — visão técnica completa
 8. `docs/handover_*.md` (mais recente — `ls docs/handover_*.md | sort | tail -1`)
@@ -39,8 +39,8 @@
 
 ### a. Qual a identidade do projeto?
 - Nome, objetivo, estágio
-- IDE primária esperada
-- Stack técnica (versões fixadas)
+- ambiente de trabalho relevante, se o projeto registrou algum
+- contexto técnico e versões fixadas quando houver
 
 ### b. Quais regras absolutas você está obrigado a seguir?
 - Liste as 6 regras universais do AGENTS.md

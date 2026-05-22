@@ -72,20 +72,20 @@ flowchart TD
 **Objetivo:** <frase única>
 
 **Arquivos:**
-- `app/<modulo>/...` → NOVO (descrição)
-- `app/main.py` → MOD (registrar router)
+- `<src>/<modulo>/...` → NOVO (descricao)
+- `<arquivo-existente>` → MOD (ponto de integracao)
 
 **LOC estimado:** ~XXX
 
 **Pré-condições:**
 - ADR-NNN aceito
-- Variável `<MODULO>_API_KEY` configurada em staging
-- Índice DB criado (se aplicável)
+- Dependencias e configuracoes necessarias prontas
+- Decisoes de dados, release ou integracao resolvidas quando aplicavel
 
 **Gate de aceite:**
 - Todos os testes unit da §7 da SPEC verdes
-- Smoke fluxo crítico #1 OK em staging
-- Logs sem ERROR/CRITICAL
+- Smoke do fluxo critico #1 OK no alvo aplicavel
+- Sinais de erro relevantes revisados
 
 ### Fase B — <nome>
 
@@ -116,8 +116,8 @@ flowchart TD
 - **Funcional:** 100% dos critérios de aceite da SPEC §8
 - **Performance:** p95 < <X>ms no fluxo crítico
 - **Custo:** < $<Y>/mês em produção
-- **Qualidade:** cobertura ≥80%; 0 erros de lint
-- **Operacional:** taxa de erro < 0.1% nas primeiras 48h pós-deploy
+- **Qualidade:** politica de validacao do projeto atendida
+- **Operacional:** criterio de estabilidade/release definido pelo projeto atendido
 
 ---
 
@@ -129,11 +129,11 @@ flowchart TD
 - [ ] ADRs relevantes aceitos (✔️ ACEITO em `specs/decisions/`)
 - [ ] PLAN aprovado por humano (**GATE 1**)
 - [ ] TASKS geradas e aprovadas (**GATE 2**)
-- [ ] Recursos cloud provisionados (DB, queue, secrets)
-- [ ] Quotas confirmadas (rate limits, custo budget)
-- [ ] Índices DB / migrations preparados
-- [ ] Variáveis de ambiente configuradas em staging
-- [ ] Skill técnica relevante existe (`.agent/skills/<dominio>/SKILL.md`)
+- [ ] Recursos externos necessarios preparados
+- [ ] Limites, riscos e custo confirmados quando aplicavel
+- [ ] Dados, configuracoes e migracoes preparados quando aplicavel
+- [ ] Ambiente ou alvo de validacao pronto
+- [ ] Regras tecnicas relevantes do projeto foram lidas
 
 ---
 
@@ -142,7 +142,7 @@ flowchart TD
 - SPEC: `specs/modules/SPEC_<MODULO>.md`
 - ADRs: `specs/decisions/ADR-NNN-*.md`
 - Architecture: `docs/<Project>_Architecture.md` §<seção>
-- Skill: `.agent/skills/<dominio>/SKILL.md`
+- Regras tecnicas adicionais: <arquivo ou fonte do projeto, se houver>
 - Documentação externa: <URLs relevantes>
 
 ---

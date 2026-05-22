@@ -127,14 +127,14 @@ PRs merged  : <#KK>
 
 ## 8. Como Retomar
 
-> Cole no próximo chat (Cursor / Antigravity / Claude / etc.) o **prompt de retomada** abaixo.
+> Cole no canal de retomada adotado pelo projeto o **prompt de retomada** abaixo.
 
 ```text
 Retomar <PROJETO> — iniciar SPEC_<MODULO> Fase <X+1> (<descrição_curta>).
 
 LEIA NESTA ORDEM antes de qualquer ação:
 1. AGENTS.md (constituição)
-2. GEMINI.md (se aplicável)
+2. instruções opcionais de tooling adotadas pelo projeto
 3. docs/handover_<MODULO>_FASE_<X>_<DATA>.md (este arquivo — autoridade do estado prévio)
 4. specs/SPEC_INDEX.md
 5. specs/modules/SPEC_<MODULO>.md §<seção_relevante>

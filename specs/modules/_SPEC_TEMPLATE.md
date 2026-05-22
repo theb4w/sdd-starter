@@ -60,24 +60,24 @@ sem necessidade de re-login, garantindo conformidade com OAuth 2.1."
 ### 3.1 Estruturas de dados
 
 ```
-<dataclass / type / interface / schema do banco>
+<estrutura, contrato, schema, estado ou interface relevante>
 ```
 
 ### 3.2 Sequence diagram (mermaid)
 
 ```mermaid
 sequenceDiagram
-    participant User
-    participant API
-    participant Service
-    participant DB
+    participant Actor
+    participant Interface
+    participant Module
+    participant Dependency
 
-    User->>API: request
-    API->>Service: process
-    Service->>DB: persist
-    DB-->>Service: ok
-    Service-->>API: response
-    API-->>User: 200 OK
+    Actor->>Interface: input
+    Interface->>Module: process
+    Module->>Dependency: use dependency when needed
+    Dependency-->>Module: result
+    Module-->>Interface: output
+    Interface-->>Actor: observable result
 ```
 
 ### 3.3 Fluxos críticos
@@ -119,16 +119,15 @@ sequenceDiagram
 ### Arquivos novos
 | Caminho | Função | LOC est. |
 |---|---|---|
-| `app/<modulo>/__init__.py` | Exports públicos do módulo | 5 |
-| `app/<modulo>/service.py` | Lógica principal | 80 |
-| `app/<modulo>/models.py` | Dataclasses / schemas | 30 |
-| `app/api/<modulo>.py` | Endpoints HTTP | 50 |
+| `<src>/<modulo>/<arquivo-1>` | Responsabilidade principal | <X> |
+| `<src>/<modulo>/<arquivo-2>` | Contratos, estado ou modelos | <Y> |
+| `tests/<escopo>/<arquivo>` | Validacao do modulo | <Z> |
 
 ### Arquivos modificados
 | Caminho | Mudança | LOC est. |
 |---|---|---|
-| `app/main.py` | Registrar router | 3 |
-| `requirements.txt` | Adicionar dep `xyz` | 1 |
+| `<arquivo-existente>` | Integrar modulo ao projeto | <X> |
+| `<manifest-ou-config>` | Atualizar dependencia/configuracao se necessario | <Y> |
 
 **Total estimado:** <X> LOC novos + <Y> LOC modificados.
 
@@ -140,12 +139,12 @@ sequenceDiagram
 
 | ID | Tipo | Cobertura | AC |
 |---|---|---|---|
-| T-<MODULO>-01 | unit | `service.<funcao>` happy path | retorna X dado Y |
-| T-<MODULO>-02 | unit | `service.<funcao>` erro de validação | levanta `ValueError` |
-| T-<MODULO>-03 | integration | fluxo end-to-end #1 | response 200 + DB tem registro |
-| T-<MODULO>-04 | smoke | login real em staging | usuário logado em <5s |
+| T-<MODULO>-01 | unit | regra principal | resultado esperado dado input valido |
+| T-<MODULO>-02 | unit | erro ou limite relevante | falha observavel e tratada |
+| T-<MODULO>-03 | integration | fluxo critico #1 | dependencias integradas conforme criterio |
+| T-<MODULO>-04 | smoke | uso real representativo | fluxo observavel funciona no alvo aplicavel |
 
-**Cobertura mínima:** ≥80% das funções da §6.
+**Cobertura minima:** <politica de cobertura do projeto para este modulo>.
 
 ---
 
@@ -155,12 +154,11 @@ sequenceDiagram
 
 - [ ] Todos os arquivos da §6 criados/modificados
 - [ ] Todos os testes da §7 passam
-- [ ] Cobertura ≥80% (medida por `pytest --cov` ou equivalente)
-- [ ] Lint sem erros (mypy/pyright/eslint/golangci-lint)
-- [ ] Smoke tests verdes em staging (≥2 fluxos críticos)
-- [ ] Logs estruturados (sem `print()`)
-- [ ] Type hints / Types em 100% das funções públicas
-- [ ] Docstrings em funções exportadas
+- [ ] Politica de cobertura do projeto atendida
+- [ ] Validadores de qualidade definidos pelo projeto passam
+- [ ] Smoke aplicavel validado nos fluxos criticos
+- [ ] Logs/telemetria respeitam regras do projeto quando existirem
+- [ ] Contratos, tipos ou documentacao exigidos pelo projeto atualizados
 - [ ] AGENTS.md atualizado se nova regra absoluta surgiu
 - [ ] SPEC_INDEX.md atualizado com status do módulo
 - [ ] Handover gerado (`docs/handover_<MODULO>_<DATA>.md`)

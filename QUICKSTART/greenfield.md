@@ -4,7 +4,7 @@
 >
 > **Tempo total esperado:** 1-2h até ter o primeiro PLAN aprovado e estar pronto para implementar.
 >
-> **Pré-requisito:** Git instalado, IDE (Cursor/Antigravity/qualquer LLM-aware) configurada, conta GitHub/GitLab.
+> **Pré-requisito:** Git instalado, ambiente de trabalho escolhido e conta GitHub/GitLab se houver remoto.
 
 ---
 
@@ -15,7 +15,7 @@ Antes de tocar em código ou template, escreva (numa folha, num bloco de notas):
 1. **O que é o projeto** em 1 frase
 2. **Para quem** (1 frase)
 3. **Que problema concreto resolve** (1 frase)
-4. **Stack desejada** (linguagem + framework + cloud, se houver)
+4. **Contexto técnico já decidido** (se houver linguagem, plataforma ou restrição)
 5. **Restrições** (compliance, prazo, orçamento)
 
 Se não consegue responder essas 5 em 5 minutos, **PARE**. O projeto ainda não está claro o suficiente.
@@ -68,14 +68,14 @@ Abra `PROJECT_BRIEF.md` e preencha as seções §1-§5:
 | Seção | O que escrever | Quanto tempo |
 |---|---|---|
 | §1 Objetivo | 1 parágrafo: o que faz, para quem, problema |
-| §2 Stack desejada | Linguagem + framework + DB + cloud (com justificativa breve) |
+| §2 Contexto técnico | Decisões, preferências e restrições já conhecidas |
 | §3 Restrições | Compliance, prazo, orçamento, time disponível |
 | §4 Módulos esperados | Lista de 3-7 módulos com 1 frase cada |
 | §5 Out-of-MVP | Lista do que NÃO vai entrar nesta versão |
 | §6 Métricas de sucesso | Como vai medir que funcionou (3-5 métricas concretas) |
 
 **Dicas:**
-- Se está na dúvida entre 2 stacks, escolha a que você conhece melhor; ADR depois pode reverter
+- Se uma decisão técnica ainda está aberta, registre a dúvida; CLARIFY ou ADR resolvem depois
 - §4 (módulos) não precisa estar perfeito — vai refinar com agente em BOOTSTRAP
 - §5 (out-of-MVP) é o mais importante — é o filtro de scope creep
 
@@ -93,16 +93,16 @@ Abra `AGENTS.md` e substitua todos os `<!-- ADAPT: ... -->`:
 |---|---|
 | `<!-- ADAPT: NOME_DO_PROJETO -->` | Nome real do projeto |
 | `<!-- ADAPT: IDENTIDADE -->` | Cole §1 do PROJECT_BRIEF |
-| `<!-- ADAPT: STACK -->` | Lista de tech do §2 do PROJECT_BRIEF, COM URLs |
+| `<!-- ADAPT: STACK -->` | Contexto técnico do §2 do PROJECT_BRIEF, com fontes quando houver decisão |
 | `<!-- ADAPT: ESTRUTURA -->` | Estrutura de diretórios da sua stack |
 | `<!-- ADAPT: REGRAS_PROJETO -->` | Regras absolutas específicas (compliance, perf) |
 
-URLs de fonte primária são **obrigatórias** para qualquer tech listada (princípio SDD).
-Exemplos: `https://docs.python.org/3/`, `https://nodejs.org/api/`, `https://golang.org/doc/`.
+URLs de fonte primária são **obrigatórias** para decisões técnicas relevantes.
+Exemplos do projeto podem apontar para documentação oficial da stack escolhida.
 
-### Opção B — Via agente (recomendado se você usa Cursor/Antigravity)
+### Opção B — Com assistencia
 
-Abra a IDE no projeto e cole no chat:
+Abra o agente ou canal de assistencia adotado no projeto e cole:
 
 ```
 Use o prompt em prompts/BOOTSTRAP.md.
@@ -116,7 +116,7 @@ Mostre o AGENTS.md final antes de salvar e aguarde meu GO.
 
 ## Passo 4 — Use BOOTSTRAP para criar SDD inicial
 
-Cole na IDE (substituindo só o nome do projeto):
+Envie ao agente escolhido (substituindo só o nome do projeto):
 
 ```
 Vou usar prompts/BOOTSTRAP.md para inicializar SDD em <NOME_PROJETO>.
@@ -161,7 +161,7 @@ Regras:
 - Tarefas atômicas (1 commit cada)
 - ID estável (T-1.1, T-1.2... ou T-A1, T-A2 se multi-fase)
 - AC verificável (comando ou condição)
-- Última tarefa = commit; penúltima = smoke; antepenúltima = pytest full
+- Última tarefa = commit; penúltima = smoke; antepenúltima = validação completa definida pelo projeto
 - Tarefas [bloq.] = gates humanos (mostrar com 🛑)
 
 🛑 GATE 2 — pare ao final aguardando minha aprovação das TASKS.
@@ -199,7 +199,7 @@ No fim da fase:
 ```
 Tarefas implementadas. Próximos passos do workflow:
 
-1. 🛑 GATE 3 — Smoke staging (rode tests/smoke/ + smoke manual)
+1. 🛑 GATE 3 — Smoke aplicável (fluxos críticos no ambiente-alvo)
 2. 🛑 GATE 4 — Commit (Conventional Commit)
 3. Use prompts/HANDOVER.md para gerar handover_<MODULO>_FASE_<X>_<DATA>.md
 4. Atualize specs/SPEC_INDEX.md (status do módulo)
@@ -231,7 +231,7 @@ Retomar <NOME_PROJETO> — iniciar SPEC_<MODULO> Fase <X> (<descrição_curta>).
 
 LEIA NESTA ORDEM:
 1. AGENTS.md
-2. GEMINI.md (se aplicável)
+2. instruções opcionais de tooling adotadas pelo projeto
 3. docs/handover_<MODULO>_FASE_<X-1>_<DATA>.md
 4. specs/SPEC_INDEX.md
 5. specs/modules/SPEC_<MODULO>.md §<seção>
