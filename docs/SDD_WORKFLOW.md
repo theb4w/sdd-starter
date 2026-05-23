@@ -1,8 +1,8 @@
 # SDD_WORKFLOW.md — Spec-Driven Development na Prática
 
-> **Framework operacional, IDE-agnóstico e stack-agnóstico** para desenvolvimento
-> com agentes de IA. Funciona em Cursor, Antigravity, Jules, Gemini CLI, Claude
-> Code, Cline, Aider — qualquer ferramenta que respeite `AGENTS.md`.
+> **Framework operacional, tool-neutral e stack-neutral** para desenvolvimento
+> orientado por especificações. Ele funciona com colaboração humana e tambem
+> com agentes de IA quando o projeto adota esse apoio.
 >
 > Lições reais (em projeto de produção) estão marcadas como `📚 LIÇÃO`.
 >
@@ -213,33 +213,23 @@ echo -n '<chave>' | gcloud secrets versions add <secret-name> --data-file=-
 | Dependency manifest pinned (`requirements.txt`/`package.json`/`go.mod`) | Reprodutibilidade | "funciona na minha máquina" |
 | `tests/` (estrutura inicial) | TDD mindset | Testes viram afterthought |
 
-### 3.5 Configuração da IDE
+### 3.5 Configuração do ambiente de trabalho
 
-#### Cursor
+O workflow SDD nao exige uma IDE, um terminal ou um agente especifico. Antes da
+primeira sessao, o projeto deve definir apenas o minimo operacional:
 
-| Config | Valor | Por quê |
-|---|---|---|
-| Mode | Plan / Agent / Debug / Ask (alternar conforme tarefa) | Plan para ambiguidade; Agent para execução clara |
-| Auto-continue | Ativo | Não cortar mid-tarefa |
-| Workspace | Pasta raiz do projeto **fora de cloud-sync** | Ver §3.2 |
-| Rules | `.cursor/rules/sdd.mdc` (incluso no template) | Agente segue SDD por padrão |
-
-#### Google Antigravity
-
-| Config | Valor |
+| Decisao | Valor esperado |
 |---|---|
-| Mode | Planning Mode |
-| Terminal Policy | Auto (com revisão humana para destrutivos) |
-| Review Policy | Request Review (nunca auto-aprovar artifacts) |
-| Load nested AGENTS.md | Ativo |
-| Auto-continue | Ativo (padrão v1.20.3+) |
+| Workspace | Raiz real do projeto, fora de cloud-sync quando o Git local puder sofrer bloqueios |
+| Fonte do metodo | `docs/SDD_WORKFLOW.md` e artefatos SDD versionados |
+| Contexto do projeto | `PROJECT_BRIEF.md`, `AGENTS.md` quando houver agentes, specs e handovers |
+| Planejamento | PLAN e TASKS revisaveis no repo, mesmo que a ferramenta tenha UI auxiliar |
+| Validacao | comandos, checks ou criterios aplicaveis a esta stack |
+| Gates | aprovacoes humanas preservadas no processo escolhido |
 
-Fonte: https://antigravity.codes/blog/antigravity-auto-accept-autopilot-guide
-
-#### Jules / Claude Code / Cline / Aider
-
-Todos leem `AGENTS.md` por padrão. Para gates explícitos, configure no prompt
-de retomada (`prompts/RESUME.md`).
+Se uma ferramenta oferecer modos de planejamento, regras locais, slash commands
+ou arquivos proprios de instrucao, trate isso como apoio de execucao. A escolha
+da ferramenta nao muda a ordem dos artefatos SDD.
 
 ### 3.6 Prompt de onboarding (1ª sessão de qualquer dev)
 
@@ -248,10 +238,10 @@ Use `prompts/ONBOARDING.md` (versão completa). Resumo:
 ```text
 Antes de qualquer ação, leia e resuma:
 1. AGENTS.md — constituição cross-tool
-2. GEMINI.md (se existir) — overrides
-3. .agent/skills/*/SKILL.md — regras técnicas por domínio
-4. specs/SPEC_INDEX.md — status atual dos módulos
-5. docs/<Project>_Architecture.md — visão técnica completa
+2. instrucoes opcionais de tooling adotadas pelo projeto
+3. .agent/skills/*/SKILL.md — regras tecnicas por dominio, se existirem
+4. specs/SPEC_INDEX.md — status atual dos modulos
+5. docs/<Project>_Architecture.md — visao tecnica completa
 6. docs/handover_*.md (mais recente) — estado atual
 
 Então responda em ordem:
@@ -520,7 +510,7 @@ Para cada `T-XN` numa fase:
 2. Codar APENAS o escopo da tarefa — não antecipar próxima.
 3. Rodar AC local imediatamente (pytest específico, rg, etc).
 4. Rodar lint/typecheck nos arquivos editados.
-5. Marcar T-XN como concluída no TodoWrite (ou equivalente do IDE).
+5. Marcar T-XN como concluida no tracking adotado pelo projeto.
 6. Próxima tarefa (não acumular várias sem AC verde).
 ```
 
@@ -549,15 +539,17 @@ Para cada Fase F na SPEC:
 | Função ≤30 linhas | Forçar nomes claros + composição |
 | Sem `// import the module` | Comentários explicam **por quê**, não **o quê** |
 
-### 8.4 Quando trocar de modo (Cursor)
+### 8.4 Quando voltar ao planejamento
 
-| De → Para | Quando |
+Pare a implementacao e retorne para PLAN, CLARIFY ou ADR quando:
+
+| Sinal | Acao |
 |---|---|
-| Agent → **Plan** | Aparece trade-off arquitetural não previsto |
-| Agent → **Plan** | Tarefa toca >5 arquivos não previstos |
-| Agent → **Debug** | Bug que precisa investigação sistemática |
-| Plan → **Agent** | Decisão tomada, escopo claro |
-| Qualquer → **Ask** | Só investigar/explicar, sem editar |
+| Apareceu trade-off arquitetural nao previsto | registrar decisao antes de continuar |
+| A tarefa passou a tocar areas fora do plano | revisar escopo e dependencias |
+| O bug exige investigacao sistematica | isolar causa e atualizar criterio de aceite |
+| A demanda virou apenas explicacao ou descoberta | responder sem editar o projeto |
+| O plano ficou claro novamente | voltar para a proxima task aprovada |
 
 ---
 
@@ -927,7 +919,7 @@ Fase X
 | Arquivo / Pasta | Portável? | O que adaptar |
 |---|---|---|
 | `AGENTS.md` (estrutura) | Sim | Versões fixadas, regras absolutas específicas, stack |
-| `GEMINI.md` | Opcional (apague se não usar Antigravity) | Overrides Antigravity da sua stack |
+| `tooling/` | Opcional | Arquivos e notas especificos do ambiente adotado |
 | `.agent/skills/<dominio>/SKILL.md` | Não | Criar SKILLs por domínio do novo projeto |
 | `.agent/agents.md` (personas) | **Sim, idêntico** | Mesmas 4 personas: @pm, @engineer, @qa, @devops |
 | `specs/SPEC_INDEX.md` (template) | Sim | Lista de módulos do novo projeto |
@@ -935,7 +927,7 @@ Fase X
 | `specs/decisions/ADR-*.md` | Não | Criar ADRs do novo projeto |
 | `docs/SDD_WORKFLOW.md` | **Sim — usar este arquivo** | Ajustar exemplos de comando à stack |
 | `docs/<Project>_Architecture.md` | Não | Escrever para o novo projeto |
-| `.gitignore`, `.gcloudignore` | Sim | Estrutura idêntica |
+| `.gitignore`, ignores de build/deploy | Sim | Ajustar ao projeto e ao alvo de release |
 | Dependency manifest | Não | Dependências do novo projeto |
 
 ### 16.2 Ajustes por stack
@@ -979,19 +971,23 @@ Fase X
 | K8s | `docker build` + push | `kubectl apply` | Sealed Secrets / External Secrets |
 | Self-hosted | `docker build` | `docker compose up` / systemd | `.env` + chmod 600 + backup criptografado |
 
-### 16.3 Slash commands úteis (Cursor / Antigravity)
+### 16.3 Atalhos de execucao opcionais
 
-| Comando | Quando usar |
+Ferramentas diferentes podem oferecer modos, comandos curtos, workflows ou
+automacoes para planejar, testar, depurar e publicar. Use esses atalhos quando
+eles preservarem os artefatos e gates do SDD.
+
+No caminho principal, os equivalentes portaveis sao:
+
+| Necessidade | Artefato ou acao SDD |
 |---|---|
-| `/plan` | Antes de qualquer implementação — gera task breakdown |
-| `/test` | Gerar e rodar testes para módulo existente |
-| `/debug` | Investigar bug sistematicamente |
-| `/deploy` | Deploy para staging |
-| Custom: `/sdd_implement <MODULO>` | Workflow SDD completo (em `.agent/workflows/`) |
+| Planejar | `PLAN_<MODULO>.md` |
+| Decompor trabalho | `TASKS_<MODULO>.md` |
+| Investigar bug | prompt e criterios do fluxo de bug fix |
+| Validar | suite/checks e smoke aplicaveis ao projeto |
+| Retomar sessao | handover + `prompts/RESUME.md` |
 
-Fonte: https://www.mintlify.com/vudovn/antigravity-kit/guide/slash-commands
-
-### 16.4 Dicas críticas da comunidade
+### 16.4 Dicas criticas de operacao
 
 - **Git entre rodadas (obrigatório):** stage as mudanças antes de cada nova rodada do agente. Diff visível = controle.
 - **Um plano por vez:** múltiplos planos concorrentes confundem o agente.

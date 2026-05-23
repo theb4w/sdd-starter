@@ -3,10 +3,8 @@
   AGENTS.md — Constituição cross-tool do projeto
 ═══════════════════════════════════════════════════════════════════════════════
 
-  Lido por: Cursor, Google Antigravity (v1.20.3+), Jules, Gemini CLI, Claude Code,
-            Cline, Aider e qualquer agente que respeite o padrão AGENTS.md.
-
-  Hierarquia de leitura: GEMINI.md (se Antigravity) → AGENTS.md (este) → .agent/
+  Use este arquivo para orientar agentes que participam do projeto.
+  O workflow canônico do método fica em docs/SDD_WORKFLOW.md.
 
   Como adaptar este template:
     1. Procure por <!-- ADAPT --> e preencha conforme seu projeto.
@@ -26,7 +24,7 @@
 - **Nome:** <!-- ADAPT: nome do projeto -->
 - **Objetivo:** <!-- ADAPT: 1-2 frases descrevendo o que o projeto faz e para quem -->
 - **Estágio:** <!-- ADAPT: Greenfield | MVP | Beta | Produção -->
-- **IDE primária:** <!-- ADAPT: Cursor | Antigravity | Jules | Gemini CLI | Claude Code -->
+- **Ambiente de trabalho relevante:** <!-- ADAPT: opcional; ex.: time humano, agente em IDE, agente no terminal -->
 - **Metodologia:** Spec-Driven Development (SDD) — ver `docs/SDD_WORKFLOW.md`
 - **Arquitetura base:** `docs/<!-- ADAPT: NOME_PROJETO -->_Architecture.md`
 
@@ -144,7 +142,6 @@ IMPLEMENT → TEST → DEPLOY → SMOKE → [GATE 3] → COMMIT → [GATE 4] →
 <!-- ADAPT: ajuste à sua stack -->
 projeto/
 ├── AGENTS.md                ← este arquivo (constituição)
-├── GEMINI.md                ← overrides Antigravity (apague se não usar)
 ├── README.md                ← onboarding humano
 ├── PROJECT_BRIEF.md         ← escopo do projeto (input do BOOTSTRAP/DISCOVER)
 ├── .agent/                  ← config IDE-agnóstica
@@ -173,42 +170,20 @@ projeto/
 
 ---
 
-## Regras por IDE / Ferramenta
+## Ambiente de Trabalho e Ferramentas
 
-### Cursor
+O fluxo SDD deste projeto deve continuar valido se a equipe trocar de editor,
+agente, terminal, provider ou modelo.
 
-- Modes: **Plan** (ambiguidade/design) | **Agent** (execução clara) | **Ask** (só investigar) | **Debug** (bug investigation).
-- Rule global do framework: `.cursor/rules/sdd.mdc` (instala junto do template).
-- Auto-continue ativo, **mas** GATEs humanos respeitados via `[bloq.]` em TASKS.
-- Workspace fora de cloud-sync (Drive/OneDrive/Dropbox) — ver §"Lições" do SDD_WORKFLOW.
-
-### Google Antigravity (v1.20.3+)
-
-- Lê `GEMINI.md` antes de `AGENTS.md` (precedência em conflitos).
-- Planning Mode obrigatório para qualquer IMPLEMENT.
-- Implementation Plan + Task List como **artifacts** antes de código.
-- Settings → Agent → Load nested AGENTS.md = **ativo**.
-- Auto-continue ativo (default v1.20.3+), mas GATEs humanos respeitados.
-- Fonte: https://discuss.ai.google.dev/t/antigravity-update-1-20-3-2026-3-5/129320
-
-### Jules (jules.google.com)
-
-- Lê `AGENTS.md` automaticamente ao clonar.
-- Acionado **apenas** na fase IMPLEMENT, nunca em SPECIFY/PLAN.
-- `@jules approve` antes de qualquer commit; `@jules cancel` reinicia ciclo.
-- Fonte: https://jules.google/docs/
-
-### Gemini CLI
-
-- Usa `~/.gemini/GEMINI.md` como config global. **Conflito conhecido** com Antigravity:
-  workaround é separar regras em `~/.gemini/AGENTS.md` (compartilhado) e
-  `~/.gemini/GEMINI.md` (overrides por ferramenta).
-- Uso recomendado: scripts, análise de logs, queries pontuais. Nunca implementação sem spec.
-
-### Claude Code / Cline / Aider
-
-- Lê `AGENTS.md` por padrão na maioria dos casos.
-- Para gates explícitos: configure no prompt de retomada (ver `prompts/RESUME.md`).
+- Antes de agir, ler os artefatos SDD relevantes e resumir o estado atual.
+- Representar planejamento e tarefas em arquivos revisaveis do repo, mesmo que
+  a ferramenta mantenha uma lista interna auxiliar.
+- Respeitar gates humanos ainda que a ferramenta tenha execucao automatica,
+  auto-continue ou modo autonomo.
+- Tratar configuracoes especificas de ferramenta como opcionais. Elas adaptam a
+  execucao ao ambiente, mas nao substituem specs, plans, tasks ou handovers.
+- Se o ambiente usado tiver instrucoes adicionais em `tooling/`, aplicar apenas
+  as que forem explicitamente adotadas pelo projeto.
 
 ---
 
@@ -223,9 +198,9 @@ PLAN     → specs/plans/PLAN_<MODULO>.md (artefato, sem código ainda)
 TASKS    → specs/plans/TASKS_<MODULO>.md (atômicas, com AC)
 [GATE 2] → humano aprova TASKS
 IMPLEMENT→ código gerado tarefa-por-tarefa, AC verificado a cada uma
-TEST     → pytest -q (ou equivalente) verde, sem regressão
-DEPLOY   → staging
-SMOKE    → 2-3 fluxos críticos manualmente
+TEST     → validação apropriada ao projeto, sem regressão conhecida
+RELEASE  → deploy, build, preview ou ambiente-alvo aplicável
+SMOKE    → fluxos críticos do produto validados
 [GATE 3] → humano aprova SMOKE
 COMMIT   → conventional commits, ≤250 LOC por PR
 [GATE 4] → humano revisa diff antes de push
@@ -279,9 +254,9 @@ Fonte canônica: `specs/SPEC_INDEX.md`.
 |---|---|---|
 | Tamanho de arquivo | ≤300 linhas | Forçar separação de responsabilidades |
 | Tamanho de função | ≤30 linhas | Forçar nomes claros + composição |
-| `print()` em produção | Zero | Logger estruturado obrigatório |
-| Type hints (Python) / Types (TS) | 100% em funções públicas | Catch errors no lint |
-| Docstrings em exportadas | Sim | Onboarding + IDE intellisense |
+| Saidas de debug em producao | Zero | Telemetria e logs seguem politica do projeto |
+| Contratos/tipos publicos | Conforme stack | Evitar comportamento implicito em interfaces relevantes |
+| Documentacao de APIs/exportadas | Conforme projeto | Facilitar onboarding e manutencao |
 | Comentários redundantes | Zero | Comentários explicam *por quê*, não *o quê* |
 
 ---

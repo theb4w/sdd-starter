@@ -7,7 +7,7 @@
 >
 > **Tempo total esperado:** 1-4h dependendo do tamanho do projeto.
 >
-> **Pré-requisito:** acesso ao código, IDE LLM-aware (Cursor/Antigravity), e
+> **Pré-requisito:** acesso ao código, ambiente de trabalho escolhido e
 > autonomia para criar arquivos de docs (sem precisar de PR para cada doc).
 
 ---
@@ -58,7 +58,6 @@ Copy-Item -Recurse "$src\.agent" "$dst\.agent" -ErrorAction SilentlyContinue
 Copy-Item -Recurse "$src\specs" "$dst\specs" -ErrorAction SilentlyContinue
 Copy-Item -Recurse "$src\prompts" "$dst\prompts" -ErrorAction SilentlyContinue
 Copy-Item -Recurse "$src\QUICKSTART" "$dst\QUICKSTART" -ErrorAction SilentlyContinue
-Copy-Item -Recurse "$src\.cursor" "$dst\.cursor" -ErrorAction SilentlyContinue
 
 # docs/ — APENAS templates, não sobrescreva docs existentes
 Copy-Item "$src\docs\SDD_WORKFLOW.md" "$dst\docs\SDD_WORKFLOW.md" -ErrorAction SilentlyContinue
@@ -67,7 +66,6 @@ Copy-Item "$src\docs\_ARCHITECTURE_TEMPLATE.md" "$dst\docs\_ARCHITECTURE_TEMPLAT
 
 # Constituição e brief — só se não existirem
 if (-not (Test-Path "$dst\AGENTS.md")) { Copy-Item "$src\AGENTS.md" "$dst\AGENTS.md" }
-if (-not (Test-Path "$dst\GEMINI.md")) { Copy-Item "$src\GEMINI.md" "$dst\GEMINI.md" }
 if (-not (Test-Path "$dst\PROJECT_BRIEF.md")) { Copy-Item "$src\PROJECT_BRIEF.md" "$dst\PROJECT_BRIEF.md" }
 ```
 
@@ -80,7 +78,6 @@ cp -Rn $SRC/.agent $DST/.agent
 cp -Rn $SRC/specs $DST/specs
 cp -Rn $SRC/prompts $DST/prompts
 cp -Rn $SRC/QUICKSTART $DST/QUICKSTART
-cp -Rn $SRC/.cursor $DST/.cursor
 
 mkdir -p $DST/docs
 cp -n $SRC/docs/SDD_WORKFLOW.md $DST/docs/
@@ -88,7 +85,6 @@ cp -n $SRC/docs/_HANDOVER_TEMPLATE.md $DST/docs/
 cp -n $SRC/docs/_ARCHITECTURE_TEMPLATE.md $DST/docs/
 
 [ ! -f $DST/AGENTS.md ] && cp $SRC/AGENTS.md $DST/AGENTS.md
-[ ! -f $DST/GEMINI.md ] && cp $SRC/GEMINI.md $DST/GEMINI.md
 [ ! -f $DST/PROJECT_BRIEF.md ] && cp $SRC/PROJECT_BRIEF.md $DST/PROJECT_BRIEF.md
 ```
 
@@ -98,6 +94,10 @@ cp -n $SRC/docs/_ARCHITECTURE_TEMPLATE.md $DST/docs/
 ls .agent specs prompts QUICKSTART docs
 # Deve mostrar pastas/arquivos copiados sem ter sobrescrito o que já existia
 ```
+
+Tooling opcional nao entra nesta copia padrao. Se o projeto escolher arquivos
+especificos para uma ferramenta, aplique depois apenas o material necessario de
+`tooling/`.
 
 ---
 
@@ -237,7 +237,7 @@ ADR-003: Stripe (vs in-house) — implícita
 **Sua ação:** commit manual do que DISCOVER produziu:
 
 ```bash
-git add AGENTS.md GEMINI.md PROJECT_BRIEF.md docs/ specs/ .agent/ .cursor/ prompts/ QUICKSTART/
+git add AGENTS.md PROJECT_BRIEF.md docs/ specs/ .agent/ prompts/ QUICKSTART/
 git commit -m "$(cat <<'EOF'
 docs: adopt SDD framework via DISCOVER
 

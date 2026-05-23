@@ -8,7 +8,7 @@
   INFIRA o que o projeto faz, e PROPONHA documentação SDD retrospectiva.
 
   COMO USAR:
-  1. Cole TODO o conteúdo abaixo no chat do agente (Cursor / Antigravity / etc.)
+  1. Cole TODO o conteúdo abaixo no canal de assistencia adotado pelo projeto
   2. Substitua <PROJETO> pelo nome do projeto
   3. O agente vai parar a CADA etapa esperando seu GO humano
   4. Não pula etapas. Não escreve código. Só explora e propõe.
@@ -155,7 +155,7 @@ Esse mapeamento bate com sua percepção do projeto?
 <inferência baseada em README + entry point + nomes de módulos>
 [?] Confirma esta interpretação?
 
-## 2. Stack desejada (detectada)
+## 2. Contexto tecnico detectado
 | Camada | Tecnologia | Versão | Evidência |
 |---|---|---|---|
 | Linguagem backend | <X> | <V> | requirements.txt: linha N |

@@ -60,7 +60,7 @@ Antes de iniciar:
 
 ### Etapa 2 — Adaptar AGENTS.md
 
-**Ferramentas:** `StrReplace` (substituir placeholders um a um).
+**Acao:** substituir placeholders um a um no arquivo.
 
 **O que substituir:**
 - `<!-- ADAPT: NOME_DO_PROJETO -->` → nome real

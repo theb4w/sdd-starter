@@ -47,21 +47,23 @@ desenvolvedor (single-user)."
 
 ---
 
-## 2. Stack desejada
+## 2. Contexto técnico inicial
 
-| Camada | Tecnologia preferida | Versão |
+> Preencha apenas o que ja estiver decidido ou restringido. O SDD nao exige uma
+> stack padrao. Itens em aberto podem virar perguntas de CLARIFY ou ADRs.
+
+| Area | Decisao, preferencia ou restricao | Versao/observacao |
 |---|---|---|
-| Linguagem backend | <!-- ex.: Python | Node.js | Go --> | <!-- ex.: 3.11 | 20 LTS | 1.22 --> |
-| Framework web | <!-- ex.: FastAPI | Express | Gin --> | — |
-| Banco de dados | <!-- ex.: PostgreSQL | Firestore | MongoDB --> | — |
-| Cache | <!-- ex.: Redis | em-memória | nenhum --> | — |
-| Frontend | <!-- ex.: Next.js | vanilla JS | nenhum --> | — |
-| Infra/Deploy | <!-- ex.: GCP Cloud Run | AWS Lambda | Vercel | self-hosted --> | — |
-| CI/CD | <!-- ex.: GitHub Actions | nenhum --> | — |
-| LLM (se aplicável) | <!-- ex.: Gemini 2.5 Flash-Lite | GPT-4 | nenhum --> | — |
+| Linguagem/runtime | <!-- ex.: ja decidido, preferido ou em aberto --> | <!-- ex.: versao alvo, se houver --> |
+| Frameworks/libraries | <!-- ex.: restricoes do time ou dominio --> | — |
+| Dados/persistencia | <!-- ex.: banco existente, formato, nenhum ainda --> | — |
+| Interfaces | <!-- ex.: web, mobile, CLI, API, job, library --> | — |
+| Infra/release | <!-- ex.: deploy existente, distribuicao local, em aberto --> | — |
+| Validacao/CI | <!-- ex.: politica existente, comando conhecido, em aberto --> | — |
+| Dependencias externas | <!-- ex.: servicos obrigatorios, nenhum, em aberto --> | — |
 
-> **Nota:** Se preencher como `[?]` qualquer linha, o agente usará o cenário
-> mais comum / sensato e propor ADR. Você aprova.
+> **Nota:** Se marcar `[?]`, o agente deve perguntar ou propor alternativas.
+> Nao deve escolher uma stack por padrao sem justificativa.
 
 ---
 

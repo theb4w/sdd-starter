@@ -85,7 +85,7 @@ Etapa 5 — Gerar PLAN (se média/grande)
 
 Etapa 6 — Gerar TASKS
    specs/plans/TASKS_<MODULO>.md atômico, com AC verificável.
-   Última tarefa de cada fase = commit; penúltima = smoke; antepenúltima = pytest full.
+   Última tarefa de cada fase = commit; penúltima = smoke; antepenúltima = validação completa definida pelo projeto.
    🛑 GATE 2 — AGUARDE aprovação das TASKS.
 
 Etapa 7 — Implementar (após GATEs)
@@ -101,7 +101,7 @@ Etapa 8 — Handover de fase
 REGRAS NÃO-NEGOCIÁVEIS:
 - Sem código sem PLAN+TASKS aprovados (média/grande)
 - Toda decisão técnica registra URL de fonte primária
-- AsyncClient para I/O em código async (Python+FastAPI)
+- Regras técnicas específicas do projeto quando houver
 - Sem hardcode de credenciais
 - Type hints / Types em funções públicas
 - PR ≤250 LOC

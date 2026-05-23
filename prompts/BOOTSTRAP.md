@@ -68,7 +68,7 @@ Após leitura, responda:
 
 Modifique `AGENTS.md` substituindo todos os `<!-- ADAPT -->`:
 
-1. Identidade do projeto (nome, objetivo, estágio, IDE primária)
+1. Identidade do projeto (nome, objetivo, estágio, ambiente relevante se houver)
 2. Tabela de stack técnica (versões fixadas com URL de fonte)
 3. Regras absolutas específicas do projeto (compliance, performance, etc.)
 4. Estrutura de diretórios ajustada à stack escolhida
