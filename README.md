@@ -66,6 +66,7 @@ arquitetural e greenfield usam niveis de rigor diferentes.
 | Cenario | Comece aqui |
 |---|---|
 | Projeto novo | [`QUICKSTART/greenfield.md`](QUICKSTART/greenfield.md) |
+| Clone de repo que ja usa SDD | [`QUICKSTART/cloned-repo.md`](QUICKSTART/cloned-repo.md) |
 | Projeto existente com pouca documentacao | [`QUICKSTART/brownfield.md`](QUICKSTART/brownfield.md) |
 | Bug fix | [`QUICKSTART/bug-fix.md`](QUICKSTART/bug-fix.md) |
 | Feature pequena | [`QUICKSTART/small-feature.md`](QUICKSTART/small-feature.md) |

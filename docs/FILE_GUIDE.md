@@ -48,6 +48,32 @@ cenario. Se voce vai manter o repo, leia tambem `docs/SDD_WORKFLOW.md`.
 `PROJECT_BRIEF.md` e `AGENTS.md` sao templates vivos. Eles devem ser adaptados
 quando o starter e usado em outro repo.
 
+### Por que `PROJECT_BRIEF.md` existe?
+
+`PROJECT_BRIEF.md` e a primeira fonte de contexto do projeto. Ele responde:
+
+- o que o projeto quer resolver;
+- para quem;
+- quais restricoes existem;
+- quais modulos parecem necessarios;
+- o que fica fora do MVP;
+- como sucesso sera medido.
+
+Ele e essencial porque evita que o primeiro agente ou desenvolvedor comece pela
+stack, pela pasta de codigo ou por suposicoes. O brief ancora o problema antes
+da solucao.
+
+Quem preenche:
+
+| Cenario | Como o brief nasce |
+|---|---|
+| Greenfield | Humano preenche primeiro; agente pode ajudar a organizar, mas nao inventar objetivo |
+| Brownfield sem docs | Agente pode gerar rascunho via `DISCOVER.md`, marcando incertezas com `[?]` |
+| Projeto SDD existente | Brief ja existe; specs, ADRs e handovers mais recentes podem complementar ou superar detalhes antigos |
+
+Regra: agente pode **rascunhar** o brief quando houver codigo ou conversa
+suficiente, mas humano deve validar objetivo, escopo, restricoes e fora-do-MVP.
+
 ---
 
 ## `docs/`
@@ -109,6 +135,7 @@ ou use como checklist manual.
 |---|---|
 | `greenfield.md` | Comecar projeto novo com SDD |
 | `brownfield.md` | Adotar SDD em projeto existente |
+| `cloned-repo.md` | Entrar em um repo que ja usa SDD |
 | `bug-fix.md` | Corrigir bug com fluxo enxuto |
 | `small-feature.md` | Feature pequena sem burocracia excessiva |
 | `medium-feature.md` | Feature media com spec/plan/tasks |
@@ -117,6 +144,9 @@ ou use como checklist manual.
 
 Use apenas um quickstart por vez. O quickstart escolhe quais artefatos sao
 necessarios para aquele tipo de trabalho.
+
+`cloned-repo.md` e para onboarding em projeto SDD existente. `brownfield.md` e
+para instalar/adotar SDD em projeto que ainda nao tem o metodo.
 
 ---
 
@@ -130,6 +160,21 @@ necessarios para aquele tipo de trabalho.
 
 Esta pasta ajuda quando o projeto trabalha com assistencia por agentes. Ela nao
 substitui o workflow SDD nem e obrigatoria para todo projeto.
+
+### Onde `.agent/workflows/` entra no fluxo?
+
+Pense nos arquivos de `.agent/workflows/` como o "manual interno" de execucao
+dos prompts:
+
+| Workflow | Usado junto com | Entra quando |
+|---|---|---|
+| `sdd_bootstrap.md` | `prompts/BOOTSTRAP.md` | projeto novo ou projeto com brief preenchido vai iniciar SDD |
+| `sdd_discover.md` | `prompts/DISCOVER.md` | projeto existente precisa ser entendido antes de documentar |
+| `sdd_implement.md` | `prompts/RESUME.md` ou `prompts/NEW_FEATURE.md` | PLAN e TASKS ja foram aprovados e chegou a hora de implementar |
+
+`docs/SDD_WORKFLOW.md` define o metodo. `prompts/*.md` conduzem a sessao.
+`.agent/workflows/*.md` detalham como um agente deve executar aquela sessao sem
+pular gates.
 
 ---
 
@@ -167,4 +212,3 @@ linguagem padrao.
 
 Nao comece editando `tooling/` ou `.agent/` se ainda nao souber qual ambiente
 de trabalho sera usado.
-
