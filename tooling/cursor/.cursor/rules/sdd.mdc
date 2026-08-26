@@ -5,21 +5,19 @@ alwaysApply: true
 
 # SDD
 
-Este projeto adota Spec-Driven Development. Antes de editar:
+Este projeto adota Spec-Driven Development. A interface do agente é
+`.agent/skills/sdd-mode/SKILL.md`. Copie o playbook; não invente um plano
+paralelo. Gates seguem o perfil do playbook (ADR-002).
+
+Antes de editar:
 
 1. leia `AGENTS.md` se o projeto usar agentes;
 2. leia o handover mais recente quando houver;
 3. leia `specs/SPEC_INDEX.md`;
-4. leia SPEC, PLAN e TASKS aplicaveis.
+4. leia SPEC, PLAN, TASKS ou story aplicaveis;
+5. invoque `sdd-mode` e o playbook do cenario.
 
-## Fluxo
+Regras do Cursor sao apoio de execucao e nao substituem os artefatos SDD
+versionados. Nao use never-block-on-the-human como default.
 
-```text
-SPECIFY -> CLARIFY -> ADRs -> PLAN -> TASKS -> IMPLEMENT -> VALIDATE -> COMMIT -> HANDOVER
-```
-
-Respeite os gates definidos pelo projeto. Regras do Cursor sao apoio de
-execucao e nao substituem os artefatos SDD versionados.
-
-Para detalhes, leia `docs/SDD_WORKFLOW.md`.
-
+Para o metodo, leia `docs/SDD_WORKFLOW.md`.

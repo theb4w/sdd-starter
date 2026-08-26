@@ -23,21 +23,23 @@
 
 ---
 
+> **Playbook:** `.agent/skills/sdd-mode/playbooks/feature.md` · **Perfil:** `standard` (G2, G3, G4)
+
 ## TL;DR
 
 ```
-1. Cole prompts/NEW_FEATURE.md (modo "pequena")
-2. Etapa 1: análise + escopo confirmado
-3. Etapa 2: estende SPEC existente (sem PLAN/ADR)
-4. Vai direto pra implementação (1-3 tarefas)
-5. Smoke + Commit + Handover (curto)
+1. /sdd-mode feature (tamanho pequena)
+2. Confirmar que é pequena (senão upgrade)
+3. Estender SPEC existente + TASKS curtas → GATE 2
+4. sdd-tdd IMPLEMENT
+5. G3 + G4 + handover
 ```
 
 ---
 
 ## Passo 1 — Use NEW_FEATURE com modo pequena
 
-Cole `prompts/NEW_FEATURE.md`, marcando tamanho `pequena`:
+Invoque `sdd-mode` (playbook `feature.md`, perfil `standard`):
 
 ```
 Quero adicionar a feature: <descrição em 1-2 frases>

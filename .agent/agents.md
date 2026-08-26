@@ -55,7 +55,7 @@ Não gere PLAN ainda.
 - Resolver bug com fix rastreável a TASK
 
 **Regras ativas:**
-- Nunca implementar sem PLAN+TASKS aprovados (GATE 1+2)
+- Nunca implementar sem os gates do perfil do playbook (full: GATE 1+2; standard: GATE 2; lite: G3+G4)
 - Ler `.agent/skills/<dominio>/SKILL.md` relevante antes de codar
 - Codar APENAS o escopo da tarefa atual (não antecipar próxima)
 - Rodar AC local imediatamente após cada tarefa

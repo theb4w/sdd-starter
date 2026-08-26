@@ -1,18 +1,20 @@
 # prompts
 
-Prompts sao roteiros reutilizaveis para conduzir sessoes SDD com assistencia.
-Tambem podem ser usados como checklist manual.
+Ponte humana para a skill de modo. Os passos canônicos estão em
+`.agent/skills/sdd-mode/playbooks/`.
 
-| Prompt | Papel |
-|---|---|
-| `BOOTSTRAP.md` | Inicializar SDD a partir de um brief |
-| `DISCOVER.md` | Mapear projeto existente sem documentacao suficiente |
-| `ONBOARDING.md` | Entrar em projeto SDD existente |
-| `RESUME.md` | Retomar fase em andamento |
-| `NEW_FEATURE.md` | Trabalhar em feature |
-| `BUG_FIX.md` | Corrigir bug com rastreabilidade proporcional |
-| `REFACTOR.md` | Refatorar com decisao e rollback quando necessario |
-| `HANDOVER.md` | Encerrar sessao deixando estado retomavel |
+Invoque `sdd-mode` (ou cole o bloco curto do prompt). Não trate estes arquivos
+como segunda cópia do procedimento.
 
-Antes de usar, substitua placeholders como `<PROJETO>`, `<MODULO>` e `<DATA>`.
+| Prompt | Playbook | Perfil |
+|---|---|---|
+| `BOOTSTRAP.md` | `bootstrap.md` | `full` |
+| `DISCOVER.md` | `discover.md` | `observe` |
+| `ONBOARDING.md` | `onboarding.md` | `observe` |
+| `RESUME.md` | `resume.md` | herda |
+| `NEW_FEATURE.md` | `feature.md` | `standard` / `full` |
+| `BUG_FIX.md` | `bug-fix.md` | `lite` |
+| `REFACTOR.md` | `refactor.md` | `lite` / `full` |
+| `HANDOVER.md` | `handover.md` | n/a |
 
+Cenários sem prompt dedicado (só playbook): `investigation`, `design`, `prototype`, `user-story`, `tdd-implement`, `multi-phase`.

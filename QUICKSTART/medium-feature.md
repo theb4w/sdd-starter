@@ -6,6 +6,8 @@
 > **Tempo:** 2-6h (pode ser dividida em sessões).
 >
 > **Pré-requisito:** SDD ativo no projeto.
+>
+> **Playbook:** `.agent/skills/sdd-mode/playbooks/feature.md` · **Perfil:** `full`
 
 ---
 
@@ -25,13 +27,11 @@
 ## TL;DR
 
 ```
-1. Cole prompts/NEW_FEATURE.md (modo "média")
-2. Etapa 1-2: análise + criar SPEC nova
-3. Etapa 3-4: CLARIFY + ADR (se trade-off)
-4. Etapa 5: PLAN single-phase → GATE 1
-5. Etapa 6: TASKS → GATE 2
-6. Etapa 7: IMPLEMENT (1 tarefa por vez)
-7. Etapa 8: Smoke + Commit + Handover
+1. /sdd-mode feature (tamanho média) — playbook feature.md, perfil full
+2. SPEC nova + CLARIFY + ADR se trade-off
+3. PLAN → GATE 1 → TASKS → GATE 2
+4. sdd-tdd IMPLEMENT uma TASK por vez
+5. G3 + G4 + handover
 ```
 
 ---

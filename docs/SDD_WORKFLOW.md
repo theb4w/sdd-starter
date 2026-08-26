@@ -26,7 +26,7 @@
 11. [Fase 8 — COMMIT + PUSH (GATE 4)](#11-fase-8--commit--push-gate-4)
 12. [Fase 9 — HANDOVER](#12-fase-9--handover-entre-sessões)
 13. [SPECs Multi-Fase](#13-specs-multi-fase-quando-e-como-quebrar)
-14. [Templates e prompts copy-paste](#14-templates-e-prompts-copy-paste)
+14. [Templates, skill de modo e prompts](#14-templates-skill-de-modo-e-prompts)
 15. [Lições aprendidas / Troubleshooting](#15-lições-aprendidas--troubleshooting)
 16. [Adaptação a outras stacks](#16-adaptação-a-outras-stacks)
 17. [FAQ](#17-faq)
@@ -39,8 +39,8 @@
 
 | Princípio | Significa |
 |---|---|
-| **Spec-first** | Nenhum código de produção é gerado sem spec aprovada por humano. |
-| **Gates humanos** | 4 pontos de aprovação obrigatórios: PLAN, TASKS, SMOKE, COMMIT. |
+| **Spec-first** | Nenhum código de produção é gerado sem o contrato do playbook (SPEC, story, ou nenhum em bug-fix). |
+| **Gates humanos** | Quatro gates nomeados (PLAN, TASKS, SMOKE, COMMIT). Quais disparam é o **perfil** do playbook (ADR-002). |
 | **Fonte primária** | Toda decisão técnica registra URL verificável. Sem URL → bloqueia. |
 | **Backward-compat** | Cada commit preserva o estado funcional anterior. |
 | **Rastreabilidade** | Código → Tarefa → SPEC → ADR (cadeia auditável). |
@@ -81,13 +81,23 @@ flowchart TD
     Loop -->|Não| Done["✔️ Módulo CONCLUÍDO"]
 ```
 
-### 1.3 Os 4 GATEs humanos
+### 1.3 Os 4 GATEs humanos e os perfis
+
+Os quatro gates existem. O playbook em `.agent/skills/sdd-mode/playbooks/` declara um **perfil** (ADR-002). O agente não escolhe um perfil mais leve para pular PLAN.
+
+| Perfil | Gates ativos | Código de produção | Exemplos |
+|---|---|---|---|
+| `observe` | nenhum | não | investigation, onboarding, discover até o brief |
+| `design` | aprovação do artefato de design/protótipo | não | design, prototype |
+| `lite` | G3, G4 | sim | bug-fix, refactor interno, story mínima |
+| `standard` | G2, G3, G4 | sim | feature pequena, user-story |
+| `full` | G1, G2, G3, G4 | sim | feature média/grande, bootstrap, refactor arquitetural |
 
 | GATE | Quando | Quem aprova | Pode skipar? |
 |---|---|---|---|
-| **G1 — PLAN** | Após PLAN gerado, antes de TASKS | Dono do produto / arquiteto | Não |
-| **G2 — TASKS** | Após TASKS, antes de IMPLEMENT | Dono do produto / dev sênior | Não |
-| **G3 — SMOKE** | Após DEPLOY staging, antes de COMMIT final | Dono do produto (smoke real) | Não |
+| **G1 — PLAN** | Após PLAN gerado, antes de TASKS | Dono do produto / arquiteto | Só se o perfil não inclui G1 |
+| **G2 — TASKS** | Após TASKS, antes de IMPLEMENT | Dono do produto / dev sênior | Só se o perfil não inclui G2 |
+| **G3 — SMOKE** | Após evidência na superfície real, antes de COMMIT | Dono do produto | Não, em qualquer perfil que gere código |
 | **G4 — COMMIT** | Antes de `git push` para `main` | Dev (revisar diff) | Excepcional, com justificativa |
 
 > 📚 LIÇÃO: G3 (SMOKE) é o gate mais negligenciado. Captura regressão de
@@ -102,16 +112,21 @@ flowchart TD
 
 Nem toda demanda exige o ciclo completo. Use esta tabela como guia rápido:
 
-| Modo | SPEC nova? | ADR? | PLAN? | TASKS? | Handover? | GATEs ativos | Prompt |
+| Modo | SPEC nova? | ADR? | PLAN? | TASKS? | Handover? | Perfil | Playbook |
 |---|---|---|---|---|---|---|---|
-| **Bug fix simples** | Não | Só se decisão | Não | Não | Opcional | G3, G4 | `prompts/BUG_FIX.md` |
-| **Feature pequena** (≤100 LOC) | Estende existente | Se trade-off | Não | Sim (1 fase) | Sim | G2, G3, G4 | `prompts/NEW_FEATURE.md` |
-| **Feature média** (100-400 LOC) | Sim | Provável | Sim | Sim | Sim | Todos os 4 | `prompts/NEW_FEATURE.md` |
-| **Feature grande** (>400 LOC) | Sim | Múltiplas | Sim, multi-fase | Sim, por fase | Por fase | Todos por fase | `prompts/NEW_FEATURE.md` |
-| **Refator interno** (sem mudança contratual) | Não | Sim (justifica o por quê) | Não | Sim (curto) | Sim | G3, G4 | `prompts/REFACTOR.md` |
-| **Refator arquitetural** (muda contrato) | Sim ("v2") | Sim (de migração) | Sim, multi-fase | Sim | Por fase | Todos por fase | `prompts/REFACTOR.md` |
-| **Greenfield** (projeto novo) | Sim, todas | Várias | Sim por módulo | Sim por módulo | Sim por módulo | Todos | `prompts/BOOTSTRAP.md` |
-| **Brownfield sem docs** (projeto existente sem nada) | Adoção retroativa via DISCOVER | Idem | — | — | — | Adapta-se | `prompts/DISCOVER.md` |
+| **Investigation** | Não | Não | Não | Não | Não | `observe` | `investigation.md` |
+| **Design** | Não (ainda) | Talvez depois | Não | Não | Opcional | `design` | `design.md` |
+| **Prototype** | Não | Não | Não | Não | Nota | `design` | `prototype.md` |
+| **User story** | Não (exige SPEC de módulo) | Se trade-off | Não | Se `standard` | Sim | `standard` ou `lite` | `user-story.md` |
+| **Bug fix simples** | Não | Só se decisão | Não | Não | Opcional | `lite` | `bug-fix.md` |
+| **Feature pequena** (≤100 LOC) | Estende existente | Se trade-off | Não | Sim (1 fase) | Sim | `standard` | `feature.md` |
+| **Feature média** (100-400 LOC) | Sim | Provável | Sim | Sim | Sim | `full` | `feature.md` |
+| **Feature grande** (>400 LOC) | Sim | Múltiplas | Sim, multi-fase | Sim, por fase | Por fase | `full` | `feature.md` + `multi-phase.md` |
+| **Refator interno** (sem mudança contratual) | Não | Sim (justifica o por quê) | Não | Não | Sim | `lite` | `refactor.md` |
+| **Refator arquitetural** (muda contrato) | Sim ("v2") | Sim (de migração) | Sim, multi-fase | Sim | Por fase | `full` | `refactor.md` |
+| **TDD implement** | Herda | Herda | Herda | Herda | Se a sessão acaba | herda | `tdd-implement.md` |
+| **Greenfield** (projeto novo) | Sim, todas | Várias | Sim por módulo | Sim por módulo | Sim por módulo | `full` | `bootstrap.md` |
+| **Brownfield sem docs** | Adoção retroativa | Idem | — | — | Sim | `observe` | `discover.md` |
 
 > 📚 LIÇÃO: A maior armadilha é forçar o ciclo completo num bug fix de 5 linhas
 > ou num greenfield onde tudo ainda está em fluxo. Ajuste o ciclo ao escopo —
@@ -836,7 +851,9 @@ Fase X
 
 ---
 
-## 14. Templates e prompts copy-paste
+## 14. Templates, skill de modo e prompts
+
+O procedimento do agente vive em `.agent/skills/sdd-mode/` (ADR-001). `prompts/` aponta o playbook. Não duplique passos.
 
 ### 14.1 Templates de artefato (arquivos próprios — não inline aqui)
 
@@ -846,22 +863,29 @@ Fase X
 | PLAN de execução | `specs/plans/_PLAN_TEMPLATE.md` |
 | TASKS atômicas | `specs/plans/_TASKS_TEMPLATE.md` |
 | ADR de decisão | `specs/decisions/_ADR_TEMPLATE.md` |
+| User story | `specs/stories/_STORY_TEMPLATE.md` |
+| Design exploratório | `docs/design/_DESIGN_TEMPLATE.md` |
 | Handover de sessão | `docs/_HANDOVER_TEMPLATE.md` |
 | Architecture document | `docs/_ARCHITECTURE_TEMPLATE.md` |
-| SKILL técnica | `.agent/skills/_example_skill/SKILL.md` |
+| SKILL de domínio | `.agent/skills/_example_skill/SKILL.md` |
+| Skill de modo SDD | `.agent/skills/sdd-mode/SKILL.md` |
 
-### 14.2 Prompts copy-paste (arquivos próprios em `prompts/`)
+### 14.2 Playbooks (passos canônicos)
 
-| Cenário | Prompt |
-|---|---|
-| Greenfield (projeto novo, dev tem brief) | `prompts/BOOTSTRAP.md` |
-| Brownfield (projeto sem docs, agente descobre) | `prompts/DISCOVER.md` |
-| Sessão nova num projeto SDD existente | `prompts/ONBOARDING.md` |
-| Retomar fase intermediária | `prompts/RESUME.md` |
-| Encerrar sessão (gerar handover) | `prompts/HANDOVER.md` |
-| Próxima feature SDD | `prompts/NEW_FEATURE.md` |
-| Bug fix com rastreabilidade | `prompts/BUG_FIX.md` |
-| Refator sob ADR de migração | `prompts/REFACTOR.md` |
+Invocar `sdd-mode`. O modo copia os passos de `.agent/skills/sdd-mode/playbooks/`. Catálogo na skill e na tabela §2.
+
+### 14.3 Prompts (ponte humana)
+
+| Cenário | Prompt | Playbook |
+|---|---|---|
+| Greenfield | `prompts/BOOTSTRAP.md` | `bootstrap.md` |
+| Brownfield | `prompts/DISCOVER.md` | `discover.md` |
+| Sessão nova | `prompts/ONBOARDING.md` | `onboarding.md` |
+| Retomar fase | `prompts/RESUME.md` | `resume.md` |
+| Encerrar sessão | `prompts/HANDOVER.md` | `handover.md` |
+| Feature | `prompts/NEW_FEATURE.md` | `feature.md` |
+| Bug fix | `prompts/BUG_FIX.md` | `bug-fix.md` |
+| Refator | `prompts/REFACTOR.md` | `refactor.md` |
 
 ---
 

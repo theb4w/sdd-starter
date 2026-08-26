@@ -5,21 +5,20 @@ globs: PROJECT_BRIEF.md
 
 # SDD Bootstrap
 
-Antes de iniciar:
+Antes de iniciar, invoque `sdd-mode` e o playbook certo:
 
-| Estado | Proximo passo |
+| Estado | Playbook |
 |---|---|
-| Projeto novo com brief preenchido | usar `prompts/BOOTSTRAP.md` |
-| Projeto existente sem docs | usar `prompts/DISCOVER.md` |
-| Projeto SDD com indice e handover | usar `prompts/ONBOARDING.md` ou `prompts/RESUME.md` |
+| Projeto novo com brief preenchido | `bootstrap.md` |
+| Projeto existente sem docs | `discover.md` |
+| Projeto SDD com indice e handover | `onboarding.md` ou `resume.md` |
 
 Durante bootstrap ou discover:
 
 - nao escrever codigo de producao;
 - marcar inferencias incertas;
 - criar artefatos um por vez;
-- pausar nos gates humanos;
+- pausar nos gates do perfil;
 - preservar arquivos existentes em brownfield.
 
-Para detalhes, leia `QUICKSTART/greenfield.md` ou `QUICKSTART/brownfield.md`.
-
+Passos: `.agent/skills/sdd-mode/playbooks/`.

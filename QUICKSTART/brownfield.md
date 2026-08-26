@@ -9,6 +9,8 @@
 >
 > **Pré-requisito:** acesso ao código, ambiente de trabalho escolhido e
 > autonomia para criar arquivos de docs (sem precisar de PR para cada doc).
+>
+> **Playbook:** `.agent/skills/sdd-mode/playbooks/discover.md` · **Perfil:** `observe`
 
 ---
 
@@ -257,16 +259,16 @@ EOF
 
 ## Passo 3 — Faça primeira task SDD-style
 
-Agora que tem documentação, escolha uma task. Não importa se é bug fix, feature ou refactor. Use o prompt apropriado:
+Agora que tem documentação, escolha uma task. Invoque `sdd-mode` com o playbook:
 
-| Task | Prompt | Tempo extra (vs sem SDD) |
+| Task | Playbook | Tempo extra (vs sem SDD) |
 |---|---|---|
-| Bug fix simples | `prompts/BUG_FIX.md` | +10-20 min (regression test obrigatório) |
-| Feature pequena | `prompts/NEW_FEATURE.md` (modo "pequena") | +5-10 min |
-| Feature média | `prompts/NEW_FEATURE.md` (modo "média") | +30-60 min (SPEC + ADR + PLAN) |
-| Feature grande | `prompts/NEW_FEATURE.md` (modo "grande") | +1-2h (SPEC multi-fase) |
-| Refator interno | `prompts/REFACTOR.md` (tipo "interno") | +20-40 min (cobertura + testes) |
-| Refator arquitetural | `prompts/REFACTOR.md` (tipo "arquitetural") | +1-3h (ADR de migração obrigatória) |
+| Bug fix simples | `bug-fix.md` (`lite`) | +10-20 min (regression test obrigatório) |
+| Feature pequena | `feature.md` (`standard`) | +5-10 min |
+| Feature média | `feature.md` (`full`) | +30-60 min (SPEC + ADR + PLAN) |
+| Feature grande | `feature.md` + `multi-phase.md` (`full`) | +1-2h (SPEC multi-fase) |
+| Refator interno | `refactor.md` (`lite`) | +20-40 min (cobertura + testes) |
+| Refator arquitetural | `refactor.md` (`full`) | +1-3h (ADR de migração obrigatória) |
 
 **O overhead se paga em 2-3 tasks** porque:
 - Próximo dev (incluindo você daqui 2 meses) entende contexto em 5 min via handover

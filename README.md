@@ -8,6 +8,10 @@
 intencao em artefatos pequenos, revisaveis e rastreaveis: brief, spec,
 clarificacoes, decisoes, plano, tarefas, validacao e handover.
 
+O ponto de entrada do agente e a skill **sdd-mode**
+(`.agent/skills/sdd-mode/SKILL.md`): um modo sticky que copia os passos do
+playbook do cenario. Humanos seguem `QUICKSTART/` e invocam o mesmo playbook.
+
 Ele ajuda especialmente quando agentes de IA participam do desenvolvimento,
 porque velocidade sem contexto perde decisoes, escopo e criterios de aceite
 muito rapido. Ainda assim, o metodo nao depende de uma IDE, de um agente, de um
@@ -63,16 +67,17 @@ arquitetural e greenfield usam niveis de rigor diferentes.
 
 ## Comece Pelo Seu Cenario
 
-| Cenario | Comece aqui |
-|---|---|
-| Projeto novo | [`QUICKSTART/greenfield.md`](QUICKSTART/greenfield.md) |
-| Projeto existente com pouca documentacao | [`QUICKSTART/brownfield.md`](QUICKSTART/brownfield.md) |
-| Bug fix | [`QUICKSTART/bug-fix.md`](QUICKSTART/bug-fix.md) |
-| Feature pequena | [`QUICKSTART/small-feature.md`](QUICKSTART/small-feature.md) |
-| Feature media | [`QUICKSTART/medium-feature.md`](QUICKSTART/medium-feature.md) |
-| Feature grande | [`QUICKSTART/large-feature.md`](QUICKSTART/large-feature.md) |
-| Refatoracao | [`QUICKSTART/refactor.md`](QUICKSTART/refactor.md) |
-| Retomar uma sessao | [`prompts/RESUME.md`](prompts/RESUME.md) |
+| Cenario | Comece aqui | Playbook |
+|---|---|---|
+| Projeto novo | [`QUICKSTART/greenfield.md`](QUICKSTART/greenfield.md) | `bootstrap.md` |
+| Projeto existente com pouca documentacao | [`QUICKSTART/brownfield.md`](QUICKSTART/brownfield.md) | `discover.md` |
+| Bug fix | [`QUICKSTART/bug-fix.md`](QUICKSTART/bug-fix.md) | `bug-fix.md` |
+| Feature pequena | [`QUICKSTART/small-feature.md`](QUICKSTART/small-feature.md) | `feature.md` |
+| Feature media | [`QUICKSTART/medium-feature.md`](QUICKSTART/medium-feature.md) | `feature.md` |
+| Feature grande | [`QUICKSTART/large-feature.md`](QUICKSTART/large-feature.md) | `feature.md` + `multi-phase.md` |
+| Refatoracao | [`QUICKSTART/refactor.md`](QUICKSTART/refactor.md) | `refactor.md` |
+| Design / prototype / user story / TDD | skill `sdd-mode` | `design.md`, `prototype.md`, `user-story.md`, `tdd-implement.md` |
+| Retomar uma sessao | [`prompts/RESUME.md`](prompts/RESUME.md) | `resume.md` |
 
 ## Como Navegar
 
@@ -81,7 +86,8 @@ arquitetural e greenfield usam niveis de rigor diferentes.
 | "Qual arquivo leio primeiro?" | `README.md`, depois `docs/FILE_GUIDE.md` |
 | "Onde esta o metodo completo?" | `docs/SDD_WORKFLOW.md` |
 | "Qual guia sigo agora?" | `QUICKSTART/README.md` |
-| "Qual prompt uso?" | `prompts/README.md` |
+| "Qual prompt uso?" | `prompts/README.md` (ponteiro; passos no playbook) |
+| "Onde esta o sdd-mode?" | `.agent/skills/sdd-mode/SKILL.md` |
 | "Onde ficam specs, plans e ADRs?" | `specs/README.md` |
 | "O que e opcional por ferramenta?" | `tooling/README.md` |
 
@@ -92,14 +98,16 @@ Para aplicar o metodo, o leitor precisa entender primeiro estes artefatos:
 | Arquivo ou pasta | Papel |
 |---|---|
 | `docs/SDD_WORKFLOW.md` | Fluxo, fases, gates e criterios de uso |
+| `.agent/skills/sdd-mode/` | Procedimento do agente (playbooks + principles) |
 | `PROJECT_BRIEF.md` | Contexto inicial do projeto |
-| `specs/` | Specs, planos, tasks e ADRs |
-| `prompts/` | Prompts reutilizaveis para bootstrap, discover, feature, fix e handover |
-| `docs/_*_TEMPLATE.md` | Templates de arquitetura e handover |
+| `specs/` | Specs, stories, planos, tasks e ADRs |
+| `prompts/` | Ponte humana para o playbook (nao dono dos passos) |
+| `docs/_*_TEMPLATE.md` | Templates de arquitetura, design e handover |
 | `AGENTS.md` | Instrucoes do projeto quando agentes participam do fluxo |
 
 `AGENTS.md` e util em projetos assistidos por agentes, mas o workflow SDD nao
-exige uma ferramenta especifica para existir.
+exige uma ferramenta especifica para existir. Invocar `sdd-mode` e o atalho;
+os artefatos em `specs/` continuam a fonte persistida.
 
 ## Modos De Uso
 
@@ -125,11 +133,13 @@ sdd-starter/
 │   ├── SDD_WORKFLOW.md
 │   ├── FILE_GUIDE.md
 │   ├── _ARCHITECTURE_TEMPLATE.md
-│   └── _HANDOVER_TEMPLATE.md
+│   ├── _HANDOVER_TEMPLATE.md
+│   └── design/_DESIGN_TEMPLATE.md
 ├── specs/
 │   ├── README.md
 │   ├── SPEC_INDEX.md
 │   ├── modules/_SPEC_TEMPLATE.md
+│   ├── stories/_STORY_TEMPLATE.md
 │   ├── plans/_PLAN_TEMPLATE.md
 │   ├── plans/_TASKS_TEMPLATE.md
 │   └── decisions/_ADR_TEMPLATE.md
@@ -137,7 +147,7 @@ sdd-starter/
 │   └── README.md
 ├── QUICKSTART/
 │   └── README.md
-├── .agent/
+├── .agent/                 skills/sdd-mode (procedimento)
 ├── scripts/
 ├── tests/
 └── tooling/                 opcional, por ambiente/ferramenta
@@ -170,9 +180,9 @@ o workflow.
 
 1. Crie um repo a partir deste template.
 2. Preencha `PROJECT_BRIEF.md`.
-3. Use [`prompts/BOOTSTRAP.md`](prompts/BOOTSTRAP.md) ou siga o quickstart
-   greenfield manualmente.
-4. Pare no primeiro PLAN aprovado antes de implementar.
+3. Invoque `sdd-mode` (playbook `bootstrap.md`) ou siga o quickstart
+   greenfield. `prompts/BOOTSTRAP.md` e o ponteiro curto.
+4. Pare no primeiro PLAN aprovado (GATE 1) antes de implementar.
 
 ### Projeto existente
 

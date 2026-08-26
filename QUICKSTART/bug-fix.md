@@ -8,14 +8,15 @@
 
 ---
 
+> **Playbook:** `.agent/skills/sdd-mode/playbooks/bug-fix.md` · **Perfil:** `lite` (G3, G4)
+
 ## TL;DR
 
 ```
-1. Cole prompts/BUG_FIX.md preenchido
-2. Etapa 1: Investigação → root cause
-3. Etapa 2: Decisão de escopo (fix puro? regra de negócio? arquitetural?)
-4. Etapa 3: Regression test PRIMEIRO + fix mínimo
-5. Etapa 4: Smoke + Commit + Handover
+1. /sdd-mode bug-fix (playbook bug-fix.md)
+2. Reproduzir → causa raiz → classificar
+3. sdd-tdd: RED + fix mínimo + GREEN
+4. G3 no mesmo repro + G4
 ```
 
 ---

@@ -6,6 +6,8 @@
 > **Tempo:** 1h - vários dias dependendo do tipo.
 >
 > **Pré-requisito:** SDD ativo, cobertura de testes ≥80% no módulo (CRÍTICO).
+>
+> **Playbook:** `.agent/skills/sdd-mode/playbooks/refactor.md` · interno = `lite`; arquitetural = `full`
 
 ---
 
@@ -28,7 +30,7 @@
 
 ```
 1. Verifique cobertura ≥80% (se não, adicione testes ANTES)
-2. Cole prompts/REFACTOR.md tipo "interno"
+2. /sdd-mode refactor interno (playbook refactor.md, perfil lite)
 3. Etapas 1-2: análise + cobertura
 4. Etapa 5: refactor (1 tarefa por vez, testes verdes)
 5. Smoke + Commit
@@ -38,7 +40,7 @@
 
 ```
 1. Verifique cobertura ≥80%
-2. Cole prompts/REFACTOR.md tipo "arquitetural"
+2. /sdd-mode refactor arquitetural (playbook refactor.md, perfil full)
 3. ADR de migração obrigatória
 4. SPEC v2 (lado-a-lado com SPEC v1)
 5. PLAN multi-fase (expand-contract / strangler fig)
@@ -72,7 +74,7 @@ pytest --cov=app.<modulo> --cov-report=term-missing
 ```
 
 Se <80%:
-- Cole `prompts/NEW_FEATURE.md` modo "pequena" e peça testes
+- Invoque `sdd-mode` feature pequena e peça testes (playbook `feature.md`)
 - Continue refator só depois
 
 Se ≥80%:

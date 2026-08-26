@@ -37,15 +37,16 @@
 
 ### 1. Ciclo SDD Obrigatório
 
-Nenhum código de produção é gerado sem spec aprovada por humano.
-Sequência obrigatória:
+Nenhum código de produção é gerado sem o contrato do playbook (SPEC, user story
+ligada a SPEC de módulo, ou nenhum contrato novo em bug-fix).
+Sequência completa (perfil `full`):
 
 ```
 SPECIFY → CLARIFY → (ADRs?) → PLAN → [GATE 1] → TASKS → [GATE 2] →
 IMPLEMENT → TEST → DEPLOY → SMOKE → [GATE 3] → COMMIT → [GATE 4] → HANDOVER
 ```
 
-- 4 gates humanos obrigatórios (PLAN, TASKS, SMOKE, COMMIT) — ver `docs/SDD_WORKFLOW.md` §1.
+- Gates humanos nomeados (PLAN, TASKS, SMOKE, COMMIT). Quais disparam é o **perfil** do playbook (`observe` / `design` / `lite` / `standard` / `full`) — ver `docs/SDD_WORKFLOW.md` §1.3 e ADR-002.
 - Qualquer mudança de requisito reinicia o ciclo a partir de SPECIFY.
 - Bug fix simples e refator interno têm versão enxuta — ver tabela "Modos de uso" no SDD_WORKFLOW.
 
@@ -176,10 +177,11 @@ O fluxo SDD deste projeto deve continuar valido se a equipe trocar de editor,
 agente, terminal, provider ou modelo.
 
 - Antes de agir, ler os artefatos SDD relevantes e resumir o estado atual.
+- Tarefas de agente: invocar `.agent/skills/sdd-mode/SKILL.md` e copiar o playbook.
 - Representar planejamento e tarefas em arquivos revisaveis do repo, mesmo que
   a ferramenta mantenha uma lista interna auxiliar.
 - Respeitar gates humanos ainda que a ferramenta tenha execucao automatica,
-  auto-continue ou modo autonomo.
+  auto-continue ou modo autonomo. Perfil mais leve so com reclassificacao explicita.
 - Tratar configuracoes especificas de ferramenta como opcionais. Elas adaptam a
   execucao ao ambiente, mas nao substituem specs, plans, tasks ou handovers.
 - Se o ambiente usado tiver instrucoes adicionais em `tooling/`, aplicar apenas

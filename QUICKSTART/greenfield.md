@@ -5,6 +5,8 @@
 > **Tempo total esperado:** 1-2h até ter o primeiro PLAN aprovado e estar pronto para implementar.
 >
 > **Pré-requisito:** Git instalado, ambiente de trabalho escolhido e conta GitHub/GitLab se houver remoto.
+>
+> **Playbook:** `.agent/skills/sdd-mode/playbooks/bootstrap.md` · **Perfil:** `full` · invoque `sdd-mode`
 
 ---
 
@@ -105,7 +107,7 @@ Exemplos do projeto podem apontar para documentação oficial da stack escolhida
 Abra o agente ou canal de assistencia adotado no projeto e cole:
 
 ```
-Use o prompt em prompts/BOOTSTRAP.md.
+Invoque `sdd-mode` com o playbook `bootstrap.md` (ponteiro: `prompts/BOOTSTRAP.md`).
 
 Estamos em modo greenfield. PROJECT_BRIEF.md já está preenchido.
 Adapte AGENTS.md substituindo todos os placeholders <!-- ADAPT --> com base no brief.

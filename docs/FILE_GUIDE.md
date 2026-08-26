@@ -15,8 +15,9 @@ Use como mapa antes de adaptar o template a um projeto real.
 | 3 | `QUICKSTART/<cenario>.md` | Para aplicar o metodo ao seu caso |
 | 4 | `PROJECT_BRIEF.md` | Para registrar o contexto inicial do projeto |
 | 5 | `specs/SPEC_INDEX.md` | Para acompanhar modulos, status e ADRs |
-| 6 | `prompts/<fluxo>.md` | Para conduzir uma sessao com assistencia |
-| 7 | `AGENTS.md` | Para orientar agentes quando eles participarem |
+| 6 | `.agent/skills/sdd-mode/SKILL.md` | Procedimento do agente (playbooks) |
+| 7 | `prompts/<fluxo>.md` | Ponte humana para o playbook |
+| 8 | `AGENTS.md` | Constituicao quando agentes participam |
 
 Se voce so quer experimentar, leia `README.md` e depois o quickstart do seu
 cenario. Se voce vai manter o repo, leia tambem `docs/SDD_WORKFLOW.md`.
@@ -30,7 +31,8 @@ cenario. Se voce vai manter o repo, leia tambem `docs/SDD_WORKFLOW.md`.
 | Guia | `README.md`, `docs/SDD_WORKFLOW.md`, `QUICKSTART/*.md` | Ler; normalmente nao copiar trecho por trecho |
 | Template | nomes com `_TEMPLATE.md` ou placeholders `<...>` | Copiar e preencher para criar artefatos reais |
 | Artefato de projeto | `PROJECT_BRIEF.md`, `AGENTS.md`, `specs/SPEC_INDEX.md` | Editar no projeto que adota SDD |
-| Prompt | `prompts/*.md` | Colar/adaptar em uma sessao de trabalho |
+| Skill de modo | `.agent/skills/sdd-mode/` | Invocar; o agente copia os passos do playbook |
+| Prompt | `prompts/*.md` | Ponteiro curto para o playbook (humano sem slash) |
 | Tooling opcional | `tooling/*` | Usar somente se aquela ferramenta for adotada |
 | Exemplo/convenção | `.agent/`, `scripts/`, `tests/` | Adaptar conforme o projeto; nao sao obrigatorios para todo mundo |
 
@@ -58,6 +60,7 @@ quando o starter e usado em outro repo.
 | `FILE_GUIDE.md` | Mapa de navegacao do starter |
 | `_ARCHITECTURE_TEMPLATE.md` | Base para documentar arquitetura do projeto real |
 | `_HANDOVER_TEMPLATE.md` | Base para encerrar uma sessao com estado retomavel |
+| `design/_DESIGN_TEMPLATE.md` | Exploracao (UX/forma) antes de SPEC/codigo |
 
 Regra simples: `SDD_WORKFLOW.md` explica o metodo; arquivos com `_TEMPLATE`
 viram artefatos preenchidos em projetos reais.
@@ -70,6 +73,7 @@ viram artefatos preenchidos em projetos reais.
 |---|---|
 | `SPEC_INDEX.md` | Painel de status dos modulos, ADRs e proximos passos |
 | `modules/_SPEC_TEMPLATE.md` | Template de especificacao de modulo/feature |
+| `stories/_STORY_TEMPLATE.md` | Template de user story (exige SPEC de modulo) |
 | `plans/_PLAN_TEMPLATE.md` | Template de plano antes de implementar |
 | `plans/_TASKS_TEMPLATE.md` | Template de tarefas atomicas com criterios de aceite |
 | `decisions/_ADR_TEMPLATE.md` | Template de decisao arquitetural |
@@ -87,19 +91,18 @@ specs/decisions/ADR-001-auth-provider.md
 
 ## `prompts/`
 
-| Prompt | Use quando |
-|---|---|
-| `BOOTSTRAP.md` | Projeto novo ou projeto existente com brief preenchido |
-| `DISCOVER.md` | Projeto existente sem documentacao suficiente |
-| `ONBOARDING.md` | Nova sessao ou novo dev em projeto que ja usa SDD |
-| `RESUME.md` | Retomar uma fase que ja tem PLAN/TASKS aprovados |
-| `NEW_FEATURE.md` | Iniciar ou continuar uma feature |
-| `BUG_FIX.md` | Corrigir bug com rastreabilidade proporcional |
-| `REFACTOR.md` | Refatorar sem perder justificativa e rollback |
-| `HANDOVER.md` | Encerrar sessao deixando o estado retomavel |
+Ponte humana. Passos canônicos: `.agent/skills/sdd-mode/playbooks/`.
 
-Prompts sao roteiros. Ajuste placeholders, cole no canal de assistencia adotado
-ou use como checklist manual.
+| Prompt | Playbook |
+|---|---|
+| `BOOTSTRAP.md` | `bootstrap.md` |
+| `DISCOVER.md` | `discover.md` |
+| `ONBOARDING.md` | `onboarding.md` |
+| `RESUME.md` | `resume.md` |
+| `NEW_FEATURE.md` | `feature.md` |
+| `BUG_FIX.md` | `bug-fix.md` |
+| `REFACTOR.md` | `refactor.md` |
+| `HANDOVER.md` | `handover.md` |
 
 ---
 
@@ -125,11 +128,14 @@ necessarios para aquele tipo de trabalho.
 | Caminho | Serve para |
 |---|---|
 | `.agent/agents.md` | Personas reutilizaveis como @pm, @engineer, @qa, @devops |
-| `.agent/workflows/` | Roteiros operacionais para bootstrap, discover e implementacao |
-| `.agent/skills/` | Exemplo de regras tecnicas por dominio |
+| `.agent/skills/sdd-mode/` | Skill de modo: roteador + playbooks (procedimento) |
+| `.agent/skills/principle-*/` | Uma regra SDD por arquivo |
+| `.agent/skills/sdd-tdd/` | Loop RED → IMPLEMENT → GREEN |
+| `.agent/skills/_example_skill/` | Template de skill de *dominio* (stack do produto) |
+| `.agent/workflows/` | Ponteiros para os playbooks equivalentes |
 
-Esta pasta ajuda quando o projeto trabalha com assistencia por agentes. Ela nao
-substitui o workflow SDD nem e obrigatoria para todo projeto.
+`sdd-mode` nao substitui `docs/SDD_WORKFLOW.md`. O workflow e o metodo; a skill
+e como o agente executa agora. Plugin/IDE continua opt-in em `tooling/`.
 
 ---
 
@@ -165,6 +171,9 @@ linguagem padrao.
 4. `docs/<Project>_Architecture.md`, criado a partir do template
 5. `specs/modules/SPEC_<MODULO>.md`, criado a partir do template
 
-Nao comece editando `tooling/` ou `.agent/` se ainda nao souber qual ambiente
-de trabalho sera usado.
+Nao comece editando `tooling/` se ainda nao souber qual ambiente de trabalho
+sera usado. A skill `sdd-mode` ja vem no template; nao a substitua por rules
+de IDE.
+
+Quando o trabalho comecar, invoque `sdd-mode` e o playbook do cenario.
 

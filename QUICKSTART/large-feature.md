@@ -6,6 +6,8 @@
 > **Tempo:** 1-3 dias (em múltiplas sessões).
 >
 > **Pré-requisito:** SDD ativo, time alinhado com a feature, prazo realista.
+>
+> **Playbooks:** `feature.md` + `multi-phase.md` · **Perfil:** `full` por fase
 
 ---
 
@@ -66,7 +68,7 @@ SESSÃO 4-N: idem para C/D/...
 
 ## Passo 1 — Sessão de planejamento
 
-Cole `prompts/NEW_FEATURE.md`:
+Invoque `sdd-mode` (playbooks `feature.md` + `multi-phase.md`):
 
 ```
 Quero adicionar a feature: <DESCRIÇÃO 2-3 frases>
