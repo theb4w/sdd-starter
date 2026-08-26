@@ -3,7 +3,7 @@
 **Status:** ✔️ CONCLUÍDO
 **Autor(es):** Allan + Grok
 **Data de criação:** 2026-08-25
-**Última atualização:** 2026-08-25
+**Última atualização:** 2026-08-26
 **Spec relacionadas:** `SDD/decisions/ADR-001-skill-as-interface.md`, `SDD/decisions/ADR-002-gate-profiles.md`
 
 ---
@@ -17,9 +17,9 @@ Dar ao desenvolvedor um ponto de entrada único (`sdd-mode`) que aplica Spec-Dri
 ## 2. Contexto e Justificativa
 
 - **Architecture:** o starter não tem `SDD/architecture.md` preenchido; a visão canônica do método é `.agent/skills/sdd-mode/references/workflow.md`.
-- **Problema:** hoje o procedimento vive em `sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)`, `QUICKSTART/` e `.agent/workflows/` ao mesmo tempo. O agente resume e inventa um plano que pula GATE. O pstack resolve isso copiando passos verbatim; o SDD ainda não tem essa peça.
-- **ADRs aplicáveis:** ADR-001 (skill, não plugin, como interface), ADR-002 (perfis de gate).
-- **Constraints:** tool-neutrality (`PLAN_SDD_CORE_NEUTRALITY`); as 6 regras absolutas de `AGENTS.md`; templates de artefato continuam a fonte do *o quê* persistido.
+- **Problema resolvido:** o procedimento era prompts + QUICKSTART + workflows em paralelo; o agente resumia e pulava GATE. Agora só `sdd-mode` + `SDD/`.
+- **ADRs aplicáveis:** ADR-001, ADR-002.
+- **Constraints:** tool-neutrality; regras em `SDD/AGENTS.md`; templates na skill.
 - **Fonte do formato:** https://github.com/cursor/plugins/blob/main/pstack/README.md
 - **Fonte do método:** `.agent/skills/sdd-mode/references/workflow.md` e https://codelabs.developers.google.com/sdd-adk-antigravity
 
@@ -35,12 +35,12 @@ Camadas (uma casa por fato):
 |---|---|---|
 | Método | `.agent/skills/sdd-mode/references/workflow.md` | o quê / por quê / quando |
 | Procedimento | `.agent/skills/sdd-mode/` | como executar agora |
-| Contrato persistido | `specs/`, `docs/` templates | o que a skill escreve |
-| Ponte humana | `sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)`, `QUICKSTART/` | apontam o playbook; não donos dos passos |
+| Contrato persistido | `SDD/` | o que a skill escreve |
+| Templates | `.agent/skills/sdd-mode/templates/` | copiados para `SDD/` na primeira execução |
 
 A skill `sdd-mode` casa a demanda a um playbook, copia os passos para o todo, dispara principles/skills nomeadas, e **para** no gate do perfil. Skip só com `skip: motivo`.
 
-Perfis de gate: `observe` | `design` | `lite` | `standard` | `full`. Definição em ADR-002 e `SDD_WORKFLOW.md` §2.
+Perfis de gate: `observe` | `design` | `lite` | `standard` | `full`. ADR-002 e `references/workflow.md` §2.
 
 ### 3.2 Sequence diagram
 
@@ -49,7 +49,7 @@ sequenceDiagram
     participant Dev
     participant Mode as sdd-mode
     participant Book as playbook
-    participant Artifacts as specs/docs
+    participant Artifacts as SDD
     participant Human as gate humano
 
     Dev->>Mode: demanda
@@ -75,15 +75,15 @@ sequenceDiagram
 
 | ID | Regra | Fonte |
 |---|---|---|
-| RN-SDD_MODE-01 | Código de produção só após o contrato do playbook (SPEC, story, ou “nenhum” em bug) | `AGENTS.md` regra 1; principle-spec-first |
+| RN-SDD_MODE-01 | Código de produção só após o contrato do playbook (SPEC, story, ou “nenhum” em bug) | `SDD/AGENTS.md` regra 1; principle-spec-first |
 | RN-SDD_MODE-02 | O playbook declara o perfil de gate; o agente não escolhe `lite` para pular PLAN em feature média | ADR-002 |
 | RN-SDD_MODE-03 | Skip de passo só com `skip: motivo` no todo | pstack poteto-mode (mecanismo) |
 | RN-SDD_MODE-04 | Parar no gate do perfil; não perguntar permissão dentro de TASK já aprovada | principle-stop-at-gate |
 | RN-SDD_MODE-05 | Módulo novo não nasce só de user story | esta SPEC §3.3 |
 | RN-SDD_MODE-06 | TDD RED-GREEN é default quando o teste local for barato; skip com motivo; G3 permanece nos perfis que geram código | principle-tdd-red-green |
-| RN-SDD_MODE-07 | Skill canônica vive em `.agent/skills/`; plugin/IDE só em `tooling/` | ADR-001; PLAN_SDD_CORE_NEUTRALITY |
-| RN-SDD_MODE-08 | Não copiar “best spec is code” nem “never block on the human” como default | ADR-001 |
-| RN-SDD_MODE-09 | `sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)` e `QUICKSTART/` não donos de passos após a fase 3 | principle-one-home-per-fact |
+| RN-SDD_MODE-07 | Skill canônica em `.agent/skills/`; não é plugin | ADR-001 |
+| RN-SDD_MODE-08 | Não copiar “best spec is code” nem “never block on the human” | ADR-001 |
+| RN-SDD_MODE-09 | Artefatos só em `SDD/`; passos só nos playbooks | principle-one-home-per-fact |
 
 ---
 
@@ -131,14 +131,13 @@ Não há runtime. Verificação por consistência documental.
 
 ## 8. Critérios de Aceite (DoD)
 
-- [ ] `sdd-mode` casa todos os cenários atuais (bootstrap, discover, bug, feature, refactor, resume, handover, onboarding)
-- [ ] Playbooks novos: investigation, design, prototype, user-story, tdd-implement, multi-phase
-- [ ] Principles absolutas + proportional-rigor, stop-at-gate, prove-it-works, tdd-red-green, sequence-verifiable-units, one-home-per-fact
-- [ ] Perfis de gate documentados no workflow e declarados em cada playbook
-- [ ] Templates de story e design existem
-- [ ] Prompts/quickstarts apontam playbooks (fase 3)
-- [ ] Tool-neutrality preservada: sem plugin como core
-- [ ] SPEC_INDEX e ADRs atualizados
+- [x] `sdd-mode` casa os cenários (bootstrap … onboarding + camada extra)
+- [x] Playbooks: investigation, design, prototype, user-story, tdd-implement, multi-phase
+- [x] Principles + TDD + stop-at-gate
+- [x] Perfis de gate no workflow e nos playbooks
+- [x] Templates na skill; artefatos em `SDD/`
+- [x] Sem plugin como core
+- [x] `SDD/INDEX.md` e ADRs atualizados
 
 ---
 

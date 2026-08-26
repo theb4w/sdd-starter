@@ -76,13 +76,13 @@ Perfis:
 
 ### Negativas (aceitas)
 
-- `AGENTS.md` deixa de dizer “4 gates sempre”; passa a dizer “gates do perfil do playbook”.
+- `SDD/AGENTS.md` usa gates do perfil, não “4 sempre”.
 - Dois vocabulários (G1–G4 e perfil) até o leitor decorar a tabela.
 
 ### Riscos mitigados
 
 - **Risco:** agente declara “é pequena” para pular PLAN.
-  **Mitigação:** critérios de tamanho já em `QUICKSTART/small-feature.md` entram no playbook `feature.md`; discordância do agente prevalece para *upgrade*, não para downgrade.
+  **Mitigação:** critérios de tamanho no playbook `feature.md`; discordância do agente prevalece para *upgrade*, não para downgrade.
 
 ### Risco residual
 

@@ -38,21 +38,21 @@ A pergunta: o desenvolvedor invoca um **plugin**, uma **skill**, ou continua col
 - **Reversibilidade:** fácil (remover a pasta; prompts ainda apontam).
 - **Fonte:** https://github.com/sickn33/antigravity-awesome-skills/blob/main/docs/contributors/skill-anatomy.md
 
-### Opção C — Manter prompts copy-paste como interface
+### Opção C — Prompts copy-paste como interface
 
-**Descrição:** Status quo. Humano cola `sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)*.md`.
+**Descrição:** Humano cola roteiros longos a cada sessão.
 
 - **Prós:** zero migração; funciona sem suporte a skills.
-- **Contras:** agente resume e pula gates; passos duplicados em QUICKSTART/workflows; não escala para design/story/TDD.
-- **Custo:** já pago em inconsistência.
-- **Reversibilidade:** n/a (é o presente).
-- **Fonte:** `.agent/skills/sdd-mode/references/workflow.md` §14.2
+- **Contras:** agente resume e pula gates; passos duplicados; não escala.
+- **Custo:** inconsistência.
+- **Reversibilidade:** n/a (era o status quo).
+- **Fonte:** ciclo anterior deste repo (`prompts/`, removido).
 
 ---
 
 ## Decisão
 
-Escolhemos a **Opção B** porque preserva a regra de tool-neutrality já aprovada, entrega o mecanismo que o pstack acertou (modo + playbooks + principles), e deixa plugin como adaptador em `tooling/`. A opção A vira o método num sotaque de editor. A opção C não resolve o problema que motivou a refatoração.
+Escolhemos a **Opção B** porque preserva tool-neutrality e entrega o mecanismo do pstack (modo + playbooks + principles) sem plugin. Artefatos do produto vão em `SDD/`. A opção A vira o método num sotaque de editor. A opção C não resolve o problema.
 
 Não adotamos a filosofia pstack “the best spec is code” nem “never block on the human”. Copiamos só o mecanismo. Fonte do recorte: https://github.com/cursor/plugins/blob/main/pstack/README.md (seção “why are there no planning skills?”) vs `.agent/skills/sdd-mode/references/workflow.md` §1.
 
@@ -69,12 +69,12 @@ Não adotamos a filosofia pstack “the best spec is code” nem “never block 
 ### Negativas (aceitas)
 
 - Quem só usa Cursor não ganha `/add-plugin` no dia um.
-- Agentes que não leem `.agent/skills/` ainda precisam do ponteiro em `sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)`.
+- Agentes que não leem `.agent/skills/` precisam copiar o pack ou ser apontados ao `SKILL.md`.
 
 ### Riscos mitigados
 
 - **Risco:** plugin virar fonte de verdade.
-  **Mitigação:** `tooling/` só registra; corpo da skill não se duplica.
+  **Mitigação:** este pack não envia plugin; o corpo da skill não se duplica.
 
 ### Risco residual
 
@@ -84,7 +84,6 @@ Não adotamos a filosofia pstack “the best spec is code” nem “never block 
 
 ## Como Reverter
 
-1. Manter `sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)` utilizáveis como ponteiros (fase 3 não apaga o nome do cenário).
-2. Remover `.agent/skills/sdd-mode/` e `principle-*`.
-3. Restaurar passos longos em `sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)` a partir do git.
-4. Marcar este ADR como ⏸️ SUPERSEDED.
+1. Remover `.agent/skills/sdd-mode/` e `principle-*`.
+2. Restaurar o kit antigo a partir do git (commit anterior a `32ca261`).
+3. Marcar este ADR como ⏸️ SUPERSEDED.

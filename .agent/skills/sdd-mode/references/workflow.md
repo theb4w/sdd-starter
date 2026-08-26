@@ -1,4 +1,4 @@
-# SDD_WORKFLOW.md — Spec-Driven Development na Prática
+# SDD — método (referência)
 
 > **Framework operacional, tool-neutral e stack-neutral** para desenvolvimento
 > orientado por especificações. Ele funciona com colaboração humana e tambem
@@ -22,11 +22,11 @@
 7. [Fase 4 — TASKS](#7-fase-4--tasks-decomposição-atômica)
 8. [Fase 5 — IMPLEMENT](#8-fase-5--implement-com-sub-fases)
 9. [Fase 6 — TEST](#9-fase-6--test)
-10. [Fase 7 — DEPLOY + SMOKE (GATE 3)](#10-fase-7--deploy--smoke-gate-3)
+10. [Fase 7 — RELEASE + SMOKE (GATE 3)](#10-fase-7--release--smoke-gate-3)
 11. [Fase 8 — COMMIT + PUSH (GATE 4)](#11-fase-8--commit--push-gate-4)
 12. [Fase 9 — HANDOVER](#12-fase-9--handover-entre-sessões)
 13. [SPECs Multi-Fase](#13-specs-multi-fase-quando-e-como-quebrar)
-14. [Templates, skill de modo e prompts](#14-templates-skill-de-modo-e-prompts)
+14. [Skill, templates e pasta SDD/](#14-skill-templates-e-pasta-sdd)
 15. [Lições aprendidas / Troubleshooting](#15-lições-aprendidas--troubleshooting)
 16. [Adaptação a outras stacks](#16-adaptação-a-outras-stacks)
 17. [FAQ](#17-faq)
@@ -75,7 +75,7 @@ flowchart TD
     G3 -->|OK| Commit["10. COMMIT + PUSH"]
     Commit --> G4{"GATE 4<br/>commit aprovado?"}
     G4 -->|Não| Commit
-    G4 -->|Sim| Handover["11. HANDOVER<br/>+ atualizar SPEC_INDEX"]
+    G4 -->|Sim| Handover["11. HANDOVER<br/>+ atualizar SDD/INDEX"]
     Handover --> Loop{"Mais fases<br/>nesta SPEC?"}
     Loop -->|Sim| LoopFase
     Loop -->|Não| Done["✔️ Módulo CONCLUÍDO"]
@@ -103,8 +103,8 @@ Os quatro gates existem. O playbook em `.agent/skills/sdd-mode/playbooks/` decla
 > 📚 LIÇÃO: G3 (SMOKE) é o gate mais negligenciado. Captura regressão de
 > comportamento que nenhum unit test pega — ex.: prompt do LLM responde
 > diferente após refatoração; mudança de CSS quebra responsividade no mobile;
-> migração de DB altera precisão de timestamps. Sem G3, "verde no pytest" não
-> significa "está pronto".
+> migração de DB altera precisão de timestamps. Suite verde não significa
+> "está pronto".
 
 ---
 
@@ -188,28 +188,13 @@ gh repo create <user>/<repo> --private --source . --push
 > `git push` (até 5 min em vez de 3s) e pode corromper o índice.
 > Mantenha `~/dev/` ou `C:\dev\` fora do sync; use o GitHub como backup.
 
-### 3.3 Setup de cloud (se aplicável)
+### 3.3 Segredos e release (se aplicável)
 
-Comandos abaixo são exemplo para GCP. Adapte ao seu provider.
+SDD não escolhe cloud. Se o produto tiver deploy:
 
-```bash
-# <!-- STACK: gcp -->
-gcloud auth login
-gcloud auth application-default login
-gcloud config set project <PROJECT_ID>
-bash scripts/setup-gcp.sh
-echo -n '<chave>' | gcloud secrets versions add <secret-name> --data-file=-
-
-# <!-- STACK: aws -->
-# aws configure
-# aws sso login --profile <profile>
-# aws secretsmanager create-secret --name <name> --secret-string '<value>'
-
-# <!-- STACK: azure -->
-# az login
-# az account set --subscription <id>
-# az keyvault secret set --vault-name <vault> --name <name> --value '<value>'
-```
+- secrets em env ou secret manager — nunca em git;
+- tag imutável (commit SHA), não `:latest`;
+- G3 é evidência na superfície real daquele alvo (URL, binário, CLI).
 
 ### 3.4 Arquivos obrigatórios da Fase 0
 
@@ -228,7 +213,7 @@ primeira sessao, o projeto deve definir apenas o minimo operacional:
 |---|---|
 | Workspace | Raiz real do projeto, fora de cloud-sync quando o Git local puder sofrer bloqueios |
 | Fonte do metodo | `.agent/skills/sdd-mode/references/workflow.md` e artefatos SDD versionados |
-| Contexto do projeto | `SDD/BRIEF.md`, `AGENTS.md` quando houver agentes, specs e handovers |
+| Contexto do projeto | `SDD/BRIEF.md`, `SDD/AGENTS.md`, INDEX e handovers |
 | Planejamento | PLAN e TASKS revisaveis no repo, mesmo que a ferramenta tenha UI auxiliar |
 | Validacao | comandos, checks ou criterios aplicaveis a esta stack |
 | Gates | aprovacoes humanas preservadas no processo escolhido |
@@ -243,12 +228,11 @@ Use o playbook `onboarding.md`. Resumo:
 
 ```text
 Antes de qualquer ação, leia e resuma:
-1. AGENTS.md — constituição cross-tool
-2. instrucoes opcionais de tooling adotadas pelo projeto
-3. .agent/skills/*/SKILL.md — regras tecnicas por dominio, se existirem
-4. SDD/INDEX.md — status atual dos modulos
-5. SDD/architecture.md — visao tecnica completa
-6. SDD/handovers/handover_*.md (mais recente) — estado atual
+1. SDD/AGENTS.md — constituição do produto
+2. .agent/skills/sdd-mode/SKILL.md — procedimento
+3. SDD/INDEX.md — módulos
+4. SDD/architecture.md — se existir
+5. SDD/handovers/ (mais recente)
 
 Então responda em ordem:
 a. Quais regras absolutas você está obrigado a seguir?
@@ -314,7 +298,7 @@ Decisões importantes durante CLARIFY.
 | 📋 PLAN | Plano gerado | GATE 1 (aprovação humana) |
 | ✅ APROVADO | PLAN+TASKS aprovados | IMPLEMENT começa |
 | 🚧 IMPLEMENT | Em desenvolvimento | Sub-fases (se multi-fase) |
-| ✔️ CONCLUÍDO | Deployado + smoke OK | Atualizar SPEC_INDEX |
+| ✔️ CONCLUÍDO | Smoke OK | Atualizar `SDD/INDEX.md` |
 
 ### 4.3 Prompt CLARIFY
 
@@ -423,9 +407,7 @@ Como saberemos que funcionou? (latência, custo, taxa de erro, etc).
 - [ ] ADRs aceitos
 - [ ] PLAN aprovado (GATE 1)
 - [ ] TASKS aprovada (GATE 2)
-- [ ] Recursos cloud provisionados
-- [ ] Quotas confirmadas
-- [ ] Índices DB revisados
+- [ ] Dependências externas / secrets prontos (se o PLAN exigir)
 ```
 
 ### 6.2 Prompt para gerar PLAN
@@ -471,7 +453,7 @@ Use `.agent/skills/sdd-mode/templates/tasks.md`. Escreva em `SDD/plans/`. Resumo
 
 | ID | Tarefa | Onde | AC |
 |---|---|---|---|
-| T-A1 | ... | app/x.py:foo → MOD | pytest tests/unit/test_x.py::test_foo verde |
+| T-A1 | ... | `<src>/…` → MOD | check do AC verde |
 | T-A2 | ... | ... | ... |
 | T-A9 [bloq.] | testes full sem regressão | terminal | 0 falhas |
 | T-A10 [bloq.] | smoke staging | manual | 3 fluxos críticos OK |
@@ -492,7 +474,7 @@ PLAN aprovado (GATE 1). Gere SDD/plans/TASKS_<X>.md como artefato.
 
 Requisitos:
 1. 1 linha por tarefa atômica (1 commit lógico, ~10-30 LOC cada)
-2. Cada tarefa tem AC verificável (pytest, rg, http response, log)
+2. Cada tarefa tem AC verificável (teste, comando, HTTP, log)
 3. Marcar tarefas [bloq.] que impedem próxima fase
 4. Última tarefa de cada fase = commit (Conventional Commits)
 5. Penúltima tarefa de cada fase = smoke staging (gate humano)
@@ -514,7 +496,7 @@ Para cada `T-XN` numa fase:
 ```text
 1. Confirmar pré-condições da tarefa (T-XN-1 verde, ADR aceita, etc).
 2. Codar APENAS o escopo da tarefa — não antecipar próxima.
-3. Rodar AC local imediatamente (pytest específico, rg, etc).
+3. Rodar AC local imediatamente.
 4. Rodar lint/typecheck nos arquivos editados.
 5. Marcar T-XN como concluida no tracking adotado pelo projeto.
 6. Próxima tarefa (não acumular várias sem AC verde).
@@ -527,8 +509,8 @@ Para cada Fase F na SPEC:
 1. Executar T-F1..T-F<N-3> (código + testes unitários).
 2. T-F<N-2>: testes full → 0 regressão. [bloq.]
 3. T-F<N-1>: deploy staging + smoke manual. [bloq. — GATE 3 humano]
-4. T-F<N>: commit + push + atualizar SPEC_INDEX. [GATE 4 humano]
-5. Handover de fase: handover_<MODULO>_FASE_<F>_<DATA>.md
+4. T-F<N>: commit + push + atualizar `SDD/INDEX.md`. [GATE 4]
+5. Handover: `SDD/handovers/handover_<MODULO>_FASE_<F>_<DATA>.md`
 6. Próxima fase só começa após GATE 4 da anterior.
 ```
 
@@ -536,14 +518,11 @@ Para cada Fase F na SPEC:
 
 | Regra | Por quê |
 |---|---|
-| Sem `print()` em produção | Logger estruturado (regra absoluta de privacidade) |
-| Sem hardcode de credenciais | Secret Manager / env var |
-| AsyncClient para I/O em código async | Bloquear event loop = deadlock |
-| Type hints / Types em todas funções públicas | Catch errors no lint |
-| Docstring em funções exportadas | Onboarding + IDE intellisense |
-| Arquivo ≤300 linhas | Forçar separação de responsabilidades |
-| Função ≤30 linhas | Forçar nomes claros + composição |
-| Sem `// import the module` | Comentários explicam **por quê**, não **o quê** |
+| Sem dump de debug em produção | Telemetria segue `SDD/AGENTS.md` |
+| Sem hardcode de credenciais | env / secret manager |
+| Tipos e contratos públicos explícitos | Conforme a stack do produto |
+| Arquivo ≤300 linhas / função ≤30 | Separação de responsabilidades |
+| Comentário só no *por quê* | O código já diz o *quê* |
 
 ### 8.4 Quando voltar ao planejamento
 
@@ -576,72 +555,36 @@ Pare a implementacao e retorne para PLAN, CLARIFY ou ADR quando:
 - Cliente real **só em smoke** (custo previsível).
 - Nomenclatura: `test_<funcao>_<cenario>_<resultado_esperado>`.
 - 1 assert por teste sempre que possível (debug rápido).
-- Fixtures em `tests/conftest.py` (Python) / `setup.ts` (Node) / equivalente.
+- Fixtures no lugar que a stack do produto já usa.
 
-### 9.3 Prompt @qa para gerar testes
+### 9.3 Pedido ao @qa
 
-```text
-@qa Gere tests/unit/test_<modulo>.<ext> cobrindo SPEC_<X>.md §7.
-
-Requisitos:
-- Stack: <pytest+pytest-asyncio | jest+ts-jest | go test+testify | ...>
-- Mock 100% de I/O externo (DB, LLM, HTTP)
-- Cobertura ≥80% das funções da §7
-- Cada teste com nome auto-explicativo
-- Sem prints; usar caplog/spy para verificar logs
-- Fixtures comuns em <conftest.py | setup.ts | testutil.go>
-```
+Gerar testes cobrindo a SPEC §7, no runner do projeto. Mock de I/O no unit. Nomes autoexplicativos. Sem prints. Default IMPLEMENT: skill `sdd-tdd` (RED → GREEN).
 
 ---
 
-## 10. Fase 7 — DEPLOY + SMOKE (GATE 3)
+## 10. Fase 7 — RELEASE + SMOKE (GATE 3)
 
-### 10.1 Sequência de deploy staging (exemplo GCP Cloud Run)
+### 10.1 Princípio
 
-```bash
-# <!-- STACK: gcp + cloud run -->
-# 1. Build da imagem
-gcloud builds submit --tag <IMAGE> .
+Build com identificador imutável → publicar no alvo (staging, preview, binário, CLI) → health/smoke. O comando é o da stack do produto.
 
-# 2. Deploy com env vars + secrets
-gcloud run deploy <SERVICE>-staging \
-  --image <IMAGE> \
-  --service-account <SA> \
-  --set-secrets "<KEY>=<SECRET>:latest" \
-  --set-env-vars "..." \
-  --allow-unauthenticated
-
-# 3. Capturar URL + health check
-SERVICE_URL=$(gcloud run services describe <SERVICE>-staging --format "value(status.url)")
-curl -f "$SERVICE_URL/health"
-```
-
-Para AWS/Azure/Vercel/Netlify/etc, adapte os comandos. O princípio é o mesmo:
-build com tag imutável → deploy → health check.
-
-### 10.2 Smoke test — checklist mínimo (humano)
+### 10.2 Smoke — checklist mínimo (humano)
 
 ```text
-URL: <SERVICE_URL>
+Alvo: <URL | binário | CLI>
 
-[ ] Login flui (Auth carrega sem erro)
-[ ] Fluxo crítico 1 — <descrever esperado>
-[ ] Fluxo crítico 2 — <descrever esperado>
-[ ] Fluxo crítico 3 — <descrever esperado>
-[ ] Logs sem ERROR/CRITICAL nos últimos 5 min
-[ ] Custo no cloud console: pico < orçamento estimado
+[ ] Fluxo crítico 1
+[ ] Fluxo crítico 2
+[ ] Fluxo crítico 3 (se houver)
+[ ] Sem erro novo nos logs do alvo
 ```
 
-### 10.3 GATE 3 — critérios de aprovação
+### 10.3 GATE 3
 
-- TODOS os fluxos críticos respondem como esperado.
-- Comportamento observável de UX **não regrediu**.
-- Logs limpos (warnings OK, errors NÃO).
-- Latência dentro do RN de performance.
-
-> 📚 LIÇÃO: Um pytest verde não garante que o LLM responde como esperado.
-> Refator de prompt pode quebrar tom/estilo sem quebrar testes.
-> SMOKE é o único gate que captura isso.
+- Fluxos críticos da SPEC/story passam na superfície real.
+- UX observável não regrediu.
+- Suite verde não substitui este gate.
 
 ---
 
@@ -753,7 +696,7 @@ Use `.agent/skills/sdd-mode/templates/handover.md`. Resumo:
 |---|---|---|---|
 
 ## 4. Estado da Infra
-Cloud Run / equivalente, repositório (commit hash, branch).
+Alvo de release (se houver), repositório (commit hash, branch).
 
 ## 5. Decisões Reafirmadas
 ADRs validadas na prática + mudanças importantes de comportamento.
@@ -765,7 +708,7 @@ Cleanup + operacional.
 | Item | Detalhe |
 
 ## 8. Como Retomar
-Cole no próximo chat o prompt de retomada (`sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)RESUME.md` preenchido).
+Próxima sessão: playbook `resume.md`.
 ```
 
 ### 12.3 Quando criar handover
@@ -777,19 +720,7 @@ Cole no próximo chat o prompt de retomada (`sdd-mode playbooks (see .agent/skil
 
 ### 12.4 Prompt de encerramento
 
-Use `sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)HANDOVER.md` (versão completa). Resumo:
-
-```text
-Antes de encerrar, gere SDD/handovers/handover_<MODULO>[_FASE_<X>]_<DATA>.md
-seguindo o template em .agent/skills/sdd-mode/templates/handover.md.
-
-Conteúdo obrigatório: ver §12.2 acima.
-
-Após gerar, atualizar SPEC_INDEX.md (status do módulo + comentário
-no rodapé).
-
-NÃO commite. Apenas gere os arquivos para revisão humana.
-```
+Use o playbook `handover.md`. Atualizar `SDD/INDEX.md`. Não commitar até revisão humana.
 
 ---
 
@@ -859,21 +790,19 @@ O procedimento vive em `.agent/skills/sdd-mode/`. Artefatos do **produto** nasce
 | `.git/index` corrompido | Cloud-sync escreveu parcialmente | Re-clonar do GitHub, copiar `.env` separado |
 | `LF will be replaced by CRLF` warnings | Windows + `core.autocrlf=true` | Esperado, ignorar |
 
-### 15.2 Cloud Build / Deploy
+### 15.2 Release
 
 | Sintoma | Causa | Solução |
 |---|---|---|
-| Upload de >100MB | Falta `.gcloudignore` | Criar excluindo `.venv/`, `tests/`, `docs/`, `.git/` |
-| 503 UNAVAILABLE intermitente do LLM | API rate ou indisponibilidade transient | Catch erro tipado → retornar 503 ao client |
-| `min-instances=0` cold start lento | Trade-off de custo aceito | OK para staging; em prod usar `min-instances=1` se SLA |
-| Deploy não atualiza | Image tag não mudou | Usar SHA do commit como tag, não `:latest` |
+| Artefato não muda no alvo | Tag mutável (`:latest`) | Tag = SHA do commit |
+| Build envia lixo | Ignore de build ausente | Excluir `.git/`, deps, caches |
 
 ### 15.3 IDE / Agent
 
 | Sintoma | Causa | Solução |
 |---|---|---|
-| Agente perde contexto mid-tarefa | Sessão muito longa | Encerrar com handover; reiniciar com `sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)RESUME.md` |
-| Agente "esquece" regras | AGENTS.md não foi lido | Re-onboarding com `sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)ONBOARDING.md` |
+| Agente perde contexto mid-tarefa | Sessão muito longa | Handover; playbook `resume.md` |
+| Agente "esquece" regras | `SDD/AGENTS.md` não foi lido | Playbook `onboarding.md` |
 | Agente edita arquivo errado | Workspace incorreto | Confirmar workspace antes de qualquer edit |
 | Auto-continue avança sem aprovar | Faltou marcar `[bloq.]` na TASKS | Reforçar gates humanos no prompt |
 
@@ -890,8 +819,8 @@ O procedimento vive em `.agent/skills/sdd-mode/`. Artefatos do **produto** nasce
 | Sintoma | Causa | Solução |
 |---|---|---|
 | Smoke OK mas usuário reclama | Comportamento de UX não testado por unit | Adicionar smoke check ao GATE 3 |
-| Pytest verde + LLM responde diferente | Refator de prompt sem smoke | SMOKE é o gate que captura isso |
-| Teste flake (passa/falha aleatório) | I/O real ou tempo no teste | Mock 100%; usar `freezegun` para tempo |
+| Suite verde + UX errada | Faltou G3 na superfície real | Smoke dos fluxos da SPEC |
+| Teste flake | I/O real ou relógio | Mock; tempo determinístico |
 
 ---
 
@@ -901,8 +830,8 @@ O procedimento vive em `.agent/skills/sdd-mode/`. Artefatos do **produto** nasce
 
 | Arquivo / Pasta | Portável? | O que adaptar |
 |---|---|---|
-| `AGENTS.md` (estrutura) | Sim | Versões fixadas, regras absolutas específicas, stack |
-| `tooling/` | Opcional | Arquivos e notas especificos do ambiente adotado |
+| `SDD/AGENTS.md` | Sim | Stack e regras do produto |
+| `.agent/skills/sdd-mode/` | Sim | Copiar o pack; não reescrever o método |
 | `.agent/skills/<dominio>/SKILL.md` | Não | Criar SKILLs por domínio do novo projeto |
 | `.agent/agents.md` (personas) | **Sim, idêntico** | Mesmas 4 personas: @pm, @engineer, @qa, @devops |
 | `SDD/INDEX.md` (template) | Sim | Lista de módulos do novo projeto |
@@ -945,14 +874,7 @@ O procedimento vive em `.agent/skills/sdd-mode/`. Artefatos do **produto** nasce
 
 #### Infra
 
-| Provider | Build | Deploy | Secrets |
-|---|---|---|---|
-| GCP Cloud Run | `gcloud builds submit` | `gcloud run deploy` | Secret Manager |
-| AWS Lambda / ECS | `sam build` / `docker build` | `sam deploy` / ECS service update | AWS Secrets Manager |
-| Azure App Service | `az acr build` | `az webapp deploy` | Key Vault |
-| Vercel / Netlify | (auto) | (auto via Git) | Painel da plataforma |
-| K8s | `docker build` + push | `kubectl apply` | Sealed Secrets / External Secrets |
-| Self-hosted | `docker build` | `docker compose up` / systemd | `.env` + chmod 600 + backup criptografado |
+O SDD não fixa provider. Registre build/deploy/secrets em `SDD/AGENTS.md` e, se houver trade-off, numa ADR.
 
 ### 16.3 Atalhos de execucao opcionais
 
@@ -966,9 +888,9 @@ No caminho principal, os equivalentes portaveis sao:
 |---|---|
 | Planejar | `PLAN_<MODULO>.md` |
 | Decompor trabalho | `TASKS_<MODULO>.md` |
-| Investigar bug | prompt e criterios do fluxo de bug fix |
-| Validar | suite/checks e smoke aplicaveis ao projeto |
-| Retomar sessao | handover + `sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)RESUME.md` |
+| Investigar bug | playbook `bug-fix.md` |
+| Validar | suite do projeto + G3 |
+| Retomar sessao | handover + playbook `resume.md` |
 
 ### 16.4 Dicas criticas de operacao
 
@@ -994,7 +916,7 @@ Adapte: Fase 7 (DEPLOY) vira "build do binário/release". Smoke é "rodar o bin�
 
 ### "Como adoto SDD num projeto que já existe e não tem nada disso?"
 
-Use `sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)DISCOVER.md`. O agente faz reverse engineering documentation em 5 etapas conservadoras. Você só preenche os `[?]` que ele não conseguiu inferir.
+Playbook `discover.md`. O agente explora o código; você confirma os `[?]` no `SDD/BRIEF.md`.
 
 ### "Posso pular o GATE 4 (revisão de commit) se trabalho sozinho?"
 
@@ -1010,16 +932,16 @@ Não há regra fixa. Em projeto típico: 0-3 ADRs por SPEC. Se passar de 3, cons
 
 ### "O agente reabre debate de ADR já fechada. Como evito?"
 
-Garanta que ADRs estão em `SDD/decisions/ADR-NNN-*.md` com status `✔️ ACEITO` e estão listadas em `AGENTS.md`. No prompt de retomada, cite explicitamente: "ADRs aceitos: ADR-001, ADR-002 — não reabrir."
+ADRs em `SDD/decisions/` com `✔️ ACEITO`, listadas em `SDD/INDEX.md`. No `resume.md`: "ADRs aceitos: … — não reabrir."
 
 ### "Qual a relação entre SDD e TDD?"
 
-Complementares. SDD diz "antes de codar, escreva spec aprovada". TDD diz "antes de codar, escreva o teste que falha". No SDD, a §7 da SPEC descreve os testes; na fase IMPLEMENT, você pode escrever teste antes de implementação se preferir TDD. SDD não impede TDD.
+Complementares. A SPEC §7 nomeia os testes; `sdd-tdd` os escreve em RED → GREEN quando o caminho local for barato.
 
 ### "E se o agente entra em loop ou fica preso?"
 
-Encerre a sessão com handover (mesmo parcial), abra sessão nova com `sdd-mode playbooks (see .agent/skills/sdd-mode/playbooks/)RESUME.md`. Reinício forçado quebra o estado podre do contexto.
+Handover (mesmo parcial) e sessão nova com playbook `resume.md`.
 
 ---
 
-*Versão 2.0 — destilada de projeto de produção real. Manter sincronizado com `AGENTS.md` e `SDD/INDEX.md` do projeto que adota este framework.*
+*Versão 2.1 — método na skill; processo do produto em `SDD/`. Sincronizar com `SDD/INDEX.md`.*

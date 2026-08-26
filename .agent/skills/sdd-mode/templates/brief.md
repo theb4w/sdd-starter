@@ -9,8 +9,7 @@
   2. BROWNFIELD: invoque sdd-mode (playbook discover); o agente preenche [?] aqui.
 
   Em ambos os casos, este brief vira FONTE DE VERDADE inicial do projeto.
-  Atualize-o conforme o projeto evolui (ou deixe envelhecer e use SPEC_INDEX
-  como fonte canônica).
+  Atualize-o conforme o projeto evolui (ou deixe envelhecer e use `SDD/INDEX.md`).
 
   REMOVA este header antes do primeiro commit do seu projeto real.
 ═══════════════════════════════════════════════════════════════════════════════

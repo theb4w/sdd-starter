@@ -48,7 +48,7 @@ IMPLEMENT → TEST → DEPLOY → SMOKE → [GATE 3] → COMMIT → [GATE 4] →
 
 - Gates humanos nomeados (PLAN, TASKS, SMOKE, COMMIT). Quais disparam é o **perfil** do playbook (`observe` / `design` / `lite` / `standard` / `full`) — ver `.agent/skills/sdd-mode/references/workflow.md` §1.3 e ADR-002.
 - Qualquer mudança de requisito reinicia o ciclo a partir de SPECIFY.
-- Bug fix simples e refator interno têm versão enxuta — ver tabela "Modos de uso" no SDD_WORKFLOW.
+- Bug fix simples e refator interno têm versão enxuta — `references/workflow.md` §2.
 
 ### 2. Toda Decisão Técnica Requer URL de Fonte Primária
 
@@ -193,7 +193,7 @@ Detalhes completos: `.agent/skills/sdd-mode/references/workflow.md`.
 
 ## Módulos do Projeto
 
-<!-- ADAPT: lista atualizada conforme SPEC_INDEX.md. Exemplo:
+<!-- ADAPT: lista atualizada conforme SDD/INDEX.md. Exemplo:
 
 | Módulo | Spec | Status |
 |---|---|---|
@@ -224,7 +224,7 @@ Fonte canônica: `SDD/INDEX.md`.
 - **Nunca** logar conteúdo sensível (definido na §"Regras Absolutas").
 - **Nunca** force-push em `main`.
 - Todos os inputs externos passam por validação antes de processamento.
-- Toda chamada externa em `try/except` com tratamento de erro tipado.
+- Toda chamada externa com tratamento de erro tipado (conforme a stack).
 
 ---
 
