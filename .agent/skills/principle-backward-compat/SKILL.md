@@ -9,4 +9,4 @@ A commit on `main` must leave the previous behavior working, or ship an explicit
 
 A contract break needs an ADR plus a rollback path. Do not land a half-migration that only works if the next commit arrives.
 
-**Source:** `AGENTS.md` regra 5; `docs/SDD_WORKFLOW.md` §1.1.
+**Source:** `SDD/AGENTS.md` regra 5; `references/workflow.md` §1.1.

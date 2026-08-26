@@ -13,11 +13,11 @@ Do not write production code until the playbook's contract exists and, if the ga
 
 | Playbook | Contract |
 |---|---|
-| feature (média/grande), bootstrap, refactor arquitetural | `SPEC_*.md` |
+| feature (média/grande), bootstrap, refactor arquitetural | `SDD/modules/SPEC_*.md` |
 | feature pequena, user-story | SPEC existente estendida, ou story ligada a SPEC de módulo |
 | bug-fix | nenhum novo; comportamento esperado já documentado ou o repro |
 | design, prototype, investigation | não geram código de produção |
 
 **Do not:** treat a chat agreement as a SPEC. Write the file.
 
-**Source:** `AGENTS.md` regra 1; `docs/SDD_WORKFLOW.md` §1.1.
+**Source:** `SDD/AGENTS.md` regra 1 (after generate); `references/workflow.md` §1.1.

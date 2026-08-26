@@ -1,9 +1,0 @@
-# Pasta para testes de integração.
-#
-# Convenções:
-# - Cobertura: fluxos críticos cross-module
-# - Mock OPCIONAL (alguns I/O reais permitidos com cuidado de custo)
-# - Tempo total: <5min
-# - Rodam a cada commit (CI)
-#
-# Ver docs/SDD_WORKFLOW.md §9 para detalhes.

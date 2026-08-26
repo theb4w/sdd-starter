@@ -9,4 +9,4 @@ One TASK, one story slice, or one phase ends in an observable check (test, comma
 
 Do not batch five TASKS and “test at the end”.
 
-**Source:** `docs/SDD_WORKFLOW.md` §7 (TASKS atômicas); `specs/plans/_TASKS_TEMPLATE.md`.
+**Source:** `references/workflow.md` §7; `sdd-mode/templates/tasks.md`.

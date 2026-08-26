@@ -9,4 +9,4 @@ Put secrets in environment variables or a secret manager. Keep `.env` gitignored
 
 If a sample in a skill or test needs a key, use a placeholder name, never a real value.
 
-**Source:** `AGENTS.md` regra 4.
+**Source:** `SDD/AGENTS.md` regra 4.

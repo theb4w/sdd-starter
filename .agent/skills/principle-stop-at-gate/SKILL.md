@@ -13,4 +13,4 @@ Still pause for irreversible actions the project forbids without a human: force-
 
 This is the inverse of pstack's never-block-on-the-human, which is not a default here (ADR-001).
 
-**Source:** `specs/decisions/ADR-001-skill-as-interface.md`; `AGENTS.md` “Respeitar gates humanos ainda que a ferramenta tenha execução automática”.
+**Source:** `SDD/decisions/ADR-001-skill-as-interface.md`; `SDD/AGENTS.md`.

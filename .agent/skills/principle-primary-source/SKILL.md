@@ -9,4 +9,4 @@ A technical choice with two or more viable options needs an ADR. Each option nee
 
 If you cannot find a URL, say so and stop. Do not invent citations.
 
-**Source:** `AGENTS.md` regra 2; `specs/decisions/_ADR_TEMPLATE.md`.
+**Source:** `SDD/AGENTS.md` regra 2; `sdd-mode/templates/adr.md`.

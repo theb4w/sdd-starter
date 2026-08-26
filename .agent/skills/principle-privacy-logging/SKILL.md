@@ -9,4 +9,4 @@ Do not log secrets, tokens, passwords, or the project's defined sensitive conten
 
 User content in a database is an architecture decision (ADR), not a logging convenience.
 
-**Source:** `AGENTS.md` regra 3.
+**Source:** `SDD/AGENTS.md` regra 3.

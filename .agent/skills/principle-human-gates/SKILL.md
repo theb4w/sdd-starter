@@ -17,4 +17,4 @@ The four gates still have names: G1 PLAN, G2 TASKS, G3 SMOKE, G4 COMMIT. Which o
 
 Stop and wait when the profile names a gate. Do not ask for a gate the profile omitted. Do not honor “skip PLAN” on a `full` playbook without reclassifying the work.
 
-**Source:** `docs/SDD_WORKFLOW.md` §2; `specs/decisions/ADR-002-gate-profiles.md`.
+**Source:** `references/workflow.md` §2; `SDD/decisions/ADR-002-gate-profiles.md`.

@@ -1,27 +1,16 @@
 # Playbook: onboarding
 
 **Gate profile:** `observe`
-**When:** first session on a repo that already uses SDD, or a new person/agent joining.
-**Not when:** the repo has no SDD artifacts → `discover.md`.
-**Human prompt (pointer):** `prompts/ONBOARDING.md`
+**When:** first session on a repo that already has `SDD/`.
+**Not when:** no `SDD/` and no product docs → `discover.md`. Empty product intent → fill BRIEF via `bootstrap.md`.
 
 ## Steps
 
-1. Read and summarize, in order:
-   - `AGENTS.md` (absolute rules)
-   - optional `tooling/` files the project actually adopted
-   - `.agent/skills/sdd-mode/SKILL.md` and domain skills
-   - `specs/SPEC_INDEX.md`
-   - `docs/<Project>_Architecture.md` if present
-   - latest `docs/handover_*.md`
-2. Answer, in this order, **before any code**:
-   - a. Which absolute rules bind you?
-   - b. Which versions are pinned, and why (ADR/URL)?
-   - c. Which modules exist and their status?
-   - d. Which accepted ADRs affect today's work?
-   - e. Which playbook should today's request use?
-3. Wait. Do not implement in the onboarding turn.
+1. Ensure `SDD/` (if missing, create then stop: this is not onboarding, pick discover/bootstrap).
+2. Read `SDD/AGENTS.md`, `SDD/INDEX.md`, `SDD/architecture.md`, latest handover, this skill.
+3. Answer before any code: absolute rules; pinned versions; modules/status; ADRs that affect today; which playbook today needs.
+4. Wait.
 
 ## Reply
 
-The five answers above, then the recommended next playbook.
+The five answers, recommended next playbook.

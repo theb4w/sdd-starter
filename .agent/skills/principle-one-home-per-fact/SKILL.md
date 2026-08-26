@@ -7,10 +7,10 @@ description: "Each rule or procedure lives in one file. Others point to it. Use 
 
 | Fact | Home |
 |---|---|
-| Method (what/why/when) | `docs/SDD_WORKFLOW.md` |
+| Method (what/why/when) | `.agent/skills/sdd-mode/references/workflow.md` |
 | Agent procedure (how, now) | `.agent/skills/sdd-mode/playbooks/` |
-| Persisted contract | `specs/`, `docs/` templates |
-| A single technical choice | one ADR |
+| Persisted contract | `SDD/` |
+| A single technical choice | one file in `SDD/decisions/` |
 | A domain pitfall | `.agent/skills/<domain>/SKILL.md` |
 
 After a session, put the lesson in that home. Do not add a parallel paragraph in a prompt, a comment, and the workflow.
