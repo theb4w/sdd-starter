@@ -1,13 +1,12 @@
 # SDD — método (referência)
 
-> **Framework operacional, tool-neutral e stack-neutral** para desenvolvimento
-> orientado por especificações. Ele funciona com colaboração humana e tambem
-> com agentes de IA quando o projeto adota esse apoio.
->
-> Lições reais (em projeto de produção) estão marcadas como `📚 LIÇÃO`.
->
-> Fonte SDD original: https://codelabs.developers.google.com/sdd-adk-antigravity
-> Getting Started: https://codelabs.developers.google.com/codelabs/getting-started-with-spec-driven-development-in-antigravity
+Framework operacional, tool-neutral, stack-neutral. Implementa o ciclo da comunidade:
+
+- **spec-kit** (GitHub): https://github.github.io/spec-kit/concepts/sdd.html — specs executáveis; WHAT antes de HOW; constitution → specify → clarify → plan → tasks → implement.
+- **Antigravity + spec-kit:** https://codelabs.developers.google.com/sdd-adk-antigravity — artifacts versionados; humano aprova plano/tasks antes do código.
+- **Antigravity SDD intro:** https://codelabs.developers.google.com/codelabs/getting-started-with-spec-driven-development-in-antigravity — SSOT; loop design↔implementação; granularidade modular; test spec como juiz.
+
+Mapeamento deste pack: `sdd-basis.md`. Lições de operação marcadas `📚 LIÇÃO`.
 
 ---
 
@@ -40,7 +39,7 @@
 | Princípio | Significa |
 |---|---|
 | **Spec-first** | Nenhum código de produção é gerado sem o contrato do playbook (SPEC, story, ou nenhum em bug-fix). |
-| **Gates humanos** | Quatro gates nomeados (PLAN, TASKS, SMOKE, COMMIT). Quais disparam é o **perfil** do playbook (ADR-002). |
+| **Gates humanos** | G1–G4 nomeados. Default **agentic** (ADR-003): humano no intent e no pacote; G1/G2 só no `full`. |
 | **Fonte primária** | Toda decisão técnica registra URL verificável. Sem URL → bloqueia. |
 | **Backward-compat** | Cada commit preserva o estado funcional anterior. |
 | **Rastreabilidade** | Código → Tarefa → SPEC → ADR (cadeia auditável). |
@@ -83,22 +82,23 @@ flowchart TD
 
 ### 1.3 Os 4 GATEs humanos e os perfis
 
-Os quatro gates existem. O playbook em `.agent/skills/sdd-mode/playbooks/` declara um **perfil** (ADR-002). O agente não escolhe um perfil mais leve para pular PLAN.
+Os quatro gates existem como nomes. **Quem bloqueia o humano** é o perfil (ADR-002, ADR-003). Default: `agentic`.
 
-| Perfil | Gates ativos | Código de produção | Exemplos |
+| Perfil | Paradas humanas | Código | Exemplos |
 |---|---|---|---|
-| `observe` | nenhum | não | investigation, onboarding, discover até o brief |
-| `design` | aprovação do artefato de design/protótipo | não | design, prototype |
-| `lite` | G3, G4 | sim | bug-fix, refactor interno, story mínima |
-| `standard` | G2, G3, G4 | sim | feature pequena, user-story |
-| `full` | G1, G2, G3, G4 | sim | feature média/grande, bootstrap, refactor arquitetural |
+| `observe` | nenhuma (BRIEF no discover) | não | investigation, onboarding, review solo |
+| `design` | um GO no arquivo de design | não | design, prototype |
+| `lite` | pacote (G3 dentro) | sim | bug-fix, refactor interno |
+| `agentic` | CLARIFY de produto; depois **pacote** (review + G3 + diff) | sim | feature, story, bootstrap |
+| `full` | G1, G2, depois pacote | sim | schema, compliance, WHAT incerto |
+| `standard` | alias de `agentic` | sim | — |
 
-| GATE | Quando | Quem aprova | Pode skipar? |
-|---|---|---|---|
-| **G1 — PLAN** | Após PLAN gerado, antes de TASKS | Dono do produto / arquiteto | Só se o perfil não inclui G1 |
-| **G2 — TASKS** | Após TASKS, antes de IMPLEMENT | Dono do produto / dev sênior | Só se o perfil não inclui G2 |
-| **G3 — SMOKE** | Após evidência na superfície real, antes de COMMIT | Dono do produto | Não, em qualquer perfil que gere código |
-| **G4 — COMMIT** | Antes de `git push` para `main` | Dev (revisar diff) | Excepcional, com justificativa |
+| GATE | Quando bloqueia | Skip |
+|---|---|---|
+| **G1 — PLAN** | Só perfil `full` | `agentic` grava o PLAN e segue |
+| **G2 — TASKS** | Só perfil `full` | `agentic` grava TASKS e segue |
+| **G3 — SMOKE** | Sempre que há código; evidência no pacote | Não |
+| **Pacote (ex-G4)** | Diff + review do agente + G3; branch, não `main` silencioso | Não |
 
 > 📚 LIÇÃO: G3 (SMOKE) é o gate mais negligenciado. Captura regressão de
 > comportamento que nenhum unit test pega — ex.: prompt do LLM responde
@@ -117,15 +117,14 @@ Nem toda demanda exige o ciclo completo. Use esta tabela como guia rápido:
 | **Investigation** | Não | Não | Não | Não | Não | `observe` | `investigation.md` |
 | **Design** | Não (ainda) | Talvez depois | Não | Não | Opcional | `design` | `design.md` |
 | **Prototype** | Não | Não | Não | Não | Nota | `design` | `prototype.md` |
-| **User story** | Não (exige SPEC de módulo) | Se trade-off | Não | Se `standard` | Sim | `standard` ou `lite` | `user-story.md` |
-| **Bug fix simples** | Não | Só se decisão | Não | Não | Opcional | `lite` | `bug-fix.md` |
-| **Feature pequena** (≤100 LOC) | Estende existente | Se trade-off | Não | Sim (1 fase) | Sim | `standard` | `feature.md` |
-| **Feature média** (100-400 LOC) | Sim | Provável | Sim | Sim | Sim | `full` | `feature.md` |
-| **Feature grande** (>400 LOC) | Sim | Múltiplas | Sim, multi-fase | Sim, por fase | Por fase | `full` | `feature.md` + `multi-phase.md` |
-| **Refator interno** (sem mudança contratual) | Não | Sim (justifica o por quê) | Não | Não | Sim | `lite` | `refactor.md` |
-| **Refator arquitetural** (muda contrato) | Sim ("v2") | Sim (de migração) | Sim, multi-fase | Sim | Por fase | `full` | `refactor.md` |
-| **TDD implement** | Herda | Herda | Herda | Herda | Se a sessão acaba | herda | `tdd-implement.md` |
-| **Greenfield** (projeto novo) | Sim, todas | Várias | Sim por módulo | Sim por módulo | Sim por módulo | `full` | `bootstrap.md` |
+| **Review** | Não | Não | Não | Não | Não | `observe` | `review.md` |
+| **User story** | Não (exige SPEC de módulo) | Se trade-off | Não | Sim | Pacote | `agentic` | `user-story.md` |
+| **Bug fix simples** | Não | Só se decisão | Não | Não | Pacote | `lite` | `bug-fix.md` |
+| **Feature** | Conforme tamanho | Se trade-off | Sim se média+ | Sim | Pacote | `agentic` (`full` se risco) | `feature.md` |
+| **Refator interno** | Não | Sim (por quê) | Não | Não | Pacote | `lite` | `refactor.md` |
+| **Refator arquitetural** | Sim ("v2") | Migração | Sim | Sim | Pacote | `full` | `refactor.md` |
+| **TDD implement** | Herda | Herda | Herda | Herda | Pacote | herda | `tdd-implement.md` |
+| **Greenfield** | Sim | Várias | Sim | Sim | Pacote | `agentic` | `bootstrap.md` |
 | **Brownfield sem docs** | Adoção retroativa | Idem | — | — | Sim | `observe` | `discover.md` |
 
 > 📚 LIÇÃO: A maior armadilha é forçar o ciclo completo num bug fix de 5 linhas
@@ -428,8 +427,7 @@ Requisitos:
 NÃO gere TASKS ainda. NÃO escreva código. Aguarde GATE 1.
 ```
 
-> **GATE 1:** Humano aprova o PLAN (revisar fases, dependências, riscos).
-> Rejeição → volta para SPECIFY/CLARIFY.
+> **GATE 1:** Só perfil `full`. Em `agentic` o PLAN é gravado e o agente segue (ADR-003).
 
 ---
 
@@ -483,7 +481,7 @@ Requisitos:
 NÃO escreva código. Aguarde GATE 2.
 ```
 
-> **GATE 2:** Humano aprova a TASKS. Rejeição → volta para PLAN.
+> **GATE 2:** Só perfil `full`. Em `agentic` as TASKS são gravadas e o IMPLEMENT segue.
 
 ---
 
@@ -896,11 +894,7 @@ No caminho principal, os equivalentes portaveis sao:
 
 - **Git entre rodadas (obrigatório):** stage as mudanças antes de cada nova rodada do agente. Diff visível = controle.
 - **Um plano por vez:** múltiplos planos concorrentes confundem o agente.
-- **Aprovação explícita antes de IMPLEMENT** mesmo com auto-continue ativo:
-
-```text
-Não escreva código ainda. Aguarde minha aprovação do PLAN e da TASKS.
-```
+- **`full`:** não escrever código até G1+G2. **`agentic`:** gravar PLAN/TASKS e implementar; um pacote humano no fim.
 
 ---
 

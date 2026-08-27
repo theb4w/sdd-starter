@@ -1,6 +1,7 @@
 # Playbook: prototype
 
 **Gate profile:** `design`
+**Basis:** spec-kit “parallel implementations” / creative exploration. Observe, then specify; do not merge the sketch as the spec.
 **When:** an empirical fork; throwaway sketch is cheaper than asking.
 **Not when:** the sketch is meant to ship → `feature.md`. Do not merge to `main`.
 

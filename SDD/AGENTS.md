@@ -5,7 +5,7 @@ Skill pack SDD. O procedimento está em `.agent/skills/sdd-mode/`. O processo de
 ## Regras
 
 1. **Spec-first.** Sem contrato do playbook (SPEC, story, ou nenhum em bug-fix), sem código de produção.
-2. **Gates pelo perfil.** `observe` / `design` / `lite` / `standard` / `full` — ADR-002. Não aliviar o perfil sem reclassificar.
+2. **Gates pelo perfil.** Default `agentic` (ADR-003): humano no intent e no pacote (review + G3 + diff). `full` = G1+G2. Não aliviar `full` sem reclassificar.
 3. **Fonte primária.** Decisão técnica com URL; senão ADR bloqueada.
 4. **Sem secrets em git ou logs.** Sensível neste pack: nenhum (não há app).
 5. **Backward-compat.** Commit em `main` preserva o estado anterior.

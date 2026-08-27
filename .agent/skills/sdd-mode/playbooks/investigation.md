@@ -1,6 +1,7 @@
 # Playbook: investigation
 
 **Gate profile:** `observe`
+**Basis:** spec-kit `/speckit.analyze` (read-only cross-check). Cite artifacts; do not patch code in the same pass.
 **When:** read-only how/why/are we sure.
 **Not when:** the user wants a change — answer, then pick a build playbook.
 

@@ -1,16 +1,18 @@
 ---
 name: principle-tdd-red-green
-description: "When a cheap local test path exists, write a failing test from the acceptance criterion, then the minimum code, then watch it pass. Use during IMPLEMENT, bug-fix, and user-story."
+description: "When a cheap local test path exists, write a failing test from the acceptance criterion, then the minimum code, then watch it pass. Use during IMPLEMENT. Maps to spec-kit test spec as judge."
 ---
 
 # TDD: RED → IMPLEMENT → GREEN
 
-1. **RED** — write the test that encodes the AC (or Given/When/Then). Run it. Record the failure.
-2. **IMPLEMENT** — smallest change that should pass.
-3. **GREEN** — run it. Do not widen scope. Cleanup refactor only while green.
+**Why:** Beck’s TDD makes the test spec executable before production code exists. Antigravity SDD: generated code is judged by the test specification. A test written after the fact often encodes the bug. The failing test is the trace from SPEC §7 / Given-When-Then to code.
 
-Skip only with `skip: motivo` (test would be expensive, integration-only, or the behavior is still unclear). Skipping TDD does not skip G3.
+**Pattern:**
 
-TDD proves an already-written criterion. It does not discover the spec.
+1. **RED** — test from the AC. Run it. Keep the failure.
+2. **IMPLEMENT** — smallest change.
+3. **GREEN** — same test + relevant suite. No extra behavior.
 
-**Source:** playbook `tdd-implement.md`; skill `sdd-tdd`. Classic cycle: https://martinfowler.com/bliki/TestDrivenDevelopment.html
+**Boundaries:** Skip with `skip: motivo` if there is no cheap runner, the check is UI-only (then G3 is the proof), or the criterion is still in CLARIFY. TDD does not discover the spec.
+
+**Source:** https://martinfowler.com/bliki/TestDrivenDevelopment.html ; Antigravity lab §7 (test specification is the judge).

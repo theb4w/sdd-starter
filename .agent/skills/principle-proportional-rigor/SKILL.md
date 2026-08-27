@@ -1,12 +1,14 @@
 ---
 name: principle-proportional-rigor
-description: "Match ceremony to the scenario. Do not force the full cycle on a five-line bug. Do not empty PLAN out of a medium feature. Use when classifying size or picking a playbook."
+description: "Match ceremony to risk. Do not force plan+tasks on a five-line bug. Do not skip PLAN on a medium feature. Use when classifying size or picking a playbook."
 ---
 
 # Proportional rigor
 
-The playbook picks the weight. Upgrade (more gates, more artifacts) is always allowed. Downgrade requires reclassifying the work in the open (bug, not feature; story, not new module).
+**Why:** ISO/IEC 12207 allows tailoring the life cycle to project risk. Spec-kit documents a shorter path for small features (only specify is strictly required before plan). Forcing the full pipeline on a typo produces theater; skipping PLAN on a new module produces vibe coding.
 
-Size cues for `feature.md` (from `QUICKSTART/small-feature.md`): small is ≤100 LOC, 0–1 new files, no architectural trade-off, no new external service, no schema change. Any “no” → not small.
+**Pattern:** Default `agentic` (ADR-003). Upgrade to `full` when schema, new service, compliance, or WHAT is unclear. Downgrade only by reclassifying in the open. Small feature: ≤100 LOC, 0–1 new files, no architectural trade-off, no new external service, no schema change.
 
-**Source:** `docs/SDD_WORKFLOW.md` §2; ADR-002.
+**Boundaries:** Compliance, safety, or money-moving changes stay `full` even if the diff is small.
+
+**Source:** https://github.github.io/spec-kit/ (shorter path for small features); ADR-002.

@@ -1,20 +1,21 @@
 # Playbook: user-story
 
-**Gate profile:** `standard`. `lite` only if module SPEC exists and the slice is ≤1 file with no schema/service change.
-**When:** vertical slice on a module that already has `SDD/modules/SPEC_*.md`.
-**Not when:** module does not exist → `feature.md` / `bootstrap.md`.
-**Template:** `templates/story.md`
-**Skills:** `sdd-tdd`
+**Gate profile:** `agentic`. `lite` if module SPEC exists and the slice is ≤1 file, no schema/service.
+**When:** vertical slice on an existing `SDD/modules/SPEC_*.md`.
+**Not when:** no module SPEC → `feature.md` / `bootstrap.md`.
+**Basis:** Cohn slice; spec-kit specify at story grain.
+**Skills:** `sdd-tdd`, `review.md`
 
 ## Steps
 
-1. Ensure `SDD/`. Identify the module SPEC. If missing, stop and reclassify.
-2. Write `SDD/stories/STORY_<SLUG>.md`. Given/When/Then become RED tests.
-3. Must not contradict the SPEC. Rule changes → update SPEC or CLARIFY.
-4. If `standard`: short TASKS in `SDD/plans/`. **STOP GATE 2.** If `lite`: `skip: lite story`.
+1. Ensure `SDD/`. Identify module SPEC. Missing → reclassify.
+2. Write `SDD/stories/STORY_<SLUG>.md`. Given/When/Then → RED tests.
+3. Must not contradict the SPEC. Product rule change → **STOP** CLARIFY.
+4. Write short TASKS unless `lite` (`skip: lite story`). No G2 stop on `agentic`.
 5. IMPLEMENT via `sdd-tdd`.
-6. **STOP GATE 3.** **STOP GATE 4.** Update INDEX.
+6. `review.md` + G3.
+7. **Package.** INDEX.
 
 ## Reply
 
-Story path, module SPEC, profile, waiting gate or TDD evidence.
+Story path, profile, package or CLARIFY stop.

@@ -1,17 +1,20 @@
 # Playbook: multi-phase
 
-**Gate profile:** `full` per phase (G1 is the overall PLAN; G2/G3/G4 repeat per phase).
-**When:** large feature, architectural refactor, or a PLAN already split into phases.
+**Gate profile:** inherit parent (`agentic` per phase unless `full`).
+**Basis:** modular granularity; each phase is a working system.
+**When:** large feature, architectural refactor, or a PLAN already split.
 **Not when:** one PR fits → `feature.md` / `refactor.md`.
+**Skills:** `sdd-tdd`, `review.md`
 
 ## Steps
 
-1. Ensure `SDD/`. SPEC and multi-phase PLAN must exist under `SDD/`. Else parent playbook first, **STOP GATE 1**.
-2. TASKS for the current phase only. **STOP GATE 2.**
-3. IMPLEMENT with `sdd-tdd`. Phase commit leaves previous phase working.
-4. **STOP GATE 3.** **STOP GATE 4.** `handover.md` naming the next phase.
-5. Default next session: `resume.md`.
+1. Ensure `SDD/`. SPEC + multi-phase PLAN must exist. Else parent playbook first (`full` only: **STOP G1**).
+2. TASKS for this phase. `full`: **STOP G2**. `agentic`: continue.
+3. IMPLEMENT + `sdd-tdd`. Phase commit leaves previous phase working. Branch.
+4. `review.md` + G3.
+5. **Package** for this phase. `handover.md` names the next phase.
+6. Next session: `resume.md`.
 
 ## Reply
 
-Phase id, TASK range, waiting gate, next phase.
+Phase id, profile, package, next phase.

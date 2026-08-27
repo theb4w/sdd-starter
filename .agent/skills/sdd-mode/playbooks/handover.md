@@ -1,6 +1,7 @@
 # Playbook: handover
 
 **Gate profile:** n/a
+**Basis:** persistent Markdown (spec-kit). Session memory is not the SSOT; `SDD/handovers/` is.
 **When:** phase closed, pause, after G3, or context exhausted.
 **Template:** `templates/handover.md`
 

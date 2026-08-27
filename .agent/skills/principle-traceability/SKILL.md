@@ -5,8 +5,10 @@ description: "Code traces to a TASK or story, which traces to a SPEC, which trac
 
 # Traceability
 
-Every production file created in an SDD session names the TASK (or story) it fulfills. Every TASK names a SPEC under `SDD/modules/`. Every architectural choice names an ADR under `SDD/decisions/`.
+**Why:** IEEE 29148 requires bidirectional traceability between needs, requirements, and verification. Spec-kit persists `spec.md` / `plan.md` / `tasks.md` in git so a later agent (or human) reconstructs intent. Chat history is not that record.
 
-User stories trace to an existing module SPEC (`RN-SDD_MODE-05`). Bug-fixes trace to the SPEC of the broken behavior, or to a regression test if no SPEC exists yet.
+**Pattern:** Production file → TASK or story in `SDD/plans` or `SDD/stories` → `SDD/modules/SPEC_*` → `SDD/decisions/ADR-*` when a trade-off existed. User stories require a module SPEC. Bug-fixes trace to the SPEC of the broken behavior or to the regression test.
 
-**Source:** `AGENTS.md` regra 6.
+**Boundaries:** Generated `SDD/` scaffold files (empty INDEX) need no TASK id.
+
+**Source:** ISO/IEC/IEEE 29148; spec-kit persistent Markdown artifacts https://github.github.io/spec-kit/concepts/sdd.html

@@ -1,26 +1,28 @@
 # Playbook: feature
 
-**Gate profile:** small → `standard`. Medium/large → `full`. Large also uses `multi-phase.md`.
+**Gate profile:** `agentic` (ADR-003). Promote to `full` if new schema, new external service, compliance, or WHAT unclear. Large → also `multi-phase.md`.
 **When:** new or changed intended behavior.
 **Not when:** defect → `bug-fix.md`. Slice of specified module → `user-story.md`. Shape unknown → `design.md`.
-**Skills:** `sdd-tdd`
+**Basis:** spec-kit specify → clarify → plan → tasks → implement. PLAN/TASKS always written. Human GO on HOW only if `full`.
+**Skills:** `sdd-tdd`, then `review.md`
 
 ## Size
 
-Small only if all hold: ≤100 LOC, 0–1 new files, no architectural trade-off, no new external service, no schema change. Unsure → upgrade.
+Small: ≤100 LOC, 0–1 new files, no architectural trade-off, no new service, no schema change. Else medium/large. Unsure → treat as medium (`agentic` still, unless promote rules fire).
 
 ## Steps
 
-1. Ensure `SDD/`. Read BRIEF, INDEX, architecture, latest handover, affected SPEC, ADRs.
-2. State size, profile, files, trade-offs, CLARIFY. **STOP** if size is disputed.
-3. Contract in `SDD/modules/`: small extends existing SPEC; medium/large new or v2 from `templates/spec.md`. **No production code.**
-4. Resolve CLARIFY in SPEC §10. ADRs in `SDD/decisions/`. **STOP** for ADR acceptance.
-5. If `full`: `SDD/plans/PLAN_*.md`. **STOP GATE 1.**
-6. `SDD/plans/TASKS_*.md`. **STOP GATE 2.**
-7. IMPLEMENT one TASK; `sdd-tdd` when cheap.
-8. **STOP GATE 3.** **STOP GATE 4.**
-9. `handover.md`. Update `SDD/INDEX.md`.
+1. Ensure `SDD/`. Read BRIEF, INDEX, architecture, handover, SPEC, ADRs.
+2. State size and profile (`agentic` or `full`).
+3. Contract in `SDD/modules/` (extend or new SPEC). **No production code until the spec file exists.**
+4. Product-only CLARIFY → **STOP**. Empirical forks → `prototype.md`, do not ask. ADRs in `SDD/decisions/`; on `agentic` write and proceed (mark PROPOSTA if the human must pick a product option).
+5. Write PLAN. If `full`: **STOP GATE 1.** If `agentic`: continue.
+6. Write TASKS. If `full`: **STOP GATE 2.** If `agentic`: continue.
+7. IMPLEMENT one TASK at a time; `sdd-tdd` when cheap. No per-TASK GO.
+8. `review.md`. Fix must-fix once.
+9. G3 on the real surface (evidence in the package).
+10. **Package** (accept / fix / reject). Branch, not silent `main`. Then `handover.md` + INDEX.
 
 ## Reply
 
-Size, profile, `SDD/` paths, waiting gate.
+Size, profile, `SDD/` paths, package or the one stop.

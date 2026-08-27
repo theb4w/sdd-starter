@@ -1,20 +1,21 @@
 # Playbook: refactor
 
-**Gate profile:** internal → `lite` plus an ADR why. Architectural → `full`.
+**Gate profile:** internal → `lite` + ADR why. Architectural → `full` (contract change is specify v2).
 **When:** structure change; behavior preserved or contract migrated on purpose.
 **Not when:** sneaking a feature → `feature.md`.
-**Skills:** `sdd-tdd`
+**Basis:** Feathers characterization tests; Parnas isolate change.
+**Skills:** `sdd-tdd`, `review.md`
 
 ## Steps
 
-1. Ensure `SDD/`. Read module SPEC, ADRs, tests.
-2. If no safety net, add characterization tests before refactoring.
+1. Ensure `SDD/`. Read SPEC, ADRs, tests.
+2. Characterization tests if no safety net.
 3. Justify with a metric or risk. Classify internal vs architectural.
-4. Internal: ADR in `SDD/decisions/`; no new SPEC. Architectural: SPEC v2 + ADR of migration + PLAN. **STOP GATE 1** if `full`.
-5. If `full`: TASKS, **STOP GATE 2**. If `lite`: no G2.
-6. Tests green before and after. `sdd-tdd` for behavior that could drift.
-7. **STOP GATE 3.** **STOP GATE 4.** `handover.md`.
+4. Internal: ADR; no new SPEC. Architectural: SPEC v2 + migration ADR + PLAN. `full`: **STOP G1** then TASKS **STOP G2**. `lite`: continue after ADR.
+5. Tests green before and after. `sdd-tdd` if behavior could drift.
+6. `review.md` + G3.
+7. **Package.** `handover.md`.
 
 ## Reply
 
-Type, why, ADR path, test evidence, waiting gate.
+Type, ADR path, package or `full` gate.

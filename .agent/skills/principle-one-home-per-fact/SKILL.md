@@ -1,18 +1,23 @@
 ---
 name: principle-one-home-per-fact
-description: "Each rule or procedure lives in one file. Others point to it. Use when editing prompts, playbooks, workflow docs, or adding a lesson from a session."
+description: "Each rule or procedure lives in one file. Others point to it. Use when editing playbooks, workflow, or recording a lesson."
 ---
 
 # One home per fact
 
+**Why:** Spec-kit persists one `spec.md`, one `plan.md`, one `tasks.md` per feature so agents do not reconstruct intent from chat. Duplicate procedure in README + playbook + constitution diverges; the agent picks the stale copy.
+
+**Pattern:**
+
 | Fact | Home |
 |---|---|
-| Method (what/why/when) | `.agent/skills/sdd-mode/references/workflow.md` |
-| Agent procedure (how, now) | `.agent/skills/sdd-mode/playbooks/` |
-| Persisted contract | `SDD/` |
-| A single technical choice | one file in `SDD/decisions/` |
-| A domain pitfall | `.agent/skills/<domain>/SKILL.md` |
+| Community SDD mapping | `references/sdd-basis.md` |
+| Method (phases, gates) | `references/workflow.md` |
+| Agent procedure | `sdd-mode/playbooks/` |
+| Product contract | `SDD/` |
+| One technical choice | one ADR |
+| Domain pitfall | `.agent/skills/<domain>/SKILL.md` |
 
-After a session, put the lesson in that home. Do not add a parallel paragraph in a prompt, a comment, and the workflow.
+**Boundaries:** A one-line pointer is not a second home.
 
-**Source:** SPEC_SDD_MODE §3.1; skill-design “one home per fact”.
+**Source:** spec-kit persistent artifacts https://github.github.io/spec-kit/concepts/sdd.html

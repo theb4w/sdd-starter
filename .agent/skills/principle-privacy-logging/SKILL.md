@@ -1,12 +1,14 @@
 ---
 name: principle-privacy-logging
-description: "Never log sensitive content. Log metadata needed to debug. Use when adding logs, traces, error reports, or analytics."
+description: "Log metadata needed to debug, never secrets or the project's defined sensitive content. Use when adding logs, traces, or error reports."
 ---
 
 # Privacy and logging
 
-Do not log secrets, tokens, passwords, or the project's defined sensitive content (PII, PHI, payment data, message bodies — listed in `AGENTS.md`). Log identifiers, timing, and error class.
+**Why:** Logs leak. OWASP’s logging cheat sheet: do not log credentials, session tokens, or unnecessary personal data. Once in a log sink, data is copied, retained, and often over-privileged.
 
-User content in a database is an architecture decision (ADR), not a logging convenience.
+**Pattern:** Log identifiers, timing, error class. Define “sensitive” in `SDD/AGENTS.md` (PII, PHI, payment, message bodies). User content in a database is an ADR, not a `console.log`.
 
-**Source:** `SDD/AGENTS.md` regra 3.
+**Boundaries:** Local debug of a failing test may print fixtures; strip before commit.
+
+**Source:** https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html

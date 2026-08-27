@@ -3,6 +3,7 @@
 **Gate profile:** `observe` until the brief is accepted; then `bootstrap.md`
 **When:** existing codebase with missing or stale docs.
 **Not when:** `SDD/BRIEF.md` is already trustworthy → `bootstrap.md`.
+**Basis:** spec-kit brownfield / iterative enhancement; Feathers characterization of legacy before change. Reverse-spec what the code *does*, do not invent desired behavior.
 **Principles:** spec-first, traceability, one-home-per-fact.
 
 ## Steps

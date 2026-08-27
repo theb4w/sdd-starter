@@ -1,6 +1,7 @@
 # Playbook: resume
 
 **Gate profile:** inherit the already-approved phase.
+**Basis:** spec-kit artifacts live in git so a new session does not reconstruct intent from chat.
 **When:** continuing after a file in `SDD/handovers/`.
 **Not when:** starting a module → `bootstrap.md` / `feature.md`. No `SDD/` → preamble then `onboarding.md` or `discover.md`.
 

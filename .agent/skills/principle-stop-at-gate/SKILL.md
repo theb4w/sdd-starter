@@ -1,16 +1,19 @@
 ---
 name: principle-stop-at-gate
-description: "Stop at the playbook's named human gate. Inside an already-approved TASK, do not ask permission to write the next file. Opposite of pstack never-block-on-the-human. Use at PLAN/TASKS/SMOKE/COMMIT and during IMPLEMENT."
+description: "Block only where the profile names a human stop. agentic does not block on G1/G2. Inside IMPLEMENT, do not ask per file. ADR-003."
 ---
 
 # Stop at the gate
 
-**Block** when the profile names G1, G2, G3, G4, or design approval. Present the artifact and wait.
+**Why:** Asking GO on every TASK after the list exists adds no review quality. Skipping the **package** (review + G3 + diff) is vibe shipping. ADR-003 moves HOW approval to after the agent has reviewed and proven, except on `full`.
 
-**Do not block** on reversible work *inside* a unit that already passed those gates. Do not ask “should I implement T-A2?” after GATE 2 approved T-A2.
+**Pattern:**
 
-Still pause for irreversible actions the project forbids without a human: force-push to `main`, production deploy, data deletion.
+- `agentic` / `lite`: do not **STOP GATE 1** or **STOP GATE 2**. Stop for product-only CLARIFY, then after `review.md`+G3 for the package.
+- `full`: **STOP GATE 1** and **STOP GATE 2** as written.
+- Never per-file “may I edit this?” during IMPLEMENT.
+- Always pause: force-push to shared branch, prod delete, customer send.
 
-This is the inverse of pstack's never-block-on-the-human, which is not a default here (ADR-001).
+**Boundaries:** Not pstack never-block. The contract is still written first. The human still sees one package. `main` is not silent.
 
-**Source:** `SDD/decisions/ADR-001-skill-as-interface.md`; `SDD/AGENTS.md`.
+**Source:** ADR-003; spec-kit short path https://github.github.io/spec-kit/
