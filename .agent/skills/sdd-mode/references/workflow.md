@@ -1,5 +1,9 @@
 # SDD — método (referência)
 
+> **Appendix.** Do **not** put this file in the session todo. Do **not** dump it into context.
+> The agent executes `SKILL.md` + `catalog.md` + the matched playbook.
+> Open a **cited section only** (e.g. playbook says workflow §13).
+
 Framework operacional, tool-neutral, stack-neutral. Implementa o ciclo da comunidade:
 
 - **spec-kit** (GitHub): https://github.github.io/spec-kit/concepts/sdd.html — specs executáveis; WHAT antes de HOW; constitution → specify → clarify → plan → tasks → implement.
@@ -22,7 +26,7 @@ Mapeamento deste pack: `sdd-basis.md`. Lições de operação marcadas `📚 LI�
 8. [Fase 5 — IMPLEMENT](#8-fase-5--implement-com-sub-fases)
 9. [Fase 6 — TEST](#9-fase-6--test)
 10. [Fase 7 — RELEASE + SMOKE (GATE 3)](#10-fase-7--release--smoke-gate-3)
-11. [Fase 8 — COMMIT + PUSH (GATE 4)](#11-fase-8--commit--push-gate-4)
+11. [Fase 8 — Pacote humano + COMMIT](#11-fase-8--pacote-humano--commit)
 12. [Fase 9 — HANDOVER](#12-fase-9--handover-entre-sessões)
 13. [SPECs Multi-Fase](#13-specs-multi-fase-quando-e-como-quebrar)
 14. [Skill, templates e pasta SDD/](#14-skill-templates-e-pasta-sdd)
@@ -47,37 +51,38 @@ Mapeamento deste pack: `sdd-basis.md`. Lições de operação marcadas `📚 LI�
 
 ### 1.2 Ciclo completo
 
+Default **agentic** (ADR-003): PLAN e TASKS são **gravados**; G1/G2 só no perfil `full`. Depois do código: `review.md` do agente, G3, **um pacote humano**. Commit na branch.
+
 ```mermaid
 flowchart TD
     Start["Demanda nova"] --> Specify["1. SPECIFY"]
-    Specify --> Clarify["2. CLARIFY<br/>perguntas abertas"]
-    Clarify --> NeedADR{"Decisão<br/>arquitetural<br/>aberta?"}
-    NeedADR -->|Sim| ADR["3. ADRs<br/>1 ADR por trade-off"]
+    Specify --> Clarify["2. CLARIFY<br/>produto"]
+    Clarify --> NeedADR{"Decisão<br/>arquitetural?"}
+    NeedADR -->|Sim| ADR["3. ADRs"]
     NeedADR -->|Não| Plan
-    ADR --> Plan["4. PLAN<br/>estratégia + dependências"]
-    Plan --> G1{"GATE 1<br/>aprovação<br/>humana"}
+    ADR --> Plan["4. PLAN gravado"]
+    Plan --> Tasks["5. TASKS gravadas"]
+    Tasks --> Full{"Perfil full?"}
+    Full -->|Sim| G1{"G1 PLAN humano"}
     G1 -->|Rejeitar| Specify
-    G1 -->|Aprovar| Tasks["5. TASKS<br/>tarefas atômicas"]
-    Tasks --> G2{"GATE 2<br/>aprovação<br/>humana"}
+    G1 -->|Aprovar| G2{"G2 TASKS humano"}
     G2 -->|Rejeitar| Plan
-    G2 -->|Aprovar| MultiFase{"SPEC<br/>multi-fase?"}
-    MultiFase -->|Sim| LoopFase["Para cada fase:<br/>IMPLEMENT → TEST →<br/>DEPLOY → SMOKE → COMMIT"]
-    MultiFase -->|Não| Implement["6. IMPLEMENT"]
-    LoopFase --> Implement
-    Implement --> Test["7. TEST<br/>sem regressão"]
+    G2 -->|Aprovar| Implement
+    Full -->|Não agentic/lite| Implement["6. IMPLEMENT"]
+    Implement --> Review["review.md<br/>agente"]
+    Review --> Test["7. TEST"]
     Test --> Pass{"Verde?"}
     Pass -->|Não| Implement
-    Pass -->|Sim| Deploy["8. DEPLOY staging"]
-    Deploy --> Smoke["9. SMOKE<br/>2-3 fluxos críticos"]
-    Smoke --> G3{"GATE 3<br/>SMOKE OK?"}
+    Pass -->|Sim| Smoke["8. SMOKE G3"]
+    Smoke --> G3{"G3 evidência?"}
     G3 -->|Falhou| Implement
-    G3 -->|OK| Commit["10. COMMIT + PUSH"]
-    Commit --> G4{"GATE 4<br/>commit aprovado?"}
-    G4 -->|Não| Commit
-    G4 -->|Sim| Handover["11. HANDOVER<br/>+ atualizar SDD/INDEX"]
-    Handover --> Loop{"Mais fases<br/>nesta SPEC?"}
-    Loop -->|Sim| LoopFase
-    Loop -->|Não| Done["✔️ Módulo CONCLUÍDO"]
+    G3 -->|OK| Package["9. Pacote humano"]
+    Package -->|Fix/rejeitar| Implement
+    Package -->|Aceitar| Commit["10. COMMIT na branch"]
+    Commit --> Handover["11. HANDOVER<br/>+ SDD/INDEX"]
+    Handover --> Loop{"Mais fases?"}
+    Loop -->|Sim| Implement
+    Loop -->|Não| Done["Módulo CONCLUÍDO"]
 ```
 
 ### 1.3 Os 4 GATEs humanos e os perfis
@@ -112,20 +117,26 @@ Os quatro gates existem como nomes. **Quem bloqueia o humano** é o perfil (ADR-
 
 Nem toda demanda exige o ciclo completo. Use esta tabela como guia rápido:
 
-| Modo | SPEC nova? | ADR? | PLAN? | TASKS? | Handover? | Perfil | Playbook |
+Fonte canônica da intenção: `references/catalog.md` (ganha se esta tabela e o arquivo divergirem).
+
+| Intent (catalog) | SPEC nova? | ADR? | PLAN? | TASKS? | Handover? | Perfil | Playbook |
 |---|---|---|---|---|---|---|---|
-| **Investigation** | Não | Não | Não | Não | Não | `observe` | `investigation.md` |
-| **Design** | Não (ainda) | Talvez depois | Não | Não | Opcional | `design` | `design.md` |
-| **Prototype** | Não | Não | Não | Não | Nota | `design` | `prototype.md` |
-| **Review** | Não | Não | Não | Não | Não | `observe` | `review.md` |
-| **User story** | Não (exige SPEC de módulo) | Se trade-off | Não | Sim | Pacote | `agentic` | `user-story.md` |
-| **Bug fix simples** | Não | Só se decisão | Não | Não | Pacote | `lite` | `bug-fix.md` |
-| **Feature** | Conforme tamanho | Se trade-off | Sim se média+ | Sim | Pacote | `agentic` (`full` se risco) | `feature.md` |
-| **Refator interno** | Não | Sim (por quê) | Não | Não | Pacote | `lite` | `refactor.md` |
-| **Refator arquitetural** | Sim ("v2") | Migração | Sim | Sim | Pacote | `full` | `refactor.md` |
-| **TDD implement** | Herda | Herda | Herda | Herda | Pacote | herda | `tdd-implement.md` |
-| **Greenfield** | Sim | Várias | Sim | Sim | Pacote | `agentic` | `bootstrap.md` |
-| **Brownfield sem docs** | Adoção retroativa | Idem | — | — | Sim | `observe` | `discover.md` |
+| New project, I know the brief | Sim | Várias | Sim | Sim | Pacote | `agentic` | `bootstrap.md` |
+| Legacy repo, no docs | Adoção retroativa | Idem | — | — | Sim | `observe` | `discover.md` |
+| First chat, `SDD/` already there | Não | Não | Não | Não | Não | `observe` | `onboarding.md` |
+| How / why / are we sure / blast radius | Não | Não | Não | Não | Não | `observe` | `investigation.md` |
+| Review this diff / PR | Não | Não | Não | Não | Não | `observe` | `review.md` |
+| Shape / UX still open | Não (ainda) | Talvez depois | Não | Não | Opcional | `design` | `design.md` |
+| Two sketches / experiment | Não | Não | Não | Não | Nota | `design` | `prototype.md` |
+| Broken / repro | Não | Só se decisão | Não | Não | Pacote | `lite` | `bug-fix.md` |
+| User should be able to X (module SPEC exists) | Não (exige SPEC) | Se trade-off | Não | Sim | Pacote | `agentic` | `user-story.md` |
+| New behavior | Conforme tamanho | Se trade-off | Sim se média+ | Sim | Pacote | `agentic` (`full` se risco) | `feature.md` |
+| Reshape, same contract | Não | Sim (por quê) | Não | Não | Pacote | `lite` | `refactor.md` |
+| Reshape, public contract | Sim ("v2") | Migração | Sim | Sim | Pacote | `full` | `refactor.md` |
+| Large / many modules | Herda | Herda | Sim | Por fase | Pacote/fase | `agentic` | `multi-phase.md` |
+| Tests first on an approved unit | Herda | Herda | Herda | Herda | Pacote | inherit | `tdd-implement.md` |
+| Going away / stop | Não | Não | Não | Não | Sim | n/a | `handover.md` |
+| Continue | Herda | Herda | Herda | Herda | — | inherit | `resume.md` |
 
 > 📚 LIÇÃO: A maior armadilha é forçar o ciclo completo num bug fix de 5 linhas
 > ou num greenfield onde tudo ainda está em fluxo. Ajuste o ciclo ao escopo —
@@ -152,11 +163,13 @@ O processo do produto vive em `SDD/`, gerado por `sdd-mode` (ver `references/lay
 ```text
 projeto/
 ├── README.md
-├── .agent/skills/sdd-mode/
-├── SDD/          ← brief, AGENTS, INDEX, modules, plans, decisions, handovers
+├── <skill-root>/sdd-mode/   ← .cursor / .grok / .kiro / .agents / .agent /skills
+├── SDD/                     ← brief, AGENTS, INDEX, modules, plans, decisions, handovers
 ├── app/ | src/
 └── .gitignore
 ```
+
+Skill root: `references/skill-root.md`. Este checkout usa `.agent/skills/`. `SDD/` é sempre a raiz do repo alvo.
 
 ### 3.2 Setup de versionamento (faça antes de codar)
 
@@ -211,7 +224,7 @@ primeira sessao, o projeto deve definir apenas o minimo operacional:
 | Decisao | Valor esperado |
 |---|---|
 | Workspace | Raiz real do projeto, fora de cloud-sync quando o Git local puder sofrer bloqueios |
-| Fonte do metodo | `.agent/skills/sdd-mode/references/workflow.md` e artefatos SDD versionados |
+| Fonte do metodo | `sdd-mode/references/workflow.md` (skill root) e artefatos SDD versionados |
 | Contexto do projeto | `SDD/BRIEF.md`, `SDD/AGENTS.md`, INDEX e handovers |
 | Planejamento | PLAN e TASKS revisaveis no repo, mesmo que a ferramenta tenha UI auxiliar |
 | Validacao | comandos, checks ou criterios aplicaveis a esta stack |
@@ -228,7 +241,7 @@ Use o playbook `onboarding.md`. Resumo:
 ```text
 Antes de qualquer ação, leia e resuma:
 1. SDD/AGENTS.md — constituição do produto
-2. .agent/skills/sdd-mode/SKILL.md — procedimento
+2. sdd-mode/SKILL.md (skill root) — procedimento
 3. SDD/INDEX.md — módulos
 4. SDD/architecture.md — se existir
 5. SDD/handovers/ (mais recente)
@@ -248,7 +261,7 @@ Não escreva nenhum código nesta resposta.
 
 ### 4.1 O que entra numa SPEC
 
-Use `.agent/skills/sdd-mode/templates/spec.md`. Escreva em `SDD/modules/SPEC_<MODULO>.md`. Estrutura mínima:
+Use `templates/spec.md` (ao lado de `SKILL.md`). Escreva em `SDD/modules/SPEC_<MODULO>.md`. Estrutura mínima:
 
 ```text
 # SPEC_<MODULO>.md
@@ -294,8 +307,8 @@ Decisões importantes durante CLARIFY.
 |---|---|---|
 | 📝 RASCUNHO | Esqueleto criado | CLARIFY com humano |
 | 🔍 CLARIFY | Perguntas abertas | Humano responde Q1..Qn |
-| 📋 PLAN | Plano gerado | GATE 1 (aprovação humana) |
-| ✅ APROVADO | PLAN+TASKS aprovados | IMPLEMENT começa |
+| 📋 PLAN | Plano gerado | `full`: GATE 1; `agentic`: gravar e seguir |
+| ✅ APROVADO | PLAN+TASKS escritos (`full`: aprovados) | IMPLEMENT começa |
 | 🚧 IMPLEMENT | Em desenvolvimento | Sub-fases (se multi-fase) |
 | ✔️ CONCLUÍDO | Smoke OK | Atualizar `SDD/INDEX.md` |
 
@@ -334,7 +347,7 @@ Após responder:
 
 ### 5.2 Template ADR
 
-Use `.agent/skills/sdd-mode/templates/adr.md`. Escreva em `SDD/decisions/`. Resumo:
+Use `templates/adr.md` (ao lado de `SKILL.md`). Escreva em `SDD/decisions/`. Resumo:
 
 ```markdown
 # ADR-NNN — <Decisão em uma frase>
@@ -376,11 +389,11 @@ Passos práticos para sair desta decisão se ela falhar.
 
 ### 6.1 O que entra num PLAN
 
-Use `.agent/skills/sdd-mode/templates/plan.md`. Escreva em `SDD/plans/`. Resumo:
+Use `templates/plan.md` (ao lado de `SKILL.md`). Escreva em `SDD/plans/`. Resumo:
 
 ```text
 # PLAN_<MODULO>.md
-**Status:** 📋 PLAN (aguardando GATE 1)
+**Status:** 📋 PLAN (`full`: aguardando GATE 1; `agentic`: gravado)
 
 ## Resumo Executivo
 2-3 parágrafos: escopo, abordagem, premissas.
@@ -404,8 +417,8 @@ Como saberemos que funcionou? (latência, custo, taxa de erro, etc).
 ## Checklist Pré-IMPLEMENT
 - [ ] STATIC_BLOCK / contratos imutáveis aprovados
 - [ ] ADRs aceitos
-- [ ] PLAN aprovado (GATE 1)
-- [ ] TASKS aprovada (GATE 2)
+- [ ] PLAN escrito (`full`: GATE 1)
+- [ ] TASKS escrita (`full`: GATE 2)
 - [ ] Dependências externas / secrets prontos (se o PLAN exigir)
 ```
 
@@ -417,14 +430,14 @@ SDD/plans/PLAN_<X>.md como artefato.
 
 Requisitos:
 1. Se LOC estimado >800 OU >5 arquivos novos OU >2 serviços externos:
-   quebrar em N fases (ver §13 do SDD_WORKFLOW)
+   quebrar em N fases (ver §13 deste arquivo)
 2. Cada fase ≤250 LOC reais (regra de PR review)
 3. Cada fase deve preservar baseline funcional
 4. Mapa de dependências em mermaid
 5. Riscos com mitigação concreta (não "monitorar")
 6. Checklist pré-IMPLEMENT explícito
 
-NÃO gere TASKS ainda. NÃO escreva código. Aguarde GATE 1.
+NÃO gere TASKS ainda. NÃO escreva código. `full`: aguarde GATE 1. `agentic`: grave o PLAN e siga para TASKS.
 ```
 
 > **GATE 1:** Só perfil `full`. Em `agentic` o PLAN é gravado e o agente segue (ADR-003).
@@ -435,11 +448,11 @@ NÃO gere TASKS ainda. NÃO escreva código. Aguarde GATE 1.
 
 ### 7.1 O que entra num TASKS
 
-Use `.agent/skills/sdd-mode/templates/tasks.md`. Escreva em `SDD/plans/`. Resumo:
+Use `templates/tasks.md` (ao lado de `SKILL.md`). Escreva em `SDD/plans/`. Resumo:
 
 ```text
 # TASKS_<MODULO>.md
-**Status:** 📝 TASKS (aguardando GATE 2)
+**Status:** 📝 TASKS (`full`: aguardando GATE 2; `agentic`: gravado)
 
 ## Convenções
 - T-XX é o ID estável da tarefa. NUNCA renumerar.
@@ -468,7 +481,7 @@ Use `.agent/skills/sdd-mode/templates/tasks.md`. Escreva em `SDD/plans/`. Resumo
 ### 7.3 Prompt para gerar TASKS
 
 ```text
-PLAN aprovado (GATE 1). Gere SDD/plans/TASKS_<X>.md como artefato.
+PLAN escrito (`full`: GATE 1 aprovado). Gere SDD/plans/TASKS_<X>.md como artefato.
 
 Requisitos:
 1. 1 linha por tarefa atômica (1 commit lógico, ~10-30 LOC cada)
@@ -478,7 +491,7 @@ Requisitos:
 5. Penúltima tarefa de cada fase = smoke staging (gate humano)
 6. Antepenúltima = testes full sem regressão
 
-NÃO escreva código. Aguarde GATE 2.
+NÃO escreva código. `full`: aguarde GATE 2. `agentic`: grave TASKS e siga para IMPLEMENT.
 ```
 
 > **GATE 2:** Só perfil `full`. Em `agentic` as TASKS são gravadas e o IMPLEMENT segue.
@@ -506,10 +519,11 @@ Para cada `T-XN` numa fase:
 Para cada Fase F na SPEC:
 1. Executar T-F1..T-F<N-3> (código + testes unitários).
 2. T-F<N-2>: testes full → 0 regressão. [bloq.]
-3. T-F<N-1>: deploy staging + smoke manual. [bloq. — GATE 3 humano]
-4. T-F<N>: commit + push + atualizar `SDD/INDEX.md`. [GATE 4]
-5. Handover: `SDD/handovers/handover_<MODULO>_FASE_<F>_<DATA>.md`
-6. Próxima fase só começa após GATE 4 da anterior.
+3. T-F<N-1>: deploy staging + smoke. [bloq. — G3; evidência no pacote]
+4. review.md + pacote humano desta fase.
+5. T-F<N>: commit na branch + atualizar `SDD/INDEX.md`.
+6. Handover: `SDD/handovers/handover_<MODULO>_FASE_<F>_<DATA>.md`
+7. Próxima fase só começa após o pacote da anterior.
 ```
 
 ### 8.3 Regras absolutas durante IMPLEMENT
@@ -586,7 +600,7 @@ Alvo: <URL | binário | CLI>
 
 ---
 
-## 11. Fase 8 — COMMIT + PUSH (GATE 4)
+## 11. Fase 8 — Pacote humano + COMMIT
 
 ### 11.1 Conventional Commits — formato obrigatório
 
@@ -642,12 +656,13 @@ Implementa T-<X>1..T-<X>11 do PLAN_<MODULO> Fase <X>. <Por quê em 1-2 linhas>.
 EOF
 )"
 
-# 4. Push (manual após GATE 4 — humano confirma diff no GitHub)
-git push origin main
+# 4. Push da branch (após o pacote humano — não main silencioso)
+git push origin HEAD
 ```
 
-> **GATE 4:** Dev revisa o diff no GitHub UI antes de mergear/fechar.
-> Em projetos solo, esse gate vira self-review obrigatório.
+> **Pacote (ex-G4):** contrato + diff + achados de `review.md` + evidência G3.
+> Aceitar / corrigir / rejeitar. Commit na branch; o humano faz o merge.
+> Em projetos solo, o pacote ainda é self-review obrigatório — não pular.
 
 ### 11.5 Quando NÃO commitar
 
@@ -675,7 +690,7 @@ git push origin main
 
 ### 12.2 Template de handover
 
-Use `.agent/skills/sdd-mode/templates/handover.md`. Resumo:
+Use `templates/handover.md` (ao lado de `SKILL.md`). Resumo:
 
 ```markdown
 # Handover — <MODULO> Fase <X> (se aplicável)
@@ -756,8 +771,9 @@ Quebre **se qualquer dos critérios for verdadeiro**:
 Fase X
 ├─ Tarefas de código (T-X1..T-X<N-3>)
 ├─ Tarefa de testes full (T-X<N-2>) [bloq.]
-├─ Tarefa de smoke staging (T-X<N-1>) [bloq. — GATE 3]
-└─ Tarefa de commit + push (T-X<N>) [GATE 4]
+├─ Tarefa de smoke (T-X<N-1>) [bloq. — G3]
+├─ review.md + pacote humano
+└─ Tarefa de commit na branch (T-X<N>)
    └─ Handover de fase
 ```
 
@@ -773,7 +789,7 @@ Fase X
 
 ## 14. Skill, templates e pasta SDD/
 
-O procedimento vive em `.agent/skills/sdd-mode/`. Artefatos do **produto** nascem em `SDD/` (ver `references/layout.md`). Templates: `.agent/skills/sdd-mode/templates/`. Invocar `sdd-mode`; o playbook copia os passos. Sem `prompts/` paralelos.
+O procedimento vive em `sdd-mode/` no skill root do host (`references/skill-root.md`). Artefatos do **produto** nascem em `SDD/` (ver `references/layout.md`). Templates: `sdd-mode/templates/` ao lado de `SKILL.md`. Invocar `sdd-mode` (standalone ou **de dentro do pstack** — `references/with-pstack.md`); o playbook copia os passos. Sem `prompts/` paralelos. Primeira ação: **Step 0 — Ensure `SDD/`**.
 
 ---
 
@@ -829,13 +845,13 @@ O procedimento vive em `.agent/skills/sdd-mode/`. Artefatos do **produto** nasce
 | Arquivo / Pasta | Portável? | O que adaptar |
 |---|---|---|
 | `SDD/AGENTS.md` | Sim | Stack e regras do produto |
-| `.agent/skills/sdd-mode/` | Sim | Copiar o pack; não reescrever o método |
-| `.agent/skills/<dominio>/SKILL.md` | Não | Criar SKILLs por domínio do novo projeto |
-| `.agent/agents.md` (personas) | **Sim, idêntico** | Mesmas 4 personas: @pm, @engineer, @qa, @devops |
+| `<skill-root>/sdd-mode/` | Sim | Copiar o pack para o host; não reescrever o método |
+| `<skill-root>/<dominio>/SKILL.md` | Não | Criar SKILLs por domínio do novo projeto |
+| personas (`@pm` etc.) | Opcional | Não exigidas pelo `sdd-mode` |
 | `SDD/INDEX.md` (template) | Sim | Lista de módulos do novo projeto |
 | `SDD/modules/SPEC_*.md` | Não | Criar SPECs do novo projeto |
 | `SDD/decisions/ADR-*.md` | Não | Criar ADRs do novo projeto |
-| `.agent/skills/sdd-mode/references/workflow.md` | **Sim — usar este arquivo** | Ajustar exemplos de comando à stack |
+| `sdd-mode/references/workflow.md` | **Sim — usar este arquivo** | Ajustar exemplos de comando à stack |
 | `SDD/architecture.md` | Não | Escrever para o novo projeto |
 | `.gitignore`, ignores de build/deploy | Sim | Ajustar ao projeto e ao alvo de release |
 | Dependency manifest | Não | Dependências do novo projeto |
@@ -902,7 +918,7 @@ No caminho principal, os equivalentes portaveis sao:
 
 ### "Preciso seguir todas as 9 fases pra um bug fix de 5 linhas?"
 
-Não. Veja §2 (Modos de uso). Bug fix simples passa direto para IMPLEMENT, com gates G3 e G4. SPECs e PLANs são para mudanças com escopo significativo.
+Não. Veja §2 (e `catalog.md`). Bug fix simples: `bug-fix.md`, perfil `lite` — IMPLEMENT + `review.md` + G3 + pacote. SPECs e PLANs são para mudanças com escopo significativo.
 
 ### "E se o projeto não tem cloud, é só CLI/desktop?"
 
@@ -912,9 +928,9 @@ Adapte: Fase 7 (DEPLOY) vira "build do binário/release". Smoke é "rodar o bin�
 
 Playbook `discover.md`. O agente explora o código; você confirma os `[?]` no `SDD/BRIEF.md`.
 
-### "Posso pular o GATE 4 (revisão de commit) se trabalho sozinho?"
+### "Posso pular o pacote (ex-G4) se trabalho sozinho?"
 
-Não recomendado. Em projetos solo, o GATE 4 vira self-review obrigatório — você revisa o diff no GitHub UI antes de mergear/fechar. Esse hábito captura coisas que escapam mid-flow.
+Não. Em projetos solo o pacote vira self-review obrigatório — contrato + diff + `review.md` + G3 antes do merge. Não é merge overnight.
 
 ### "ADR ou SPEC, qual primeiro?"
 
@@ -938,4 +954,4 @@ Handover (mesmo parcial) e sessão nova com playbook `resume.md`.
 
 ---
 
-*Versão 2.1 — método na skill; processo do produto em `SDD/`. Sincronizar com `SDD/INDEX.md`.*
+*Versão 2.2 — método na skill; processo do produto em `SDD/`. Default agentic; skill root host-agnostic. Sincronizar com `SDD/INDEX.md` e `catalog.md`.*

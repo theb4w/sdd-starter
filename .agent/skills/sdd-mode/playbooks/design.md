@@ -1,14 +1,15 @@
 # Playbook: design
 
-**Gate profile:** `design`. No production code.
-**When:** UX/module/flow still open.
+**Family:** Shape
+**Intent:** Shape / UX still open
+**Profile:** `design`
 **Not when:** shape already in a SPEC → `feature.md`. Cheap experiment → `prototype.md` first.
 **Basis:** Antigravity SDD human step 2 (architectural design) and spec-kit creative exploration. Options before locking HOW. IEEE-style design description, not code.
 **Template:** `templates/design.md`
 
 ## Steps
 
-1. Ensure `SDD/`.
+1. **Step 0** of `sdd-mode` (ensure `SDD/`).
 2. Name user and problem. Constraints from `SDD/BRIEF.md` and INDEX.
 3. Write `SDD/design/<slug>.md` from the template. 2–3 options, each with consequences and a URL if it implies technology.
 4. Recommend one. List open questions (future CLARIFY/ADR).

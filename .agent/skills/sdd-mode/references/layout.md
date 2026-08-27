@@ -18,7 +18,7 @@ SDD/
 └── handovers/handover_*.md
 ```
 
-Templates to copy from `.agent/skills/sdd-mode/templates/`:
+Templates live next to `SKILL.md` (resolve skill root — `references/skill-root.md`). Copy from that `templates/` folder:
 
 | Generate | From |
 |---|---|
@@ -34,5 +34,7 @@ Templates to copy from `.agent/skills/sdd-mode/templates/`:
 | `SDD/stories/STORY_<S>.md` | `templates/story.md` |
 | `SDD/design/<slug>.md` | `templates/design.md` |
 | `SDD/handovers/handover_*.md` | `templates/handover.md` |
+
+On Cursor hosts, if `.cursor/rules/sdd-under-pstack.mdc` is missing, copy `templates/cursor-rule.mdc` there (Step 0).
 
 Do not create `specs/`, `docs/`, `prompts/`, `QUICKSTART/`, `scripts/`, or empty `tests/` as SDD process folders.

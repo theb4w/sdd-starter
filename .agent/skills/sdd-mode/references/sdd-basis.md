@@ -42,7 +42,7 @@ Antigravity intro (SSOT, design-implementation loop, modular granularity): https
 
 ## What this pack refuses (pstack, not spec-kit)
 
-pstack’s “the best spec is code” is rejected (spec remains SSOT). “Never block on the human” is rejected as a universal: we still write the spec first and still present one package. What we copy is **agent review after implementation** (`review.md`), not silent `main`.
+pstack’s “the best spec is code” is rejected (spec remains SSOT). Never-block on **HOW** is profile `agentic`. Never-block does not skip the contract or the package. Overnight land is pstack `shipping` after `review.md`+G3, only if the human asked. sdd-mode does not merge `main`. What we copy is **agent review after implementation** (`review.md`).
 
 ## How to write a skill here
 

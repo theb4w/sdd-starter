@@ -1,14 +1,17 @@
 # Playbook: tdd-implement
 
-**Gate profile:** inherit. Ends in `review.md` + G3 + package, not a lighter exit.
-**When:** IMPLEMENT as RED → GREEN on work that already passed specify/plan/tasks of the parent playbook.
+**Family:** Change
+**Intent:** Tests first on an approved unit
+**Profile:** inherit
 **Not when:** no AC yet → parent playbook.
 **Basis:** spec-kit implement; test spec as judge. Does not reopen specify/plan.
 **Skills:** `sdd-tdd`
 
+Ends in parent `review.md` + G3 + package, not a lighter exit.
+
 ## Steps
 
-1. Ensure `SDD/`. Name the unit (TASK id or story criterion). Quote the AC from `SDD/`.
+1. **Step 0** of `sdd-mode` (ensure `SDD/`). Name the unit (TASK id or story criterion). Quote the AC from `SDD/`.
 2. Run `sdd-tdd` for that unit only.
 3. Show RED, diff, GREEN.
 4. Next unit only after this AC is green.

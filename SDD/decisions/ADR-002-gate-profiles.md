@@ -10,7 +10,7 @@
 
 ## Contexto
 
-`.agent/skills/sdd-mode/references/workflow.md` §2 já reduz artefatos por modo (bug = G3+G4; feature pequena = G2+G3+G4). Na prática o agente trata os quatro gates como sempre obrigatórios, ou os ignora todos. O pedido desta refatoração é **poder ter menos gates** (design, user-story, bug) sem esvaziar o ciclo médio/grande.
+`sdd-mode/references/workflow.md` §2 já reduz artefatos por modo. Na prática o agente trata os quatro gates como sempre obrigatórios, ou os ignora todos. O pedido desta refatoração é **poder ter menos gates** (design, user-story, bug) sem esvaziar o ciclo médio/grande.
 
 Os quatro gates continuam existindo. O que muda é *quais disparam*, amarrado ao playbook.
 
@@ -26,7 +26,7 @@ Os quatro gates continuam existindo. O que muda é *quais disparam*, amarrado ao
 - **Contras:** o próprio workflow chama isso de armadilha; ninguém segue; gates viram teatro.
 - **Custo:** tempo humano em demanda pequena.
 - **Reversibilidade:** fácil (já é o texto de `AGENTS.md` regra 1, lido de forma rígida).
-- **Fonte:** `.agent/skills/sdd-mode/references/workflow.md` §1.3
+- **Fonte:** `sdd-mode/references/workflow.md` §1.3
 
 ### Opção B — Perfis declarados pelo playbook (`observe`, `design`, `lite`, `standard`, `full`)
 
@@ -36,7 +36,7 @@ Os quatro gates continuam existindo. O que muda é *quais disparam*, amarrado ao
 - **Contras:** cinco nomes para aprender; risco de o agente “reclassificar” para pular PLAN.
 - **Custo:** documentação + uma linha por playbook.
 - **Reversibilidade:** média (reverter perfis exige reescrever playbooks).
-- **Fonte:** `.agent/skills/sdd-mode/references/workflow.md` §2 (tabela de modos)
+- **Fonte:** `sdd-mode/references/workflow.md` §2 (tabela de modos); canônico: `catalog.md`
 
 ### Opção C — Autonomia estilo pstack (humano só no irreversível)
 
@@ -92,6 +92,12 @@ Perfis:
 
 ## Como Reverter
 
-1. Restaurar o texto “4 gates obrigatórios sempre” em `AGENTS.md` e `SDD_WORKFLOW.md` §1.
-2. Trocar a linha de perfil dos playbooks para `full`.
+1. Restaurar o texto “4 gates obrigatórios sempre” em `SDD/AGENTS.md` e `sdd-mode/references/workflow.md` §1.
+2. Trocar o **Profile:** dos playbooks para `full`.
 3. Marcar este ADR como ⏸️ SUPERSEDED.
+
+---
+
+## Addendum 2026-08-27
+
+ADR-003 tornou `agentic` o default: G1/G2 só no `full`. O antigo GATE 4 é o **pacote humano** (contrato + diff + `review.md` + G3). sdd-mode não mergeia `main`. Never-block no HOW = `agentic`. Match: `catalog.md`. G3 = `Smoke:` em `SDD/AGENTS.md`.

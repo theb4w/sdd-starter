@@ -51,7 +51,7 @@ No `agentic`:
 5. Playbook `review.md` contra o contrato.
 6. G3 na superfície real.
 7. **Um pacote humano:** contrato + diff + achados da review + evidência G3. Aceitar, corrigir, ou rejeitar.
-8. Commit em **branch**, não em `main` silencioso. Sem merge overnight.
+8. Commit em **branch**. sdd-mode não mergeia `main`. Overnight land é pstack `shipping` depois de `review.md`+G3, só se o humano pediu.
 
 `full` obrigatório quando: schema/serviço externo novo, compliance/dinheiro/saúde, WHAT incerto, ou o humano pediu.
 
@@ -73,3 +73,9 @@ No `agentic`:
 1. Default voltar a `full` no `sdd-mode`.
 2. Playbooks de mudança recuperam **STOP GATE 1/2**.
 3. Marcar este ADR ⏸️ SUPERSEDED.
+
+---
+
+## Addendum 2026-08-27 (policy split)
+
+Never-block no HOW **é** este perfil. Não é skip de CLARIFY de produto nem do pacote. G3 é a linha `Smoke:` em `SDD/AGENTS.md`; sem evidência o `review.md` não pede accept.

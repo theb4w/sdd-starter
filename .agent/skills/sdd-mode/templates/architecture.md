@@ -223,9 +223,9 @@ erDiagram
 
 ### 11.2 Pipeline CI/CD
 ```
-PR aberto → CI (lint + test) → review humano → merge para main →
-deploy automático em staging → smoke manual (GATE 3) →
-promote para produção (GATE 4) → smoke produção
+PR aberto → CI (lint + test) → review.md + pacote humano → merge da branch →
+deploy em staging → smoke (GATE 3) →
+promote para produção (após pacote) → smoke produção
 ```
 
 ### 11.3 Rollback

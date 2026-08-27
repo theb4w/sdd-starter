@@ -78,12 +78,20 @@ Não adotamos a filosofia pstack “the best spec is code” nem “never block 
 
 ### Risco residual
 
-- Ferramentas com path diferente (`.grok/skills/`) exigem cópia ou nota de adapter — aceito porque o core permanece um arquivo.
+- Ferramentas com path diferente exigem cópia ou nota de adapter — aceito porque o core permanece um arquivo.
 
 ---
 
 ## Como Reverter
 
-1. Remover `.agent/skills/sdd-mode/` e `principle-*`.
+1. Remover `sdd-mode/` e `principle-*` do skill root em uso.
 2. Restaurar o kit antigo a partir do git (commit anterior a `32ca261`).
 3. Marcar este ADR como ⏸️ SUPERSEDED.
+
+---
+
+## Addendum 2026-08-27
+
+A decisão (skill, não plugin) não muda. O **parent** da skill não é só `.agent/skills/`. Hosts usam `.cursor/skills`, `.grok/skills`, `.kiro/skills`, `.agents/skills` (Antigravity), `.agent/skills` (este checkout), ou equivalentes do usuário. Resolver via `sdd-mode/references/skill-root.md`. Copiar `sdd-mode/` (e `principle-*`, `sdd-tdd`) para a pasta do host; não forkar o Markdown. `SDD/` continua na raiz do repo alvo.
+
+Sob pstack/poteto-mode, sdd-mode é a **camada de contrato** (`references/with-pstack.md`): pstack executa; sdd grava `SDD/` e o pacote. Never-block no HOW = perfil `agentic`. Overnight land = pstack `shipping` após G3, só se o humano pediu. “Best spec is code” continua recusado. sdd-mode não mergeia `main`. Cursor: rule always-on + `references/install.md`.

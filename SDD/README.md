@@ -3,7 +3,8 @@
 Pasta de processo deste projeto, gerada por `sdd-mode`.
 
 Não edite o método aqui. O método e os playbooks vivem na skill
-(`.agent/skills/sdd-mode/`). Aqui ficam só os artefatos **deste** produto.
+(`sdd-mode/` no skill root do host — ver `references/skill-root.md`).
+Aqui ficam só os artefatos **deste** produto.
 
 | Arquivo | Papel |
 |---|---|
@@ -19,3 +20,5 @@ Não edite o método aqui. O método e os playbooks vivem na skill
 | `handovers/` | Estado retomável |
 
 Invocar `sdd-mode` e deixar o playbook escrever nesta pasta.
+
+`AGENTS.md` precisa de **`Smoke:`** (neste pack: `sdd-mode/references/dry-run.md`). Sem evidência G3 o pacote não aceita.

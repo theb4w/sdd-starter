@@ -13,10 +13,11 @@ description: "Each rule or procedure lives in one file. Others point to it. Use 
 |---|---|
 | Community SDD mapping | `references/sdd-basis.md` |
 | Method (phases, gates) | `references/workflow.md` |
-| Agent procedure | `sdd-mode/playbooks/` |
+| Intent → playbook | `references/catalog.md` (wins on drift) |
+| Agent procedure | `sdd-mode/playbooks/` (headers = catalog) |
 | Product contract | `SDD/` |
 | One technical choice | one ADR |
-| Domain pitfall | `.agent/skills/<domain>/SKILL.md` |
+| Domain pitfall | `<skill-root>/<domain>/SKILL.md` |
 
 **Boundaries:** A one-line pointer is not a second home.
 

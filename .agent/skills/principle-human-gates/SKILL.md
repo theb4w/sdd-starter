@@ -20,6 +20,6 @@ Named gates still exist (G1 PLAN, G2 TASKS, G3 SMOKE, G4/package). Which **block
 
 **Pattern:** Default `agentic` (ADR-003). Write PLAN/TASKS always when the playbook requires those files; do not wait on G1/G2 unless `full`. Always run `review.md` + G3 before the package. Irreversible ops always pause.
 
-**Boundaries:** Do not drop G3. Do not merge overnight. Do not skip the package.
+**Boundaries:** Do not drop G3. Do not skip the package. sdd-mode does not merge `main`. pstack `shipping` / overnight land is allowed only after `review.md`+G3 and only if the human asked. Never-block on HOW is profile `agentic`, not a skip of WHAT.
 
 **Source:** ADR-003; https://github.github.io/spec-kit/ ; https://codelabs.developers.google.com/sdd-adk-antigravity

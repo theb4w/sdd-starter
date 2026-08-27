@@ -5,10 +5,10 @@
 
   Como usar:
   1. Copie para SDD/plans/TASKS_<MODULO>.md
-  2. Pré-requisito: PLAN_<MODULO>.md aprovado (GATE 1)
+  2. Pré-requisito: PLAN_<MODULO>.md escrito (`full`: GATE 1)
   3. Cada task = 1 commit lógico, ~10-30 LOC, com AC verificável
-  4. Tarefas [bloq.] são gates (não pular sem aprovação humana)
-  5. Aguarde GATE 2 antes de qualquer implementação
+  4. Tarefas [bloq.] são gates (não pular sem o stop do perfil)
+  5. `full`: aguarde GATE 2. `agentic`: grave TASKS e IMPLEMENT.
 
   Convenções de ID:
   - T-<FASE><N>  (T-A1, T-B2, T-C1.3 quando há sub-fase)
@@ -19,7 +19,7 @@
 
 # TASKS_<MODULO> — Decomposição Atômica
 
-**Status:** 📝 TASKS (aguardando GATE 2)
+**Status:** 📝 TASKS (`full`: aguardando GATE 2; `agentic`: gravado)
 **Autor:** <nome>
 **Data:** YYYY-MM-DD
 **PLAN base:** `SDD/plans/PLAN_<MODULO>.md`
@@ -48,7 +48,7 @@
 | **T-A6** | Atualizar config/docs necessarias | `<manifest-ou-doc>` → MOD | configuracao ou documentacao confere com a entrega |
 | **T-A7** [bloq.] | Validacao completa sem regressao | ambiente de trabalho | suite/checklist definido pelo projeto passa |
 | **T-A8** [bloq.] | Smoke aplicavel | alvo realista / checklist | fluxos criticos OK (**GATE 3**) |
-| **T-A9** | Commit + push (Fase A) | git | commit convencional aprovado (**GATE 4**) |
+| **T-A9** | Commit na branch (Fase A) | git | commit convencional após **pacote** humano |
 
 ---
 
@@ -98,4 +98,4 @@
 
 ---
 
-*Após GATE 2 aprovado, prosseguir para IMPLEMENT (T-A1). Atualizar handover ao fim de cada fase.*
+*`full`: após GATE 2, IMPLEMENT (T-A1). `agentic`: IMPLEMENT após gravar TASKS. Pacote (review + G3) ao fim de cada fase. Atualizar handover.*

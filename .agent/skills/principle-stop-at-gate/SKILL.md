@@ -14,6 +14,6 @@ description: "Block only where the profile names a human stop. agentic does not 
 - Never per-file “may I edit this?” during IMPLEMENT.
 - Always pause: force-push to shared branch, prod delete, customer send.
 
-**Boundaries:** Not pstack never-block. The contract is still written first. The human still sees one package. `main` is not silent.
+**Boundaries:** Never-block on HOW = `agentic` (do not ask G1/G2). Never-block does not skip the contract or the package. sdd-mode does not merge `main`.
 
 **Source:** ADR-003; spec-kit short path https://github.github.io/spec-kit/

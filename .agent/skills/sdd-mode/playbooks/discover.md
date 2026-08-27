@@ -1,14 +1,14 @@
 # Playbook: discover
 
-**Gate profile:** `observe` until the brief is accepted; then `bootstrap.md`
-**When:** existing codebase with missing or stale docs.
+**Family:** Arrive
+**Intent:** Legacy repo, no docs
+**Profile:** `observe`
 **Not when:** `SDD/BRIEF.md` is already trustworthy → `bootstrap.md`.
-**Basis:** spec-kit brownfield / iterative enhancement; Feathers characterization of legacy before change. Reverse-spec what the code *does*, do not invent desired behavior.
-**Principles:** spec-first, traceability, one-home-per-fact.
+**Basis:** spec-kit brownfield; Feathers characterization. Reverse-spec what the code does.
 
 ## Steps
 
-1. Ensure `SDD/` (skill preamble). No production edits.
+1. **Step 0** of `sdd-mode` (ensure `SDD/`). No production edits.
 2. Inventory languages, entrypoints, tests, CI, deploy, README. Trust code over README.
 3. Infer product and user. Mark guesses `[?]`.
 4. Fill `SDD/BRIEF.md` from evidence.
@@ -16,8 +16,8 @@
 6. Draft `SDD/architecture.md` (inferred vs confirmed).
 7. Populate `SDD/INDEX.md` with detected modules.
 8. Thin retrospective SPECs in `SDD/modules/`. Do not invent desired behavior.
-9. Candidate ADRs in `SDD/decisions/` for decisions already in the code. Do not mark ACEITO without the human.
-10. Adapt `SDD/AGENTS.md` to the detected stack.
+9. Candidate ADRs in `SDD/decisions/`. Do not mark ACEITO without the human.
+10. Adapt `SDD/AGENTS.md` to the detected stack, including **`Smoke:`** (how this repo is proven — test command, binary, or URL).
 11. `handover.md`. Next: `bootstrap.md` only for new work.
 
 ## Reply

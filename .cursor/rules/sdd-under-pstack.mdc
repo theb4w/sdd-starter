@@ -1,0 +1,22 @@
+---
+description: sdd-mode is the contract layer under pstack/poteto-mode. Load it before product changes.
+alwaysApply: true
+---
+
+# sdd-mode under pstack (this repo)
+
+Skill root for this checkout: `.agent/skills/` (not `.cursor/skills` unless a junction exists). Details: `.agent/skills/sdd-mode/references/skill-root.md` and `with-pstack.md`.
+
+When `/poteto-mode` or pstack is active, **or** the user asked for a product change (feature, bug, refactor, bootstrap, story, design, discover):
+
+1. Read `.agent/skills/sdd-mode/SKILL.md` and `.agent/skills/sdd-mode/references/catalog.md` **before** production code.
+2. Run **Step 0 — Ensure `SDD/`**. Process artifacts only under `SDD/`.
+3. Copy the matched sdd playbook steps into the todo. pstack execution (subagents, unslop, prove, interrogate) runs inside IMPLEMENT, not instead of the contract.
+4. After a production diff: `.agent/skills/sdd-mode/playbooks/review.md`, then G3 from `SDD/AGENTS.md` `Smoke:`. No `Smoke:` line → do not present accept.
+5. sdd-mode does not merge `main`. If the user asked to land overnight, that is pstack `shipping` **after** review+G3.
+
+pstack-only (perf, forensics, babysit, shipping, autopilot, worktree): do not force `feature.md`. If product behavior also changes, do steps 1–4 first.
+
+Do not dump `references/workflow.md` into the session todo. Open a cited section only.
+
+Agent-facing skill files are English. Opt out of sdd-mode only if the user says so by name.

@@ -17,7 +17,7 @@ tags: ["example", "template"]
   - Reduz erros recorrentes (ex.: misuse de async, hardcode, padrões errados)
 
   Como usar este template:
-  1. Copie a pasta inteira: cp -r .agent/skills/_example_skill .agent/skills/<nome>
+  1. Copie a pasta inteira para o skill root do host: cp -r _example_skill <skill-root>/<nome>
   2. Renomeie a pasta (kebab-case): ex.: firestore-rules, jwt-handling, prisma-orm
   3. Atualize o YAML frontmatter (name, description, tags)
   4. Reescreva conteúdo abaixo conforme o domínio real
@@ -131,9 +131,9 @@ def script_offline():
 
 ## Ver também
 
-- `docs/<Project>_Architecture.md` §<seção relevante>
+- `SDD/architecture.md` §<seção relevante>
 - ADR-NNN — <decisão relacionada>
-- Skill irmã: `.agent/skills/<outra-skill>/SKILL.md`
+- Skill irmã: `<skill-root>/<outra-skill>/SKILL.md`
 
 ---
 

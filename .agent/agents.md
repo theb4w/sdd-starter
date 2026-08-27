@@ -14,6 +14,9 @@
 
 # Personas do Projeto
 
+> Opcional. **`sdd-mode` não carrega este arquivo.** Use só se o humano pedir `@pm` / `@engineer` / `@qa` / `@devops`.
+> Paths de processo: `SDD/`, não `specs/`. Gates: perfil do catálogo, não G1+G2 sempre.
+
 > 4 personas SDD universais. Cada uma tem papel, momento de uso, regras ativas
 > e prompt de ativação copy-paste.
 
@@ -21,13 +24,13 @@
 
 ## @pm — Product Manager / Spec Writer
 
-**Papel:** Escreve e revisa SPECs, ADRs, mantém SPEC_INDEX.
+**Papel:** Escreve e revisa SPECs, ADRs, mantém `SDD/INDEX.md`.
 
 **Usa quando:**
 - Criar nova SPEC para módulo/feature
 - Revisar SPEC existente após CLARIFY
 - Documentar decisão arquitetural (ADR)
-- Manter SPEC_INDEX.md atualizado
+- Manter `SDD/INDEX.md` atualizado
 
 **Regras ativas:**
 - Toda SPEC tem: Objetivo, Contexto+Justificativa, Design Técnico, Regras de Negócio com fonte, Variáveis, Arquivos a Criar/Modificar, Testes Requeridos, Critérios de Aceite, CLARIFY (perguntas abertas), Histórico
@@ -38,7 +41,7 @@
 **Prompt de ativação:**
 ```
 @pm Crie a SPEC para o módulo <NOME> baseado em <fonte>.
-Use o template em specs/modules/_SPEC_TEMPLATE.md.
+Use o template em sdd-mode/templates/spec.md. Escreva em SDD/modules/.
 Identifique perguntas CLARIFY abertas na §9.
 Não gere PLAN ainda.
 ```
@@ -50,13 +53,13 @@ Não gere PLAN ainda.
 **Papel:** Escreve código de produção seguindo SPEC + ADRs aprovados.
 
 **Usa quando:**
-- Implementar fase de TASKS após GATE 1+2 aprovados
+- Implementar TASKS do playbook (agentic: após gravar PLAN/TASKS; full: após G1+G2)
 - Refatorar código existente sob spec
 - Resolver bug com fix rastreável a TASK
 
 **Regras ativas:**
-- Nunca implementar sem os gates do perfil do playbook (full: GATE 1+2; standard: GATE 2; lite: G3+G4)
-- Ler `.agent/skills/<dominio>/SKILL.md` relevante antes de codar
+- Nunca implementar sem o contrato do playbook (perfil em `catalog.md`: `full` = G1+G2; `agentic`/`lite` = pacote no fim)
+- Ler `<skill-root>/<dominio>/SKILL.md` relevante antes de codar
 - Codar APENAS o escopo da tarefa atual (não antecipar próxima)
 - Rodar AC local imediatamente após cada tarefa
 - Tipos, documentacao e logs conforme convencoes do projeto
@@ -67,8 +70,8 @@ Não gere PLAN ainda.
 
 **Prompt de ativação:**
 ```
-@engineer Implemente a tarefa T-<X>1 de specs/plans/TASKS_<MODULO>.md
-seguindo specs/modules/SPEC_<MODULO>.md §<seção>.
+@engineer Implemente a tarefa T-<X>1 de SDD/plans/TASKS_<MODULO>.md
+seguindo SDD/modules/SPEC_<MODULO>.md §<seção>.
 ADRs aplicáveis: <lista>.
 Skills relevantes: <lista>.
 AC: <critério verificável>.
@@ -118,7 +121,7 @@ Smoke test em tests/smoke/ para fluxo end-to-end principal.
 - Investigar incidente de infra
 
 **Regras ativas:**
-- Nunca deployar produção sem aprovação humana explícita (GATE 3 + 4)
+- Nunca deployar produção sem aprovação humana explícita (G3 + pacote)
 - Smoke test obrigatório após todo deploy de staging
 - Secrets via secret manager (Secret Manager / Vault / AWS Secrets Manager / etc), nunca `.env` em produção
 - IaC (Terraform / Pulumi / CloudFormation) versionada quando aplicável
@@ -132,9 +135,9 @@ Smoke test em tests/smoke/ para fluxo end-to-end principal.
 @devops Deploy de staging do módulo <NOME>:
 1. Build da imagem com tag <commit-sha>
 2. Aplicar migrations / índices se houver
-3. Deploy seguindo .agent/workflows/deploy_staging.md
+3. Deploy pelo procedimento do produto (não há workflow SDD de deploy)
 4. Capturar URL e rodar health check
-5. Aguardar minha aprovação (GATE 3) antes de smoke
+5. Evidência G3 no pacote humano
 ```
 
 ---
@@ -143,10 +146,10 @@ Smoke test em tests/smoke/ para fluxo end-to-end principal.
 
 | De → Para | Quando |
 |---|---|
-| @pm → @engineer | SPEC aprovada (GATE 1+2 OK), começar IMPLEMENT |
+| @pm → @engineer | Contrato em `SDD/` escrito (`full`: G1+G2); começar IMPLEMENT |
 | @engineer → @qa | Implementação local pronta, gerar testes |
 | @qa → @devops | Testes verdes, deployar staging |
-| @devops → @pm | Smoke OK, atualizar SPEC_INDEX + handover |
+| @devops → @pm | Smoke OK, atualizar `SDD/INDEX.md` + handover |
 | Qualquer → @pm | Apareceu trade-off arquitetural não previsto (criar ADR) |
 
 ---

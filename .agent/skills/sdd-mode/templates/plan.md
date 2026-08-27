@@ -6,8 +6,8 @@
   Como usar:
   1. Copie para SDD/plans/PLAN_<MODULO>.md
   2. Pré-requisito: SPEC_<MODULO>.md tem status 📋 PLAN (CLARIFY resolvido)
-  3. Use os critérios da §13 do SDD_WORKFLOW para decidir multi-fase
-  4. Aguarde GATE 1 (humano aprova PLAN) antes de gerar TASKS
+  3. Use os critérios da §13 de `sdd-mode/references/workflow.md` para decidir multi-fase
+  4. `full`: aguarde GATE 1 antes de gerar TASKS. `agentic`: grave PLAN e siga.
 
   ⚠️  NUNCA escrever código nesta fase. PLAN é só estratégia.
 ═══════════════════════════════════════════════════════════════════════════════
@@ -15,7 +15,7 @@
 
 # PLAN_<MODULO> — Plano de Implementação
 
-**Status:** 📋 PLAN (aguardando GATE 1)
+**Status:** 📋 PLAN (`full`: aguardando GATE 1; `agentic`: gravado)
 **Autor:** <nome>
 **Data:** YYYY-MM-DD
 **Spec base:** `SDD/modules/SPEC_<MODULO>.md`
@@ -43,7 +43,7 @@ do RN-AUTH-03 (≤500ms p95).
 
 ## Tabela de Fases (se multi-fase)
 
-> Apenas se SPEC for multi-fase. Critérios em SDD_WORKFLOW §13.1.
+> Apenas se SPEC for multi-fase. Critérios em `workflow.md` §13.1.
 
 | Fase | Entrega | LOC est. | Risco | Gate de aceite |
 |---|---|---|---|---|
@@ -127,8 +127,8 @@ flowchart TD
 
 - [ ] CLARIFY da SPEC vazio (todas as Qs respondidas)
 - [ ] ADRs relevantes aceitos (✔️ ACEITO em `SDD/decisions/`)
-- [ ] PLAN aprovado por humano (**GATE 1**)
-- [ ] TASKS geradas e aprovadas (**GATE 2**)
+- [ ] PLAN escrito (`full`: GATE 1 humano)
+- [ ] TASKS escritas (`full`: GATE 2 humano)
 - [ ] Recursos externos necessarios preparados
 - [ ] Limites, riscos e custo confirmados quando aplicavel
 - [ ] Dados, configuracoes e migracoes preparados quando aplicavel
@@ -147,4 +147,4 @@ flowchart TD
 
 ---
 
-*Após GATE 1 aprovado, gerar `SDD/plans/TASKS_<MODULO>.md`. Não escrever código antes.*
+*`full`: após GATE 1, gerar TASKS. `agentic`: gerar TASKS no mesmo fôlego; IMPLEMENT depois. Não escrever código antes do contrato em `SDD/`.*
